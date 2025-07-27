@@ -3,6 +3,7 @@
 import type React from "react";
 
 import { GameWonModal } from "@/components/GameWonModal";
+import { ShowAnswerModal } from "@/components/ShowAnswerModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { type Program, gameDataService } from "@/lib/gameData";
 import {
 	DollarSign,
+	Eye,
 	GraduationCap,
 	ListOrdered,
 	MapPin,
@@ -25,7 +27,7 @@ export default function AtlasguessrGame() {
 	const [allProgramNames, setAllProgramNames] = useState<string[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [currentProgram, setCurrentProgram] = useState<Program | undefined>(
-		undefined
+		undefined,
 	);
 	const [universityGuess, setUniversityGuess] = useState("");
 	const [programGuess, setProgramGuess] = useState("");
@@ -33,6 +35,7 @@ export default function AtlasguessrGame() {
 	const [universityCorrect, setUniversityCorrect] = useState(false);
 	const [programCorrect, setProgramCorrect] = useState(false);
 	const [gameWon, setGameWon] = useState(false);
+	const [showAnswerModal, setShowAnswerModal] = useState(false);
 	const [guessHistory, setGuessHistory] = useState<
 		Array<{
 			university: string;
@@ -44,8 +47,9 @@ export default function AtlasguessrGame() {
 
 	const [filteredUniversitySuggestions, setFilteredUniversitySuggestions] =
 		useState<string[]>([]);
-	const [filteredProgramSuggestions, setFilteredProgramSuggestions] =
-		useState<string[]>([]);
+	const [filteredProgramSuggestions, setFilteredProgramSuggestions] = useState<
+		string[]
+	>([]);
 
 	const universityInputRef = useRef<HTMLInputElement>(null);
 	const programInputRef = useRef<HTMLInputElement>(null);
@@ -56,8 +60,7 @@ export default function AtlasguessrGame() {
 			try {
 				setIsLoading(true);
 				const programNames = await gameDataService.getProgramNames();
-				const universityNames =
-					await gameDataService.getUniversityNames();
+				const universityNames = await gameDataService.getUniversityNames();
 				// Get all programs by loading a random one and accessing the service's data
 				await gameDataService.preloadData();
 				const loadStatus = gameDataService.getLoadStatus();
@@ -68,8 +71,7 @@ export default function AtlasguessrGame() {
 					setAllUniversityNames(universityNames);
 
 					// Extract university names from loaded data
-					const randomProgram =
-						await gameDataService.getRandomProgram();
+					const randomProgram = await gameDataService.getRandomProgram();
 					setCurrentProgram(randomProgram);
 
 					// Set a flag that data is loaded (we'll use the service directly)
@@ -103,32 +105,42 @@ export default function AtlasguessrGame() {
 		return guess.trim() === target.trim();
 	};
 	const handleUniversityInputChange = (
-		e: React.ChangeEvent<HTMLInputElement>
+		e: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		const value = e.target.value;
 		setUniversityGuess(value);
 		if (value.length > 1) {
 			setFilteredUniversitySuggestions(
 				allUniversityNames.filter((name) =>
-					normalizeText(name).includes(normalizeText(value))
-				)
+					normalizeText(name).includes(normalizeText(value)),
+				),
 			);
 		} else {
 			setFilteredUniversitySuggestions([]);
 		}
 	};
 
-	const handleProgramInputChange = (
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
+	const handleProgramInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		setProgramGuess(value);
-		if (value.length > 1) {
-			setFilteredProgramSuggestions(
-				allProgramNames.filter((name) =>
-					normalizeText(name).includes(normalizeText(value))
-				)
-			);
+		if (value.length > 1 && currentProgram?.rankingType) {
+			// Get program names filtered by the current program's ranking type
+			gameDataService.getProgramNamesByRankingType(currentProgram.rankingType)
+				.then(filteredProgramNames => {
+					const suggestions = filteredProgramNames.filter((name) =>
+						normalizeText(name).includes(normalizeText(value)),
+					);
+					setFilteredProgramSuggestions(suggestions);
+				})
+				.catch(error => {
+					console.error('Error filtering program suggestions:', error);
+					// Fallback to all programs if filtering fails
+					setFilteredProgramSuggestions(
+						allProgramNames.filter((name) =>
+							normalizeText(name).includes(normalizeText(value)),
+						),
+					);
+				});
 		} else {
 			setFilteredProgramSuggestions([]);
 		}
@@ -151,7 +163,7 @@ export default function AtlasguessrGame() {
 
 		const normalizedUniversityGuess = normalizeText(universityGuess);
 		const normalizedUniversityTarget = normalizeText(
-			currentProgram.universityName
+			currentProgram.universityName,
 		);
 
 		const universityMatch =
@@ -160,7 +172,7 @@ export default function AtlasguessrGame() {
 		// Use flexible program matching that ignores language variants
 		const programMatch = gameDataService.checkProgramNameMatch(
 			programGuess,
-			currentProgram.programName
+			currentProgram.programName,
 		);
 
 		// Add to guess history
@@ -206,6 +218,7 @@ export default function AtlasguessrGame() {
 		setUniversityCorrect(false);
 		setProgramCorrect(false);
 		setGameWon(false);
+		setShowAnswerModal(false);
 		setGuessHistory([]);
 		setFilteredUniversitySuggestions([]);
 		setFilteredProgramSuggestions([]);
@@ -219,8 +232,7 @@ export default function AtlasguessrGame() {
 						🎓 Atlasguessr
 					</h1>
 					<p className="text-gray-600">
-						Türk üniversitelerindeki lisans programlarını tahmin
-						edin!
+						Türk üniversitelerindeki lisans programlarını tahmin edin!
 					</p>
 				</div>
 
@@ -259,9 +271,7 @@ export default function AtlasguessrGame() {
 								Deneme: {attempts}
 							</Badge>
 							<Badge
-								variant={
-									universityCorrect ? "default" : "outline"
-								}
+								variant={universityCorrect ? "default" : "outline"}
 								className="text-sm"
 							>
 								Üniversite: {universityCorrect ? "✓" : "?"}
@@ -286,9 +296,7 @@ export default function AtlasguessrGame() {
 								<CardContent className="space-y-4">
 									<div className="flex items-center gap-2 rounded-lg bg-blue-50 p-3">
 										<MapPin className="h-4 w-4 text-blue-600" />
-										<span className="font-medium">
-											Şehir:
-										</span>
+										<span className="font-medium">Şehir:</span>
 										<span className="text-blue-700">
 											{currentProgram?.cityName}
 										</span>
@@ -296,9 +304,7 @@ export default function AtlasguessrGame() {
 
 									<div className="flex items-center gap-2 rounded-lg bg-green-50 p-3">
 										<University className="h-4 w-4 text-green-600" />
-										<span className="font-medium">
-											Üniversite Türü:
-										</span>
+										<span className="font-medium">Üniversite Türü:</span>
 										<span className="text-green-700">
 											{currentProgram?.programType}
 										</span>
@@ -306,9 +312,7 @@ export default function AtlasguessrGame() {
 
 									<div className="flex items-center gap-2 rounded-lg bg-purple-50 p-3">
 										<DollarSign className="h-4 w-4 text-purple-600" />
-										<span className="font-medium">
-											Ücret Durumu:
-										</span>
+										<span className="font-medium">Ücret Durumu:</span>
 										<span className="text-purple-700">
 											{currentProgram?.scholarshipType}
 										</span>
@@ -318,26 +322,21 @@ export default function AtlasguessrGame() {
 										<div className="mb-2 flex items-center gap-2">
 											<Trophy className="h-4 w-4 text-yellow-600" />
 											<span className="font-medium">
-												Son Yerleşen Sıralamaları (4
-												Yıl):
+												Son Yerleşen Sıralamaları (4 Yıl):
 											</span>
 										</div>
 										<ul className="list-inside list-disc text-sm text-yellow-700">
-											{currentProgram?.rank.map(
-												(r: string, i: number) => (
-													<li key={r}>
-														{2024 - i}: {r}
-													</li>
-												)
-											)}
+											{currentProgram?.rank.map((r: string, i: number) => (
+												<li key={r}>
+													{2024 - i}: {r}
+												</li>
+											))}
 										</ul>
 									</div>
 
 									<div className="flex items-center gap-2 rounded-lg bg-orange-50 p-3">
 										<ListOrdered className="h-4 w-4 text-orange-600" />
-										<span className="font-medium">
-											Sıralama Türü:
-										</span>
+										<span className="font-medium">Sıralama Türü:</span>
 										<span className="text-orange-700">
 											{currentProgram?.rankingType}
 										</span>
@@ -362,37 +361,28 @@ export default function AtlasguessrGame() {
 											id="university-guess"
 											ref={universityInputRef}
 											value={universityGuess}
-											onChange={
-												handleUniversityInputChange
-											}
+											onChange={handleUniversityInputChange}
 											placeholder="Örn: BOĞAZİÇİ ÜNİVERSİTESİ"
 											className={
-												universityCorrect
-													? "border-green-500 bg-green-50"
-													: ""
+												universityCorrect ? "border-green-500 bg-green-50" : ""
 											}
 											disabled={gameWon}
 											autoComplete="off"
 										/>
-										{filteredUniversitySuggestions.length >
-											0 && (
+										{filteredUniversitySuggestions.length > 0 && (
 											<div className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg">
-												{filteredUniversitySuggestions.map(
-													(suggestion) => (
-														<button
-															key={suggestion}
-															className="w-full cursor-pointer p-2 text-left hover:bg-gray-100"
-															type="button"
-															onClick={() =>
-																selectUniversitySuggestion(
-																	suggestion
-																)
-															}
-														>
-															{suggestion}
-														</button>
-													)
-												)}
+												{filteredUniversitySuggestions.map((suggestion) => (
+													<button
+														key={suggestion}
+														className="w-full cursor-pointer p-2 text-left hover:bg-gray-100"
+														type="button"
+														onClick={() =>
+															selectUniversitySuggestion(suggestion)
+														}
+													>
+														{suggestion}
+													</button>
+												))}
 											</div>
 										)}
 									</div>
@@ -411,36 +401,24 @@ export default function AtlasguessrGame() {
 											onChange={handleProgramInputChange}
 											placeholder="Örn: Bilgisayar Mühendisliği (4 Yıllık)"
 											className={
-												programCorrect
-													? "border-green-500 bg-green-50"
-													: ""
+												programCorrect ? "border-green-500 bg-green-50" : ""
 											}
 											disabled={gameWon}
-											onKeyPress={(e) =>
-												e.key === "Enter" &&
-												checkGuess()
-											}
+											onKeyPress={(e) => e.key === "Enter" && checkGuess()}
 											autoComplete="off"
 										/>
-										{filteredProgramSuggestions.length >
-											0 && (
+										{filteredProgramSuggestions.length > 0 && (
 											<div className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg">
-												{filteredProgramSuggestions.map(
-													(suggestion) => (
-														<button
-															key={suggestion}
-															className="w-full cursor-pointer p-2 text-left hover:bg-gray-100"
-															type="button"
-															onClick={() =>
-																selectProgramSuggestion(
-																	suggestion
-																)
-															}
-														>
-															{suggestion}
-														</button>
-													)
-												)}
+												{filteredProgramSuggestions.map((suggestion) => (
+													<button
+														key={suggestion}
+														className="w-full cursor-pointer p-2 text-left hover:bg-gray-100"
+														type="button"
+														onClick={() => selectProgramSuggestion(suggestion)}
+													>
+														{suggestion}
+													</button>
+												))}
 											</div>
 										)}
 									</div>
@@ -448,9 +426,7 @@ export default function AtlasguessrGame() {
 									<Button
 										onClick={checkGuess}
 										disabled={
-											!universityGuess.trim() ||
-											!programGuess.trim() ||
-											gameWon
+											!universityGuess.trim() || !programGuess.trim() || gameWon
 										}
 										className="w-full"
 									>
@@ -460,12 +436,19 @@ export default function AtlasguessrGame() {
 							</Card>
 						</div>
 
-						{/* Reset Button */}
-						<div className="mb-8 text-center">
+						{/* Action Buttons */}
+						<div className="mb-8 flex justify-center gap-3">
+							<Button
+								onClick={() => setShowAnswerModal(true)}
+								className="gap-2 border border-amber-700 bg-amber-600 text-white shadow-md hover:bg-amber-700"
+								disabled={gameWon}
+							>
+								<Eye className="h-4 w-4" />
+								Cevabı Gör
+							</Button>
 							<Button
 								onClick={resetGame}
-								variant="outline"
-								className="gap-2 bg-transparent"
+								className="gap-2 border border-blue-700 bg-blue-600 text-white shadow-md hover:bg-blue-700"
 							>
 								<RefreshCw className="h-4 w-4" />
 								Yeni Oyun
@@ -482,10 +465,7 @@ export default function AtlasguessrGame() {
 									<div className="space-y-2">
 										{guessHistory.map((guess, index) => (
 											<div
-												key={
-													guess.university +
-													guess.program
-												}
+												key={guess.university + guess.program}
 												className="grid grid-cols-1 gap-2 rounded-lg bg-gray-50 p-3 md:grid-cols-2"
 											>
 												<div
@@ -495,25 +475,17 @@ export default function AtlasguessrGame() {
 															: "bg-red-100 text-red-800"
 													}`}
 												>
-													<span className="font-medium">
-														Üniversite:{" "}
-													</span>
+													<span className="font-medium">Üniversite: </span>
 													{guess.university}
-													{guess.universityMatch
-														? " ✓"
-														: " ✗"}
+													{guess.universityMatch ? " ✓" : " ✗"}
 													{/* Show the actual correct answer if the guess was correct but different */}
 													{guess.universityMatch &&
 														!isExactMatch(
 															guess.university,
-															currentProgram?.universityName ||
-																""
+															currentProgram?.universityName || "",
 														) && (
 															<div className="mt-1 text-green-600 text-xs">
-																Doğru cevap:{" "}
-																{
-																	currentProgram?.universityName
-																}
+																Doğru cevap: {currentProgram?.universityName}
 															</div>
 														)}
 												</div>
@@ -524,22 +496,14 @@ export default function AtlasguessrGame() {
 															: "bg-red-100 text-red-800"
 													}`}
 												>
-													<span className="font-medium">
-														Program:{" "}
-													</span>
+													<span className="font-medium">Program: </span>
 													{guess.program}
-													{guess.programMatch
-														? " ✓"
-														: " ✗"}
+													{guess.programMatch ? " ✓" : " ✗"}
 													{/* Show the actual correct answer if the guess was correct but different */}
 													{guess.programMatch &&
-														guess.program !==
-															currentProgram?.programName && (
+														guess.program !== currentProgram?.programName && (
 															<div className="mt-1 text-green-600 text-xs">
-																Doğru cevap:{" "}
-																{
-																	currentProgram?.programName
-																}
+																Doğru cevap: {currentProgram?.programName}
 															</div>
 														)}
 												</div>
@@ -553,31 +517,24 @@ export default function AtlasguessrGame() {
 						{/* Instructions */}
 						<Card>
 							<CardHeader>
-								<CardTitle className="text-lg">
-									Nasıl Oynanır?
-								</CardTitle>
+								<CardTitle className="text-lg">Nasıl Oynanır?</CardTitle>
 							</CardHeader>
 							<CardContent className="space-y-2 text-gray-600 text-sm">
 								<p>
-									• Verilen ipuçlarını kullanarak hem
-									üniversite hem de program adını tahmin edin
+									• Verilen ipuçlarını kullanarak hem üniversite hem de program
+									adını tahmin edin
 								</p>
 								<p>
-									• Her tahmin sonrası hangi kısmın doğru
-									olduğunu görebilirsiniz
+									• Her tahmin sonrası hangi kısmın doğru olduğunu
+									görebilirsiniz
+								</p>
+								<p>• Doğru tahmin ettiğiniz kısımlar yeşil renkte görünür</p>
+								<p>
+									• Her iki kısmı da doğru tahmin ettiğinizde oyunu kazanırsınız
 								</p>
 								<p>
-									• Doğru tahmin ettiğiniz kısımlar yeşil
-									renkte görünür
-								</p>
-								<p>
-									• Her iki kısmı da doğru tahmin ettiğinizde
-									oyunu kazanırsınız
-								</p>
-								<p>
-									• İpuçları: şehir, üniversite türü, burs
-									durumu, son 4 yılın sıralamaları ve bölüm
-									türü
+									• İpuçları: şehir, üniversite türü, burs durumu, son 4 yılın
+									sıralamaları ve bölüm türü
 								</p>
 							</CardContent>
 						</Card>
@@ -593,6 +550,17 @@ export default function AtlasguessrGame() {
 						attempts={attempts}
 						onNewGame={resetGame}
 						guessHistory={guessHistory}
+					/>
+				)}
+
+				{/* Show Answer Modal */}
+				{currentProgram && (
+					<ShowAnswerModal
+						isOpen={showAnswerModal}
+						onClose={() => setShowAnswerModal(false)}
+						currentProgram={currentProgram}
+						attempts={attempts}
+						onNewGame={resetGame}
 					/>
 				)}
 			</div>

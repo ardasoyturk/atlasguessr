@@ -30,19 +30,14 @@ class GameDataService {
 
 		try {
 			console.log("Loading all program data...");
-			const types: ProgramType[] = [
-				"sayisal",
-				"esitagirlik",
-				"sozel",
-				"dil",
-			];
+			const types: ProgramType[] = ["sayisal", "esitagirlik", "sozel", "dil"];
 
 			const allData = await Promise.all(
 				types.map(async (type) => {
 					const response = await fetch(`/data/${type}.json`);
 					if (!response.ok) {
 						throw new Error(
-							`Failed to fetch ${type}.json: ${response.statusText}`
+							`Failed to fetch ${type}.json: ${response.statusText}`,
 						);
 					}
 					const programs = (await response.json()) as Program[];
@@ -60,7 +55,7 @@ class GameDataService {
 						...program,
 						rankingType: rankingTypeMap[type],
 					}));
-				})
+				}),
 			);
 
 			// Flatten all programs into one array
@@ -68,28 +63,28 @@ class GameDataService {
 
 			// Extract unique program names for suggestions
 			const programNameSet = new Set(
-				this.allPrograms.map((p) => p.programName)
+				this.allPrograms.map((p) => p.programName),
 			);
 			this.allProgramNames = Array.from(programNameSet).sort();
 
 			// Extract unique university names for suggestions
 			const universityNameSet = new Set(
-				this.allPrograms.map((p) => p.universityName)
+				this.allPrograms.map((p) => p.universityName),
 			);
 			this.allUniversityNames = Array.from(universityNameSet).sort();
 
 			this.isLoaded = true;
 			console.log(`Loaded ${this.allPrograms.length} total programs`);
 			console.log(
-				`Extracted ${this.allProgramNames.length} unique program names`
+				`Extracted ${this.allProgramNames.length} unique program names`,
 			);
 			console.log(
-				`Extracted ${this.allUniversityNames.length} unique university names`
+				`Extracted ${this.allUniversityNames.length} unique university names`,
 			);
 		} catch (error) {
 			console.error("Error loading program data:", error);
 			throw new Error(
-				"Failed to load program data. Please check your connection."
+				"Failed to load program data. Please check your connection.",
 			);
 		}
 	}
@@ -126,6 +121,21 @@ class GameDataService {
 	async getProgramNames(): Promise<string[]> {
 		await this.loadAllData();
 		return this.allProgramNames;
+	}
+
+	async getProgramNamesByRankingType(rankingType: string): Promise<string[]> {
+		await this.loadAllData();
+		
+		// Filter programs by ranking type and get unique program names
+		const filteredPrograms = this.allPrograms.filter(
+			program => program.rankingType === rankingType
+		);
+		
+		const programNameSet = new Set(
+			filteredPrograms.map(p => p.programName)
+		);
+		
+		return Array.from(programNameSet).sort();
 	}
 
 	async getUniversityNames(): Promise<string[]> {
