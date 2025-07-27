@@ -66,35 +66,11 @@ class GameDataService {
 			// Flatten all programs into one array
 			this.allPrograms = allData.flat();
 
-		// Extract unique program names for suggestions, normalized to avoid language duplicates
-		const programNameSet = new Set<string>();
-		const normalizedToOriginal = new Map<string, string>();
-		
-		for (const p of this.allPrograms) {
-			const normalized = this.normalizeProgramName(p.programName);
-			// Keep the first (usually non-language specific) version we encounter
-			if (!normalizedToOriginal.has(normalized)) {
-				// Prefer non-language versions over language-specific ones
-				normalizedToOriginal.set(normalized, p.programName);
-				programNameSet.add(p.programName);
-			} else {
-				// If we already have a version, prefer the non-language one
-				const existing = normalizedToOriginal.get(normalized);
-				if (existing) {
-					const existingHasLanguage = /\([^)]*(?:İngilizce|i̇ngilizce|ingilizce|almanca|fransızca|rusça|arapça|çince|japonca|korece|İspanyolca|i̇spanyolca|ispanyolca|İtalyanca|i̇talyanca|italyanca)[^)]*\)/i.test(existing);
-					const currentHasLanguage = /\([^)]*(?:İngilizce|i̇ngilizce|ingilizce|almanca|fransızca|rusça|arapça|çince|japonca|korece|İspanyolca|i̇spanyolca|ispanyolca|İtalyanca|i̇talyanca|italyanca)[^)]*\)/i.test(p.programName);
-					
-					if (existingHasLanguage && !currentHasLanguage) {
-						// Replace language version with non-language version
-						programNameSet.delete(existing);
-						programNameSet.add(p.programName);
-						normalizedToOriginal.set(normalized, p.programName);
-					}
-				}
-			}
-		}
-		
-		this.allProgramNames = Array.from(programNameSet).sort();			// Extract unique university names for suggestions
+			// Extract ALL program names for suggestions (including language variants)
+			const programNameSet = new Set(
+				this.allPrograms.map((p) => p.programName)
+			);
+			this.allProgramNames = Array.from(programNameSet).sort();			// Extract unique university names for suggestions
 			const universityNameSet = new Set(
 				this.allPrograms.map((p) => p.universityName)
 			);
@@ -130,13 +106,7 @@ class GameDataService {
 			throw new Error("Failed to get random program");
 		}
 
-		// Return a version with the preferred (non-language) program name for matching
-		const preferredProgramName = this.getPreferredProgramName(program.programName);
-		
-		return {
-			...program,
-			programName: preferredProgramName
-		};
+		return program;
 	}
 
 	async getProgramNames(): Promise<string[]> {
@@ -147,37 +117,15 @@ class GameDataService {
 	async getProgramNamesByRankingType(rankingType: string): Promise<string[]> {
 		await this.loadAllData();
 
-		// Filter programs by ranking type and get unique program names
+		// Filter programs by ranking type and get ALL program names (including language variants)
 		const filteredPrograms = this.allPrograms.filter(
 			(program) => program.rankingType === rankingType
 		);
 
-		// Extract unique program names, preferring non-language versions
-		const programNameSet = new Set<string>();
-		const normalizedToOriginal = new Map<string, string>();
-		
-		for (const p of filteredPrograms) {
-			const normalized = this.normalizeProgramName(p.programName);
-			// Keep the first (usually non-language specific) version we encounter
-			if (!normalizedToOriginal.has(normalized)) {
-				normalizedToOriginal.set(normalized, p.programName);
-				programNameSet.add(p.programName);
-			} else {
-				// If we already have a version, prefer the non-language one
-				const existing = normalizedToOriginal.get(normalized);
-				if (existing) {
-					const existingHasLanguage = /\([^)]*(?:İngilizce|i̇ngilizce|ingilizce|almanca|fransızca|rusça|arapça|çince|japonca|korece|İspanyolca|i̇spanyolca|ispanyolca|İtalyanca|i̇talyanca|italyanca)[^)]*\)/i.test(existing);
-					const currentHasLanguage = /\([^)]*(?:İngilizce|i̇ngilizce|ingilizce|almanca|fransızca|rusça|arapça|çince|japonca|korece|İspanyolca|i̇spanyolca|ispanyolca|İtalyanca|i̇talyanca|italyanca)[^)]*\)/i.test(p.programName);
-					
-					if (existingHasLanguage && !currentHasLanguage) {
-						// Replace language version with non-language version
-						programNameSet.delete(existing);
-						programNameSet.add(p.programName);
-						normalizedToOriginal.set(normalized, p.programName);
-					}
-				}
-			}
-		}
+		// Extract ALL unique program names, including language variants
+		const programNameSet = new Set(
+			filteredPrograms.map((p) => p.programName)
+		);
 
 		return Array.from(programNameSet).sort();
 	}
