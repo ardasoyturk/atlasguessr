@@ -14,6 +14,7 @@ export interface Program {
 	rank: string[];
 	points: string[];
 	rankingType: string;
+	gameId?: number; // Optional for sharing purposes
 }
 
 class GameDataService {
@@ -107,7 +108,19 @@ class GameDataService {
 			throw new Error("Failed to get random program");
 		}
 
-		return program;
+		// Add a unique identifier based on the index for sharing purposes
+		return { ...program, gameId: randomIndex };
+	}
+
+	async getProgramById(gameId: number): Promise<Program | null> {
+		await this.loadAllData();
+
+		if (gameId < 0 || gameId >= this.allPrograms.length) {
+			return null;
+		}
+
+		const program = this.allPrograms[gameId];
+		return program ? { ...program, gameId } : null;
 	}
 
 	async getProgramNames(): Promise<string[]> {

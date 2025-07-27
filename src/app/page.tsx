@@ -2,10 +2,12 @@
 
 import type React from "react";
 
+import { GameWonModal } from "@/components/GameWonModal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { type Program, gameDataService } from "@/lib/gameData";
 import {
 	DollarSign,
 	GraduationCap,
@@ -16,7 +18,6 @@ import {
 	University,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { gameDataService, type Program } from "@/lib/gameData";
 
 export default function AtlasguessrGame() {
 	const [programs, setPrograms] = useState<Program[]>([]);
@@ -65,7 +66,6 @@ export default function AtlasguessrGame() {
 					// Get program names for suggestions
 					setAllProgramNames(programNames);
 					setAllUniversityNames(universityNames);
-					console.log(universityNames);
 
 					// Extract university names from loaded data
 					const randomProgram =
@@ -550,30 +550,6 @@ export default function AtlasguessrGame() {
 							</Card>
 						)}
 
-						{/* Game Won Message */}
-						{gameWon && (
-							<Card className="mb-6 border-green-500">
-								<CardContent className="pt-6 text-center">
-									<h2 className="mb-2 font-bold text-2xl text-green-600">
-										🎉 Tebrikler!
-									</h2>
-									<p className="mb-2 text-gray-600">
-										<span className="font-bold">
-											{currentProgram?.universityName}
-										</span>
-									</p>
-									<p className="mb-4 text-gray-600">
-										<span className="font-bold">
-											{currentProgram?.programName}
-										</span>
-									</p>
-									<p className="text-gray-500 text-sm">
-										{attempts} denemede başardınız!
-									</p>
-								</CardContent>
-							</Card>
-						)}
-
 						{/* Instructions */}
 						<Card>
 							<CardHeader>
@@ -599,13 +575,25 @@ export default function AtlasguessrGame() {
 									oyunu kazanırsınız
 								</p>
 								<p>
-									• İpuçları: şehir, üniversite türü, ücret
-									durumu, son 4 yılın sıralamaları ve sıralama
+									• İpuçları: şehir, üniversite türü, burs
+									durumu, son 4 yılın sıralamaları ve bölüm
 									türü
 								</p>
 							</CardContent>
 						</Card>
 					</>
+				)}
+
+				{/* Game Won Modal */}
+				{currentProgram && (
+					<GameWonModal
+						isOpen={gameWon}
+						onClose={() => setGameWon(false)}
+						currentProgram={currentProgram}
+						attempts={attempts}
+						onNewGame={resetGame}
+						guessHistory={guessHistory}
+					/>
 				)}
 			</div>
 		</div>
