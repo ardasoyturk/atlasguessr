@@ -60,7 +60,7 @@ ${programEmoji} ${currentProgram.programName}
 
 ${attemptSummary}
 
-🔗 atlasguessr.com`;
+🔗 atlasguessr.xyz`;
 	};
 
 	const shareResult = async () => {

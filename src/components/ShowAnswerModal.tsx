@@ -36,6 +36,10 @@ export function ShowAnswerModal({
 	};
 
 	const handleClose = () => {
+		// If the answer was shown, automatically start a new game
+		if (showHint) {
+			onNewGame();
+		}
 		onClose();
 		setShowHint(false);
 	};
@@ -44,7 +48,7 @@ export function ShowAnswerModal({
 		<Dialog open={isOpen} onOpenChange={handleClose}>
 			<DialogContent className="mx-4 w-full max-w-md rounded-xl border-amber-200 bg-gradient-to-b from-amber-50 to-white p-0 shadow-2xl">
 				{/* Warning Header */}
-				<div className="bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-8 text-center text-white">
+				<div className="rounded-md bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-8 text-center text-white">
 					<div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
 						<Eye className="h-8 w-8" />
 					</div>
