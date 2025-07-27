@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Service Worker for offline caching
 const CACHE_NAME = "atlas-guessr-v1";
 const DATA_CACHE_NAME = "atlas-guessr-data-v1";
@@ -176,7 +177,9 @@ self.addEventListener("message", (event) => {
 			})
 			.then(() => {
 				// Notify the client that preloading is complete
-				event.source.postMessage({ type: "PRELOAD_COMPLETE" });
+				if (event.source && typeof event.source.postMessage === "function") {
+					event.source.postMessage({ type: "PRELOAD_COMPLETE" });
+				}
 			});
 	}
 });
