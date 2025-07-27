@@ -5,9 +5,16 @@
 		"clientKind": "git",
 		"useIgnoreFile": true
 	},
-	"files": { "ignoreUnknown": false, "ignore": [] },
-	"formatter": { "enabled": true },
-	"organizeImports": { "enabled": true },
+	"files": {
+		"ignoreUnknown": false,
+		"ignore": ["src/data/*"]
+	},
+	"formatter": {
+		"enabled": true
+	},
+	"organizeImports": {
+		"enabled": true
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {
