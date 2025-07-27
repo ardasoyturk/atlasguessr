@@ -30,14 +30,19 @@ class GameDataService {
 
 		try {
 			console.log("Loading all program data...");
-			const types: ProgramType[] = ["sayisal", "esitagirlik", "sozel", "dil"];
+			const types: ProgramType[] = [
+				"sayisal",
+				"esitagirlik",
+				"sozel",
+				"dil",
+			];
 
 			const allData = await Promise.all(
 				types.map(async (type) => {
 					const response = await fetch(`/data/${type}.json`);
 					if (!response.ok) {
 						throw new Error(
-							`Failed to fetch ${type}.json: ${response.statusText}`,
+							`Failed to fetch ${type}.json: ${response.statusText}`
 						);
 					}
 					const programs = (await response.json()) as Program[];
@@ -55,36 +60,58 @@ class GameDataService {
 						...program,
 						rankingType: rankingTypeMap[type],
 					}));
-				}),
+				})
 			);
 
 			// Flatten all programs into one array
 			this.allPrograms = allData.flat();
 
-			// Extract unique program names for suggestions
-			const programNameSet = new Set(
-				this.allPrograms.map((p) => p.programName),
-			);
-			this.allProgramNames = Array.from(programNameSet).sort();
-
-			// Extract unique university names for suggestions
+		// Extract unique program names for suggestions, normalized to avoid language duplicates
+		const programNameSet = new Set<string>();
+		const normalizedToOriginal = new Map<string, string>();
+		
+		for (const p of this.allPrograms) {
+			const normalized = this.normalizeProgramName(p.programName);
+			// Keep the first (usually non-language specific) version we encounter
+			if (!normalizedToOriginal.has(normalized)) {
+				// Prefer non-language versions over language-specific ones
+				normalizedToOriginal.set(normalized, p.programName);
+				programNameSet.add(p.programName);
+			} else {
+				// If we already have a version, prefer the non-language one
+				const existing = normalizedToOriginal.get(normalized);
+				if (existing) {
+					const existingHasLanguage = /\([^)]*(?:İngilizce|i̇ngilizce|ingilizce|almanca|fransızca|rusça|arapça|çince|japonca|korece|İspanyolca|i̇spanyolca|ispanyolca|İtalyanca|i̇talyanca|italyanca)[^)]*\)/i.test(existing);
+					const currentHasLanguage = /\([^)]*(?:İngilizce|i̇ngilizce|ingilizce|almanca|fransızca|rusça|arapça|çince|japonca|korece|İspanyolca|i̇spanyolca|ispanyolca|İtalyanca|i̇talyanca|italyanca)[^)]*\)/i.test(p.programName);
+					
+					if (existingHasLanguage && !currentHasLanguage) {
+						// Replace language version with non-language version
+						programNameSet.delete(existing);
+						programNameSet.add(p.programName);
+						normalizedToOriginal.set(normalized, p.programName);
+					}
+				}
+			}
+		}
+		
+		this.allProgramNames = Array.from(programNameSet).sort();			// Extract unique university names for suggestions
 			const universityNameSet = new Set(
-				this.allPrograms.map((p) => p.universityName),
+				this.allPrograms.map((p) => p.universityName)
 			);
 			this.allUniversityNames = Array.from(universityNameSet).sort();
 
 			this.isLoaded = true;
 			console.log(`Loaded ${this.allPrograms.length} total programs`);
 			console.log(
-				`Extracted ${this.allProgramNames.length} unique program names`,
+				`Extracted ${this.allProgramNames.length} unique program names`
 			);
 			console.log(
-				`Extracted ${this.allUniversityNames.length} unique university names`,
+				`Extracted ${this.allUniversityNames.length} unique university names`
 			);
 		} catch (error) {
 			console.error("Error loading program data:", error);
 			throw new Error(
-				"Failed to load program data. Please check your connection.",
+				"Failed to load program data. Please check your connection."
 			);
 		}
 	}
@@ -103,19 +130,13 @@ class GameDataService {
 			throw new Error("Failed to get random program");
 		}
 
-		// Add a unique identifier based on the index for sharing purposes
-		return { ...program, gameId: randomIndex };
-	}
-
-	async getProgramById(gameId: number): Promise<Program | null> {
-		await this.loadAllData();
-
-		if (gameId < 0 || gameId >= this.allPrograms.length) {
-			return null;
-		}
-
-		const program = this.allPrograms[gameId];
-		return program ? { ...program, gameId } : null;
+		// Return a version with the preferred (non-language) program name for matching
+		const preferredProgramName = this.getPreferredProgramName(program.programName);
+		
+		return {
+			...program,
+			programName: preferredProgramName
+		};
 	}
 
 	async getProgramNames(): Promise<string[]> {
@@ -125,16 +146,39 @@ class GameDataService {
 
 	async getProgramNamesByRankingType(rankingType: string): Promise<string[]> {
 		await this.loadAllData();
-		
+
 		// Filter programs by ranking type and get unique program names
 		const filteredPrograms = this.allPrograms.filter(
-			program => program.rankingType === rankingType
+			(program) => program.rankingType === rankingType
 		);
+
+		// Extract unique program names, preferring non-language versions
+		const programNameSet = new Set<string>();
+		const normalizedToOriginal = new Map<string, string>();
 		
-		const programNameSet = new Set(
-			filteredPrograms.map(p => p.programName)
-		);
-		
+		for (const p of filteredPrograms) {
+			const normalized = this.normalizeProgramName(p.programName);
+			// Keep the first (usually non-language specific) version we encounter
+			if (!normalizedToOriginal.has(normalized)) {
+				normalizedToOriginal.set(normalized, p.programName);
+				programNameSet.add(p.programName);
+			} else {
+				// If we already have a version, prefer the non-language one
+				const existing = normalizedToOriginal.get(normalized);
+				if (existing) {
+					const existingHasLanguage = /\([^)]*(?:İngilizce|i̇ngilizce|ingilizce|almanca|fransızca|rusça|arapça|çince|japonca|korece|İspanyolca|i̇spanyolca|ispanyolca|İtalyanca|i̇talyanca|italyanca)[^)]*\)/i.test(existing);
+					const currentHasLanguage = /\([^)]*(?:İngilizce|i̇ngilizce|ingilizce|almanca|fransızca|rusça|arapça|çince|japonca|korece|İspanyolca|i̇spanyolca|ispanyolca|İtalyanca|i̇talyanca|italyanca)[^)]*\)/i.test(p.programName);
+					
+					if (existingHasLanguage && !currentHasLanguage) {
+						// Replace language version with non-language version
+						programNameSet.delete(existing);
+						programNameSet.add(p.programName);
+						normalizedToOriginal.set(normalized, p.programName);
+					}
+				}
+			}
+		}
+
 		return Array.from(programNameSet).sort();
 	}
 
@@ -174,6 +218,7 @@ class GameDataService {
 				.toLowerCase()
 				.trim()
 				// Remove language specifications
+				.replace(/\s*\(İngilizce\)\s*/gi, "")
 				.replace(/\s*\(i̇ngilizce\)\s*/gi, "")
 				.replace(/\s*\(ingilizce\)\s*/gi, "")
 				.replace(/\s*\(almanca\)\s*/gi, "")
@@ -183,8 +228,10 @@ class GameDataService {
 				.replace(/\s*\(çince\)\s*/gi, "")
 				.replace(/\s*\(japonca\)\s*/gi, "")
 				.replace(/\s*\(korece\)\s*/gi, "")
+				.replace(/\s*\(İspanyolca\)\s*/gi, "")
 				.replace(/\s*\(i̇spanyolca\)\s*/gi, "")
 				.replace(/\s*\(ispanyolca\)\s*/gi, "")
+				.replace(/\s*\(İtalyanca\)\s*/gi, "")
 				.replace(/\s*\(i̇talyanca\)\s*/gi, "")
 				.replace(/\s*\(italyanca\)\s*/gi, "")
 				// Remove Turkish diacritics for better matching
@@ -205,6 +252,25 @@ class GameDataService {
 		const normalizedGuess = this.normalizeProgramName(guess);
 		const normalizedTarget = this.normalizeProgramName(target);
 		return normalizedGuess === normalizedTarget;
+	}
+
+	// Get the preferred (non-language) variant of a program name
+	private getPreferredProgramName(programName: string): string {
+		const normalized = this.normalizeProgramName(programName);
+		
+		// Find all programs with the same normalized name
+		const variants = this.allPrograms
+			.filter(p => this.normalizeProgramName(p.programName) === normalized)
+			.map(p => p.programName);
+		
+		// Prefer non-language versions
+		const hasLanguageRegex = /\([^)]*(?:İngilizce|i̇ngilizce|ingilizce|almanca|fransızca|rusça|arapça|çince|japonca|korece|İspanyolca|i̇spanyolca|ispanyolca|İtalyanca|i̇talyanca|italyanca)[^)]*\)/i;
+		
+		// Find non-language variant first
+		const nonLanguageVariant = variants.find(variant => !hasLanguageRegex.test(variant));
+		
+		// Return non-language variant if found, otherwise return the original
+		return nonLanguageVariant || programName;
 	}
 }
 

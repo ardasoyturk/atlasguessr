@@ -67,7 +67,8 @@ ${attemptSummary}
 		const shareText = generateShareText();
 
 		// Check if we're on mobile (touch device) and if native sharing is available
-		const isMobile = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+		const isMobile =
+			"ontouchstart" in window || navigator.maxTouchPoints > 0;
 
 		if (isMobile && navigator.share) {
 			// Use native sharing only on mobile devices
@@ -141,7 +142,9 @@ ${attemptSummary}
 							<div className="flex items-center gap-2 text-purple-800">
 								<span className="text-lg">📚</span>
 								<div>
-									<p className="font-medium text-purple-600 text-xs">PROGRAM</p>
+									<p className="font-medium text-purple-600 text-xs">
+										PROGRAM
+									</p>
 									<p className="font-semibold leading-tight">
 										{currentProgram.programName}
 									</p>
@@ -153,8 +156,12 @@ ${attemptSummary}
 							<div className="flex items-center gap-2 text-orange-800">
 								<span className="text-lg">📍</span>
 								<div>
-									<p className="font-medium text-orange-600 text-xs">ŞEHİR</p>
-									<p className="font-semibold">{currentProgram.cityName}</p>
+									<p className="font-medium text-orange-600 text-xs">
+										ŞEHİR
+									</p>
+									<p className="font-semibold">
+										{currentProgram.cityName}
+									</p>
 								</div>
 							</div>
 						</div>
@@ -174,12 +181,16 @@ ${attemptSummary}
 								>
 									<div
 										className={`h-6 w-6 rounded-sm ${
-											guess.universityMatch ? "bg-green-500" : "bg-red-500"
+											guess.universityMatch
+												? "bg-green-500"
+												: "bg-red-500"
 										}`}
 									/>
 									<div
 										className={`h-6 w-6 rounded-sm ${
-											guess.programMatch ? "bg-green-500" : "bg-red-500"
+											guess.programMatch
+												? "bg-green-500"
+												: "bg-red-500"
 										}`}
 									/>
 								</div>
@@ -219,9 +230,9 @@ ${attemptSummary}
 					</div>
 
 					{/* Game ID for sharing */}
-					{currentProgram.gameId !== undefined && (
+					{currentProgram.id !== undefined && (
 						<p className="text-center text-gray-400 text-xs">
-							Oyun #{currentProgram.gameId}
+							Oyun #{currentProgram.id}
 						</p>
 					)}
 				</div>
