@@ -1,0 +1,25 @@
+{
+    "name": "Atlasguessr - Üniversite Program Tahmin Oyunu",
+    "short_name": "Atlasguessr",
+    "description": "Türkiye'deki üniversite programlarını tahmin etme oyunu",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#dbeafe",
+    "theme_color": "#3b82f6",
+    "orientation": "portrait-primary",
+    "categories": [
+        "games",
+        "education"
+    ],
+    "lang": "tr",
+    "scope": "/",
+    "icons": [
+        {
+            "src": "/favicon.ico",
+            "sizes": "any",
+            "type": "image/x-icon"
+        }
+    ],
+    "screenshots": [],
+    "prefer_related_applications": false
+}
