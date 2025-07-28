@@ -11,15 +11,18 @@ import { GuessHistory } from "@/components/GuessHistory";
 import { HintsCard } from "@/components/HintsCard";
 import { InputForm } from "@/components/InputForm";
 import { LoadingState } from "@/components/LoadingState";
+import { RankingTypeSelector, type RankingType } from "@/components/RankingTypeSelector";
 import { ShowAnswerModal } from "@/components/ShowAnswerModal";
 import { type Program, gameDataService } from "@/lib/gameData";
 import { useEffect, useRef, useState } from "react";
 
 export default function AtlasguessrGame() {
+	const [gamePhase, setGamePhase] = useState<"selection" | "playing">("selection");
+	const [selectedRankingType, setSelectedRankingType] = useState<RankingType | null>(null);
 	const [programs, setPrograms] = useState<Program[]>([]);
 	const [allUniversityNames, setAllUniversityNames] = useState<string[]>([]);
 	const [allProgramNames, setAllProgramNames] = useState<string[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
+	const [isLoading, setIsLoading] = useState(false);
 	const [currentProgram, setCurrentProgram] = useState<Program | undefined>(
 		undefined
 	);
@@ -47,40 +50,44 @@ export default function AtlasguessrGame() {
 	const universityInputRef = useRef<HTMLInputElement>(null);
 	const programInputRef = useRef<HTMLInputElement>(null);
 
-	useEffect(() => {
-		// Load real data on component mount
-		const loadData = async () => {
-			try {
-				setIsLoading(true);
-				const programNames = await gameDataService.getProgramNames();
-				const universityNames =
-					await gameDataService.getUniversityNames();
-				// Get all programs by loading a random one and accessing the service's data
-				await gameDataService.preloadData();
-				const loadStatus = gameDataService.getLoadStatus();
-
-				if (loadStatus.loaded && loadStatus.count > 0) {
-					// Get program names for suggestions
-					setAllProgramNames(programNames);
-					setAllUniversityNames(universityNames);
-
-					// Extract university names from loaded data
-					const randomProgram =
-						await gameDataService.getRandomProgram();
-					setCurrentProgram(randomProgram);
-
-					// Set a flag that data is loaded (we'll use the service directly)
-					setPrograms([randomProgram]); // Just to indicate data is loaded
-				}
-				setIsLoading(false);
-			} catch (error) {
-				console.error("Failed to load data:", error);
-				setIsLoading(false);
+	const handleRankingTypeSelect = async (rankingType: RankingType) => {
+		try {
+			setIsLoading(true);
+			setSelectedRankingType(rankingType);
+			
+			// Preload all data first
+			await gameDataService.preloadData();
+			
+			// Get program names and university names
+			const universityNames = await gameDataService.getUniversityNames();
+			setAllUniversityNames(universityNames);
+			
+			// Get a random program based on the selected ranking type
+			let randomProgram: Program;
+			let programNames: string[];
+			
+			if (rankingType === "Rastgele") {
+				// Get random program from all types
+				randomProgram = await gameDataService.getRandomProgram();
+				programNames = await gameDataService.getProgramNames();
+			} else {
+				// Get random program from specific ranking type
+				randomProgram = await gameDataService.getRandomProgramByRankingType(rankingType);
+				programNames = await gameDataService.getProgramNamesByRankingType(rankingType);
 			}
-		};
-
-		loadData();
-	}, []);
+			
+			setCurrentProgram(randomProgram);
+			setAllProgramNames(programNames);
+			setPrograms([randomProgram]); // Just to indicate data is loaded
+			
+			// Switch to game phase
+			setGamePhase("playing");
+			setIsLoading(false);
+		} catch (error) {
+			console.error("Failed to load data:", error);
+			setIsLoading(false);
+		}
+	};
 
 	const normalizeText = (text: string) => {
 		// Proper Turkish case conversion
@@ -205,8 +212,17 @@ export default function AtlasguessrGame() {
 	};
 
 	const resetGame = async () => {
+		if (!selectedRankingType) return;
+		
 		try {
-			const randomProgram = await gameDataService.getRandomProgram();
+			let randomProgram: Program;
+			
+			if (selectedRankingType === "Rastgele") {
+				randomProgram = await gameDataService.getRandomProgram();
+			} else {
+				randomProgram = await gameDataService.getRandomProgramByRankingType(selectedRankingType);
+			}
+			
 			setCurrentProgram(randomProgram);
 			console.log("Seçilen program: ", randomProgram);
 		} catch (error) {
@@ -225,27 +241,53 @@ export default function AtlasguessrGame() {
 		setFilteredProgramSuggestions([]);
 	};
 
+	const startNewGameSession = () => {
+		setGamePhase("selection");
+		setSelectedRankingType(null);
+		setCurrentProgram(undefined);
+		setUniversityGuess("");
+		setProgramGuess("");
+		setAttempts(0);
+		setUniversityCorrect(false);
+		setProgramCorrect(false);
+		setGameWon(false);
+		setShowAnswerModal(false);
+		setGuessHistory([]);
+		setFilteredUniversitySuggestions([]);
+		setFilteredProgramSuggestions([]);
+	};
+
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-			<div className="mx-auto max-w-4xl">
-				<div className="mb-8 text-center">
-					<h1 className="mb-2 font-bold text-4xl text-indigo-900">
-						🎓 Atlasguessr
-					</h1>
-					<p className="text-gray-600">
-						Türk üniversitelerindeki lisans programlarını tahmin
-						edin!
-					</p>
-				</div>
+			{gamePhase === "selection" && (
+				<RankingTypeSelector onSelectRankingType={handleRankingTypeSelect} />
+			)}
+			
+			{gamePhase === "playing" && (
+				<div className="mx-auto max-w-4xl">
+					<div className="mb-8 text-center">
+						<h1 className="mb-2 font-bold text-4xl text-indigo-900">
+							🎓 Atlasguessr
+						</h1>
+						<p className="text-gray-600">
+							Türk üniversitelerindeki lisans programlarını tahmin
+							edin!
+						</p>
+						{selectedRankingType && (
+							<p className="mt-2 text-sm text-indigo-600">
+								Sıralama Türü: {selectedRankingType}
+							</p>
+						)}
+					</div>
 
-				<LoadingState
-					isLoading={isLoading}
-					currentProgram={currentProgram}
-				/>
+					<LoadingState
+						isLoading={isLoading}
+						currentProgram={currentProgram}
+					/>
 
-				{!isLoading && currentProgram && (
-					<>
-						<GameStats
+					{!isLoading && currentProgram && (
+						<>
+							<GameStats
 							attempts={attempts}
 							universityCorrect={universityCorrect}
 							programCorrect={programCorrect}
@@ -280,6 +322,7 @@ export default function AtlasguessrGame() {
 							gameWon={gameWon}
 							onShowAnswer={() => setShowAnswerModal(true)}
 							onResetGame={resetGame}
+							onNewGameSession={startNewGameSession}
 						/>
 
 						<GuessHistory
@@ -316,7 +359,8 @@ export default function AtlasguessrGame() {
 				)}
 
 				<Footer />
-			</div>
+				</div>
+			)}
 		</div>
 	);
 }

@@ -121,6 +121,28 @@ class GameDataService {
 		return program;
 	}
 
+	async getRandomProgramByRankingType(rankingType: string): Promise<Program> {
+		await this.loadAllData();
+
+		// Filter programs by ranking type
+		const filteredPrograms = this.allPrograms.filter(
+			(program) => program.rankingType === rankingType
+		);
+
+		if (filteredPrograms.length === 0) {
+			throw new Error(`No programs available for ranking type: ${rankingType}`);
+		}
+
+		const randomIndex = Math.floor(Math.random() * filteredPrograms.length);
+		const program = filteredPrograms[randomIndex];
+
+		if (!program) {
+			throw new Error("Failed to get random program");
+		}
+
+		return program;
+	}
+
 	async getProgramNames(): Promise<string[]> {
 		await this.loadAllData();
 		return this.allProgramNames;

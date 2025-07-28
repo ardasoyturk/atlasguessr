@@ -1,18 +1,20 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Eye, RefreshCw } from "lucide-react";
+import { Eye, RefreshCw, ArrowLeft } from "lucide-react";
 
 interface ActionButtonsProps {
 	gameWon: boolean;
 	onShowAnswer: () => void;
 	onResetGame: () => void;
+	onNewGameSession?: () => void;
 }
 
 export function ActionButtons({
 	gameWon,
 	onShowAnswer,
 	onResetGame,
+	onNewGameSession,
 }: ActionButtonsProps) {
 	return (
 		<div className="mb-8 flex justify-center gap-3">
@@ -31,6 +33,16 @@ export function ActionButtons({
 				<RefreshCw className="h-4 w-4" />
 				Yeni Oyun
 			</Button>
+			{onNewGameSession && (
+				<Button
+					onClick={onNewGameSession}
+					variant="outline"
+					className="gap-2"
+				>
+					<ArrowLeft className="h-4 w-4" />
+					Yeni Sıralama Türü
+				</Button>
+			)}
 		</div>
 	);
 }
