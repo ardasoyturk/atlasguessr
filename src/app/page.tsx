@@ -76,8 +76,6 @@ export default function AtlasguessrGame() {
 			}
 
 			setCurrentProgram(randomProgram);
-			console.log("Selected program:", randomProgram);
-			console.log("Program type:", randomProgram.programType, "City:", randomProgram.cityName);
 			setAllProgramNames(programNames);
 			setPrograms([randomProgram]); // Just to indicate data is loaded
 
@@ -110,16 +108,17 @@ export default function AtlasguessrGame() {
 	const handleUniversityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		setUniversityGuess(value);
+		
+		// Always clear the programs for selected university when typing (user is changing selection)
+		setProgramsForSelectedUniversity([]);
+		
 		if (value.length > 1 && currentProgram) {
 			// Filter universities by the current program's type and city
-			console.log("Filtering universities by type:", currentProgram.programType, "and city:", currentProgram.cityName);
 			gameDataService.getUniversityNamesByTypeAndCity(currentProgram.programType, currentProgram.cityName)
 				.then((filteredUniversities) => {
-					console.log("Filtered universities count:", filteredUniversities.length);
 					const searchResults = filteredUniversities.filter((name) => 
 						normalizeText(name).includes(normalizeText(value))
 					);
-					console.log("Search results count:", searchResults.length);
 					setFilteredUniversitySuggestions(searchResults);
 				})
 				.catch((error) => {
@@ -131,8 +130,7 @@ export default function AtlasguessrGame() {
 				});
 		} else {
 			setFilteredUniversitySuggestions([]);
-			setProgramsForSelectedUniversity([]); // Reset programs for selected university
-			setFilteredProgramSuggestions(allProgramNames); // Show all programs
+			setFilteredProgramSuggestions(allProgramNames); // Show all programs when no university is selected
 			setShowProgramDropdown(false); // Hide dropdown until focus/click
 			setProgramInputFocusedByUser(false); // Prevent dropdown from opening automatically
 		}
@@ -150,9 +148,8 @@ export default function AtlasguessrGame() {
 		}
 		if (sourcePrograms.length > 0) {
 			if (value.length > 0) {
-				setFilteredProgramSuggestions(
-					sourcePrograms.filter((name) => normalizeText(name).includes(normalizeText(value))),
-				);
+				const filtered = sourcePrograms.filter((name) => normalizeText(name).includes(normalizeText(value)));
+				setFilteredProgramSuggestions(filtered);
 			} else {
 				setFilteredProgramSuggestions(sourcePrograms);
 			}
@@ -183,9 +180,11 @@ export default function AtlasguessrGame() {
 		programInputRef.current?.focus(); // Move focus to program input
 
 		// Fetch programs for selected university
-		if (selectedRankingType) {
+		if (currentProgram?.rankingType) {
 			try {
-				const programNames = await gameDataService.getProgramNamesByUniversity(suggestion, selectedRankingType);
+				// Use the current program's actual ranking type, not the selected one (which might be "Rastgele")
+				const actualRankingType = currentProgram.rankingType;
+				const programNames = await gameDataService.getProgramNamesByUniversity(suggestion, actualRankingType);
 				setProgramsForSelectedUniversity(programNames);
 			} catch (error) {
 				console.error("Error fetching programs for university:", error);
