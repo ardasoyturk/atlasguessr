@@ -34,7 +34,7 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 
 	return (
 		<Dialog open={isOpen} onOpenChange={handleClose}>
-			<DialogContent className="mx-2 w-full max-w-md rounded-xl border-amber-200 bg-gradient-to-b from-amber-50 to-white p-0 shadow-2xl sm:mx-4">
+			<DialogContent className="mx-2 w-full max-w-md rounded-xl border-amber-200 bg-gradient-to-b from-amber-50 to-white p-0 shadow-2xl sm:mx-4 dark:border-amber-800 dark:from-slate-800 dark:to-slate-900">
 				{/* Warning Header */}
 				<div className="rounded-md bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-6 text-center text-white sm:px-6 sm:py-8">
 					<div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm sm:mb-3 sm:h-16 sm:w-16">
@@ -53,9 +53,12 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 					{!showHint ? (
 						<>
 							{/* Warning Message */}
-							<div className="rounded-lg bg-amber-50 p-4 text-center">
-								<p className="mb-2 font-medium text-amber-800">Emin misin? 🤯</p>
-								<p className="text-amber-700 text-sm">
+							{/* Warning Message */}
+							<div className="rounded-lg bg-amber-50 p-4 text-center dark:bg-amber-900/20 dark:border dark:border-amber-500/30">
+								<p className="mb-2 font-medium text-amber-800 dark:text-amber-200">
+									Emin misin? 🤯
+								</p>
+								<p className="text-amber-700 text-sm dark:text-amber-300">
 									Cevabı gördükten sonra oyun bitecek ve yeni oyuna geçmen gerekecek.
 									{attempts === 0 && " Bence hiç denemeden pes etme!"}
 								</p>
@@ -63,24 +66,27 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 
 							{/* Encouragement for attempts */}
 							{attempts < 3 && (
-								<div className="rounded-lg bg-blue-50 p-4 text-center">
-									<p className="mb-2 font-medium text-blue-800">💪 Biraz daha dene!</p>
-									<p className="text-blue-700 text-sm">
+								<div className="rounded-lg bg-blue-50 p-4 text-center dark:bg-blue-900/20 dark:border dark:border-blue-500/30">
+									<p className="mb-2 font-medium text-blue-800 dark:text-blue-200">
+										💪 Biraz daha dene!
+									</p>
+									<p className="text-blue-700 text-sm dark:text-blue-300">
 										İpuçları oldukça detaylı. Belki bir kaç tahmin daha yapabilirsin?
 									</p>
 								</div>
-							)}
-
-							{/* Action Buttons */}
+							)}							{/* Action Buttons */}
 							<div className="flex gap-2">
-								<Button onClick={() => setShowHint(true)} className="flex-1 gap-2 bg-amber-600 hover:bg-amber-700">
+								<Button 
+									onClick={() => setShowHint(true)} 
+									className="flex-1 gap-2 bg-amber-600 text-white hover:bg-amber-700 dark:bg-amber-600 dark:hover:bg-amber-700"
+								>
 									<Eye className="h-4 w-4" />
 									Evet, Göster
 								</Button>
 								<Button
 									onClick={handleClose}
 									variant="outline"
-									className="flex-1 gap-2 border-green-200 hover:bg-green-50"
+									className="flex-1 gap-2 border-green-200 bg-white text-green-700 hover:bg-green-50 hover:text-green-800 dark:border-green-700 dark:bg-slate-800 dark:text-green-400 dark:hover:bg-green-900/20 dark:hover:text-green-300"
 								>
 									<X className="h-4 w-4" />
 									Vazgeç
@@ -91,47 +97,64 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 						<>
 							{/* Answer Display */}
 							<div className="space-y-3">
-								<div className="rounded-lg bg-blue-50 p-4">
-									<div className="flex items-center gap-2 text-blue-800">
+								<div className="rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20 dark:border dark:border-blue-500/30">
+									<div className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
 										<span className="text-lg">🏛️</span>
 										<div>
-											<p className="font-medium text-blue-600 text-xs">ÜNİVERSİTE</p>
-											<p className="font-semibold leading-tight">{currentProgram.universityName}</p>
+											<p className="font-medium text-blue-600 text-xs dark:text-blue-400">
+												ÜNİVERSİTE
+											</p>
+											<p className="font-semibold leading-tight dark:text-blue-100">
+												{currentProgram.universityName}
+											</p>
 										</div>
 									</div>
 								</div>
 
-								<div className="rounded-lg bg-purple-50 p-4">
-									<div className="flex items-center gap-2 text-purple-800">
+								<div className="rounded-lg bg-purple-50 p-4 dark:bg-purple-900/20 dark:border dark:border-purple-500/30">
+									<div className="flex items-center gap-2 text-purple-800 dark:text-purple-200">
 										<span className="text-lg">📚</span>
 										<div>
-											<p className="font-medium text-purple-600 text-xs">PROGRAM</p>
-											<p className="font-semibold leading-tight">{currentProgram.programName}</p>
+											<p className="font-medium text-purple-600 text-xs dark:text-purple-400">
+												PROGRAM
+											</p>
+											<p className="font-semibold leading-tight dark:text-purple-100">
+												{currentProgram.programName}
+											</p>
 										</div>
 									</div>
 								</div>
 
-								<div className="rounded-lg bg-orange-50 p-4">
-									<div className="flex items-center gap-2 text-orange-800">
+								<div className="rounded-lg bg-orange-50 p-4 dark:bg-orange-900/20 dark:border dark:border-orange-500/30">
+									<div className="flex items-center gap-2 text-orange-800 dark:text-orange-200">
 										<span className="text-lg">📍</span>
 										<div>
-											<p className="font-medium text-orange-600 text-xs">ŞEHİR</p>
-											<p className="font-semibold">{currentProgram.cityName}</p>
+											<p className="font-medium text-orange-600 text-xs dark:text-orange-400">
+												ŞEHİR
+											</p>
+											<p className="font-semibold dark:text-orange-100">
+												{currentProgram.cityName}
+											</p>
 										</div>
 									</div>
 								</div>
 							</div>
 
 							{/* Game Over Message */}
-							<div className="rounded-lg bg-gray-50 p-4 text-center">
-								<p className="mb-2 font-medium text-gray-700">🎮 Oyun Bitti!</p>
-								<p className="text-gray-600 text-sm">
+							<div className="rounded-lg bg-gray-50 p-4 text-center dark:bg-slate-800 dark:border dark:border-slate-600">
+								<p className="mb-2 font-medium text-gray-700 dark:text-gray-200">
+									🎮 Oyun Bitti!
+								</p>
+								<p className="text-gray-600 text-sm dark:text-gray-300">
 									Cevabı gördün ve oyun bitti. Şimdi yeni bir oyun başlatabilirsin.
 								</p>
 							</div>
 
 							{/* New Game Button */}
-							<Button onClick={handleNewGame} className="w-full gap-2 bg-green-600 hover:bg-green-700">
+							<Button 
+								onClick={handleNewGame} 
+								className="w-full gap-2 bg-green-600 text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
+							>
 								<EyeOff className="h-4 w-4" />
 								Yeni Oyun Başlat
 							</Button>
@@ -140,7 +163,7 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 
 					{/* Game ID */}
 					{currentProgram.id !== undefined && (
-						<p className="text-center text-gray-400 text-xs">Oyun #{currentProgram.id}</p>
+						<p className="text-center text-gray-400 text-xs dark:text-gray-500">Oyun #{currentProgram.id}</p>
 					)}
 				</div>
 			</DialogContent>

@@ -97,7 +97,7 @@ ${attemptSummary}
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
-			<DialogContent className="mx-2 w-full max-w-md rounded-xl border-green-200 bg-gradient-to-b from-green-50 to-white p-0 shadow-2xl sm:mx-4">
+			<DialogContent className="mx-2 w-full max-w-md rounded-xl border-green-200 bg-gradient-to-b from-green-50 to-white p-0 shadow-2xl sm:mx-4 dark:border-green-800 dark:from-slate-800 dark:to-slate-900">
 				{/* Celebration Header */}
 				<div className="bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-6 text-center text-white sm:px-6 sm:py-8">
 					<div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm sm:mb-3 sm:h-16 sm:w-16">
@@ -145,8 +145,8 @@ ${attemptSummary}
 					</div>
 
 					{/* Attempt History Visualization */}
-					<div className="rounded-lg bg-gray-50 p-4">
-						<p className="mb-3 text-center font-medium text-gray-600 text-sm">Tahmin Geçmişi</p>
+					<div className="rounded-lg bg-gray-50 p-4 dark:bg-slate-800 dark:border dark:border-slate-600">
+						<p className="mb-3 text-center font-medium text-gray-600 text-sm dark:text-gray-300">Tahmin Geçmişi</p>
 						<div className="flex flex-wrap justify-center gap-3">
 							{guessHistory.map((guess, index) => (
 								<div
@@ -159,12 +159,15 @@ ${attemptSummary}
 								</div>
 							))}
 						</div>
-						<p className="mt-2 text-center text-gray-500 text-xs">🟢 Doğru • 🔴 Yanlış</p>
+						<p className="mt-2 text-center text-gray-500 text-xs dark:text-gray-400">🟢 Doğru • 🔴 Yanlış</p>
 					</div>
 
 					{/* Action Buttons */}
 					<div className="flex gap-2">
-						<Button onClick={shareResult} className="flex-1 gap-2 bg-blue-600 hover:bg-blue-700">
+						<Button 
+							onClick={shareResult} 
+							className="flex-1 gap-2 bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700"
+						>
 							{copied ? (
 								<>
 									<Copy className="h-4 w-4" />
@@ -180,7 +183,7 @@ ${attemptSummary}
 						<Button
 							onClick={handleNewGame}
 							variant="outline"
-							className="flex-1 gap-2 border-green-200 hover:bg-green-50"
+							className="flex-1 gap-2 border-green-200 bg-white text-green-700 hover:bg-green-50 hover:text-green-800 dark:border-green-700 dark:bg-slate-800 dark:text-green-400 dark:hover:bg-green-900/20 dark:hover:text-green-300"
 						>
 							<RefreshCw className="h-4 w-4" />
 							Yeni Oyun
@@ -189,7 +192,7 @@ ${attemptSummary}
 
 					{/* Game ID for sharing */}
 					{currentProgram.id !== undefined && (
-						<p className="text-center text-gray-400 text-xs">Oyun #{currentProgram.id}</p>
+						<p className="text-center text-gray-400 text-xs dark:text-gray-500">Oyun #{currentProgram.id}</p>
 					)}
 				</div>
 			</DialogContent>
