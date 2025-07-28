@@ -28,9 +28,7 @@ export function LoadingState({ isLoading, currentProgram }: LoadingStateProps) {
 			<div className="flex min-h-[50vh] items-center justify-center">
 				<Card className="w-full max-w-md">
 					<CardContent className="pt-6 text-center">
-						<p className="text-lg text-red-600">
-							Veri yüklenirken hata oluştu.
-						</p>
+						<p className="text-lg text-red-600">Veri yüklenirken hata oluştu.</p>
 						<Button onClick={() => window.location.reload()} className="mt-4">
 							Yeniden Dene
 						</Button>

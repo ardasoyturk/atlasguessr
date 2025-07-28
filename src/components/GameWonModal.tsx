@@ -1,13 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import type { Program } from "@/lib/gameData";
 import { CheckCircle, Copy, RefreshCw, Share2 } from "lucide-react";
 import { useState } from "react";
@@ -110,12 +104,8 @@ ${attemptSummary}
 						<CheckCircle className="h-6 w-6 sm:h-8 sm:w-8" />
 					</div>
 					<DialogHeader>
-						<DialogTitle className="font-bold text-white text-xl sm:text-2xl">
-							🎉 Tebrikler!
-						</DialogTitle>
-						<DialogDescription className="text-green-100">
-							{attempts} denemede başardınız!
-						</DialogDescription>
+						<DialogTitle className="font-bold text-white text-xl sm:text-2xl">🎉 Tebrikler!</DialogTitle>
+						<DialogDescription className="text-green-100">{attempts} denemede başardınız!</DialogDescription>
 					</DialogHeader>
 				</div>
 
@@ -127,12 +117,8 @@ ${attemptSummary}
 							<div className="flex items-center gap-2 text-blue-800">
 								<span className="text-base sm:text-lg">🏛️</span>
 								<div>
-									<p className="font-medium text-blue-600 text-xs">
-										ÜNİVERSİTE
-									</p>
-									<p className="font-semibold text-sm leading-tight sm:text-base">
-										{currentProgram.universityName}
-									</p>
+									<p className="font-medium text-blue-600 text-xs">ÜNİVERSİTE</p>
+									<p className="font-semibold text-sm leading-tight sm:text-base">{currentProgram.universityName}</p>
 								</div>
 							</div>
 						</div>
@@ -142,9 +128,7 @@ ${attemptSummary}
 								<span className="text-base sm:text-lg">📚</span>
 								<div>
 									<p className="font-medium text-purple-600 text-xs">PROGRAM</p>
-									<p className="font-semibold text-sm leading-tight sm:text-base">
-										{currentProgram.programName}
-									</p>
+									<p className="font-semibold text-sm leading-tight sm:text-base">{currentProgram.programName}</p>
 								</div>
 							</div>
 						</div>
@@ -154,9 +138,7 @@ ${attemptSummary}
 								<span className="text-base sm:text-lg">📍</span>
 								<div>
 									<p className="font-medium text-orange-600 text-xs">ŞEHİR</p>
-									<p className="font-semibold text-sm sm:text-base">
-										{currentProgram.cityName}
-									</p>
+									<p className="font-semibold text-sm sm:text-base">{currentProgram.cityName}</p>
 								</div>
 							</div>
 						</div>
@@ -164,9 +146,7 @@ ${attemptSummary}
 
 					{/* Attempt History Visualization */}
 					<div className="rounded-lg bg-gray-50 p-4">
-						<p className="mb-3 text-center font-medium text-gray-600 text-sm">
-							Tahmin Geçmişi
-						</p>
+						<p className="mb-3 text-center font-medium text-gray-600 text-sm">Tahmin Geçmişi</p>
 						<div className="flex flex-wrap justify-center gap-3">
 							{guessHistory.map((guess, index) => (
 								<div
@@ -174,30 +154,17 @@ ${attemptSummary}
 									className="flex gap-0.5"
 									title={`${index + 1}. Tahmin`}
 								>
-									<div
-										className={`h-6 w-6 rounded-sm ${
-											guess.universityMatch ? "bg-green-500" : "bg-red-500"
-										}`}
-									/>
-									<div
-										className={`h-6 w-6 rounded-sm ${
-											guess.programMatch ? "bg-green-500" : "bg-red-500"
-										}`}
-									/>
+									<div className={`h-6 w-6 rounded-sm ${guess.universityMatch ? "bg-green-500" : "bg-red-500"}`} />
+									<div className={`h-6 w-6 rounded-sm ${guess.programMatch ? "bg-green-500" : "bg-red-500"}`} />
 								</div>
 							))}
 						</div>
-						<p className="mt-2 text-center text-gray-500 text-xs">
-							🟢 Doğru • 🔴 Yanlış
-						</p>
+						<p className="mt-2 text-center text-gray-500 text-xs">🟢 Doğru • 🔴 Yanlış</p>
 					</div>
 
 					{/* Action Buttons */}
 					<div className="flex gap-2">
-						<Button
-							onClick={shareResult}
-							className="flex-1 gap-2 bg-blue-600 hover:bg-blue-700"
-						>
+						<Button onClick={shareResult} className="flex-1 gap-2 bg-blue-600 hover:bg-blue-700">
 							{copied ? (
 								<>
 									<Copy className="h-4 w-4" />
@@ -222,9 +189,7 @@ ${attemptSummary}
 
 					{/* Game ID for sharing */}
 					{currentProgram.id !== undefined && (
-						<p className="text-center text-gray-400 text-xs">
-							Oyun #{currentProgram.id}
-						</p>
+						<p className="text-center text-gray-400 text-xs">Oyun #{currentProgram.id}</p>
 					)}
 				</div>
 			</DialogContent>

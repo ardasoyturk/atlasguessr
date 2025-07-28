@@ -10,7 +10,8 @@
 		"ignore": ["public/*"]
 	},
 	"formatter": {
-		"enabled": true
+		"enabled": true,
+		"lineWidth": 120
 	},
 	"organizeImports": {
 		"enabled": true

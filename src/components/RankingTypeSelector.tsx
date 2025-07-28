@@ -1,30 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type React from "react";
 import { useState } from "react";
 
-export type RankingType =
-	| "Sayısal"
-	| "Eşit Ağırlık"
-	| "Sözel"
-	| "Yabancı Dil"
-	| "Rastgele";
+export type RankingType = "Sayısal" | "Eşit Ağırlık" | "Sözel" | "Yabancı Dil" | "Rastgele";
 
 interface RankingTypeSelectorProps {
 	onSelectRankingType: (rankingType: RankingType) => void;
 }
 
-export function RankingTypeSelector({
-	onSelectRankingType,
-}: RankingTypeSelectorProps) {
+export function RankingTypeSelector({ onSelectRankingType }: RankingTypeSelectorProps) {
 	const [selectedType, setSelectedType] = useState<RankingType | null>(null);
 	const [isAnimating, setIsAnimating] = useState(false);
 
@@ -96,9 +83,7 @@ export function RankingTypeSelector({
 
 			<Card
 				className={`w-full max-w-2xl border-white/20 bg-white/90 shadow-2xl backdrop-blur-sm transition-all duration-150 ease-out dark:border-slate-700/50 dark:bg-slate-800/90 ${
-					isAnimating
-						? "scale-95 opacity-80 blur-sm"
-						: "scale-100 opacity-100 blur-0"
+					isAnimating ? "scale-95 opacity-80 blur-sm" : "scale-100 opacity-100 blur-0"
 				} ${selectedType ? "animate-pulse" : ""}`}
 			>
 				<CardHeader className="p-4 text-center sm:p-6">
@@ -136,9 +121,7 @@ export function RankingTypeSelector({
 							<div className="relative z-10 flex items-center space-x-3 sm:space-x-4">
 								<span
 									className={`text-2xl transition-all duration-150 group-hover:scale-110 sm:text-3xl ${
-										selectedType === rankingTypeInfo.type
-											? "animate-bounce"
-											: "group-hover:animate-pulse"
+										selectedType === rankingTypeInfo.type ? "animate-bounce" : "group-hover:animate-pulse"
 									}`}
 								>
 									{rankingTypeInfo.emoji}
@@ -176,9 +159,7 @@ export function RankingTypeSelector({
 
 							{/* Selection checkmark */}
 							{selectedType === rankingTypeInfo.type && (
-								<div className="absolute top-2 right-2 animate-bounce text-white">
-									✓
-								</div>
+								<div className="absolute top-2 right-2 animate-bounce text-white">✓</div>
 							)}
 						</Button>
 					))}
@@ -187,14 +168,8 @@ export function RankingTypeSelector({
 					{selectedType && (
 						<div className="flex animate-fade-in items-center justify-center space-x-2 py-3 sm:py-4">
 							<div className="h-2 w-2 animate-ping rounded-full bg-blue-500" />
-							<div
-								className="h-2 w-2 animate-ping rounded-full bg-purple-500"
-								style={{ animationDelay: "0.2s" }}
-							/>
-							<div
-								className="h-2 w-2 animate-ping rounded-full bg-pink-500"
-								style={{ animationDelay: "0.4s" }}
-							/>
+							<div className="h-2 w-2 animate-ping rounded-full bg-purple-500" style={{ animationDelay: "0.2s" }} />
+							<div className="h-2 w-2 animate-ping rounded-full bg-pink-500" style={{ animationDelay: "0.4s" }} />
 							<span className="ml-2 font-medium text-gray-600 text-sm sm:text-base dark:text-gray-300">
 								Oyun yükleniyor...
 							</span>

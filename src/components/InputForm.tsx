@@ -57,10 +57,7 @@ export function InputForm({
 	useEffect(() => {
 		if (!showProgramDropdown) return;
 		function handleClickOutside(event: MouseEvent) {
-			if (
-				programDropdownRef.current &&
-				!programDropdownRef.current.contains(event.target as Node)
-			) {
+			if (programDropdownRef.current && !programDropdownRef.current.contains(event.target as Node)) {
 				setShowProgramDropdown(false);
 			}
 		}
@@ -77,10 +74,7 @@ export function InputForm({
 			</CardHeader>
 			<CardContent className="space-y-3 sm:space-y-4">
 				<div className="relative">
-					<label
-						htmlFor="university-guess"
-						className="mb-2 block font-medium text-sm"
-					>
+					<label htmlFor="university-guess" className="mb-2 block font-medium text-sm">
 						Üniversite Adı
 					</label>
 					<Input
@@ -90,9 +84,7 @@ export function InputForm({
 						onChange={onUniversityChange}
 						placeholder="Örn: BOĞAZİÇİ ÜNİVERSİTESİ"
 						className={
-							universityCorrect
-								? "border-green-500 bg-green-50 dark:border-green-400 dark:bg-green-900/20"
-								: ""
+							universityCorrect ? "border-green-500 bg-green-50 dark:border-green-400 dark:bg-green-900/20" : ""
 						}
 						disabled={gameWon}
 						autoComplete="off"
@@ -114,10 +106,7 @@ export function InputForm({
 				</div>
 
 				<div className="relative">
-					<label
-						htmlFor="program-guess"
-						className="mb-2 block font-medium text-sm"
-					>
+					<label htmlFor="program-guess" className="mb-2 block font-medium text-sm">
 						Program Adı
 					</label>
 					<div className="relative">
@@ -130,9 +119,7 @@ export function InputForm({
 							onMouseDown={onProgramInputMouseDown}
 							placeholder="Örn: Bilgisayar Mühendisliği (4 Yıllık)"
 							className={
-								programCorrect
-									? "border-green-500 bg-green-50 pr-8 dark:border-green-400 dark:bg-green-900/20"
-									: "pr-8"
+								programCorrect ? "border-green-500 bg-green-50 pr-8 dark:border-green-400 dark:bg-green-900/20" : "pr-8"
 							}
 							disabled={gameWon}
 							onKeyPress={(e) => e.key === "Enter" && onSubmit()}

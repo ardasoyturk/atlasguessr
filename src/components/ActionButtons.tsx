@@ -10,12 +10,7 @@ interface ActionButtonsProps {
 	onNewGameSession?: () => void;
 }
 
-export function ActionButtons({
-	gameWon,
-	onShowAnswer,
-	onResetGame,
-	onNewGameSession,
-}: ActionButtonsProps) {
+export function ActionButtons({ gameWon, onShowAnswer, onResetGame, onNewGameSession }: ActionButtonsProps) {
 	return (
 		<div className="mb-6 flex flex-col justify-center gap-2 sm:mb-8 sm:flex-row sm:gap-3">
 			<Button

@@ -14,11 +14,7 @@ interface GuessHistoryProps {
 	isExactMatch: (guess: string, target: string) => boolean;
 }
 
-export function GuessHistory({
-	guessHistory,
-	currentProgram,
-	isExactMatch,
-}: GuessHistoryProps) {
+export function GuessHistory({ guessHistory, currentProgram, isExactMatch }: GuessHistoryProps) {
 	if (guessHistory.length === 0) return null;
 
 	return (
@@ -44,15 +40,11 @@ export function GuessHistory({
 								<span className="break-words">{guess.university}</span>
 								{guess.universityMatch ? " ✓" : " ✗"}
 								{/* Show the actual correct answer if the guess was correct but different */}
-								{guess.universityMatch &&
-									!isExactMatch(
-										guess.university,
-										currentProgram.universityName,
-									) && (
-										<div className="mt-1 text-green-600 text-xs dark:text-green-400">
-											Doğru cevap: {currentProgram.universityName}
-										</div>
-									)}
+								{guess.universityMatch && !isExactMatch(guess.university, currentProgram.universityName) && (
+									<div className="mt-1 text-green-600 text-xs dark:text-green-400">
+										Doğru cevap: {currentProgram.universityName}
+									</div>
+								)}
 							</div>
 							<div
 								className={`rounded p-2 text-sm sm:text-base ${
@@ -65,12 +57,11 @@ export function GuessHistory({
 								<span className="break-words">{guess.program}</span>
 								{guess.programMatch ? " ✓" : " ✗"}
 								{/* Show the actual correct answer if the guess was correct but different */}
-								{guess.programMatch &&
-									guess.program !== currentProgram.programName && (
-										<div className="mt-1 text-green-600 text-xs dark:text-green-400">
-											Doğru cevap: {currentProgram.programName}
-										</div>
-									)}
+								{guess.programMatch && guess.program !== currentProgram.programName && (
+									<div className="mt-1 text-green-600 text-xs dark:text-green-400">
+										Doğru cevap: {currentProgram.programName}
+									</div>
+								)}
 							</div>
 						</div>
 					))}

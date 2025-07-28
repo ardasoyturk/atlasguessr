@@ -16,8 +16,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
 	title: "Atlasguessr - Üniversite Program Tahmin Oyunu",
-	description:
-		"Türkiye'deki üniversite programlarını tahmin etme oyunu. Offline oynanabilen eğitici tahmin oyunu.",
+	description: "Türkiye'deki üniversite programlarını tahmin etme oyunu. Offline oynanabilen eğitici tahmin oyunu.",
 	keywords: ["üniversite", "program", "tahmin", "oyun", "eğitim", "türkiye"],
 	authors: [{ name: "Atlasguessr" }],
 	manifest: "/manifest.json",
@@ -43,9 +42,7 @@ const geist = Geist({
 	variable: "--font-geist-sans",
 });
 
-export default function RootLayout({
-	children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
 	return (
 		<html lang="tr" className={`${geist.variable}`}>
 			<head>

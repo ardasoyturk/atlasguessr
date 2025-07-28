@@ -15,9 +15,7 @@ export function Footer() {
 						Arda Soyturk
 					</a>
 				</p>
-				<p className="text-gray-500 text-xs dark:text-gray-400">
-					Türk üniversitelerini keşfetmenin eğlenceli yolu
-				</p>
+				<p className="text-gray-500 text-xs dark:text-gray-400">Türk üniversitelerini keşfetmenin eğlenceli yolu</p>
 			</div>
 		</footer>
 	);
