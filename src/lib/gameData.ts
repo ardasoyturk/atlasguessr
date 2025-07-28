@@ -15,6 +15,7 @@ export interface Program {
 	points: string[];
 	rankingType: string;
 	gameId?: number; // Optional for sharing purposes
+	alternativeNames?: string[]; // Optional array of alternative program names
 }
 
 class GameDataService {
@@ -66,11 +67,22 @@ class GameDataService {
 			// Flatten all programs into one array
 			this.allPrograms = allData.flat();
 
-			// Extract ALL program names for suggestions (including language variants)
-			const programNameSet = new Set(
-				this.allPrograms.map((p) => p.programName)
-			);
-			this.allProgramNames = Array.from(programNameSet).sort();			// Extract unique university names for suggestions
+			// Extract ALL program names for suggestions (including alternative names)
+			const allProgramNamesSet = new Set<string>();
+
+			for (const program of this.allPrograms) {
+				// Add main program name
+				allProgramNamesSet.add(program.programName);
+
+				// Add alternative names if they exist
+				if (program.alternativeNames) {
+					for (const altName of program.alternativeNames) {
+						allProgramNamesSet.add(altName);
+					}
+				}
+			}
+
+			this.allProgramNames = Array.from(allProgramNamesSet).sort(); // Extract unique university names for suggestions
 			const universityNameSet = new Set(
 				this.allPrograms.map((p) => p.universityName)
 			);
@@ -117,17 +129,27 @@ class GameDataService {
 	async getProgramNamesByRankingType(rankingType: string): Promise<string[]> {
 		await this.loadAllData();
 
-		// Filter programs by ranking type and get ALL program names (including language variants)
+		// Filter programs by ranking type and get ALL program names (including alternative names)
 		const filteredPrograms = this.allPrograms.filter(
 			(program) => program.rankingType === rankingType
 		);
 
-		// Extract ALL unique program names, including language variants
-		const programNameSet = new Set(
-			filteredPrograms.map((p) => p.programName)
-		);
+		// Extract ALL unique program names, including alternative names
+		const allProgramNamesSet = new Set<string>();
 
-		return Array.from(programNameSet).sort();
+		for (const program of filteredPrograms) {
+			// Add main program name
+			allProgramNamesSet.add(program.programName);
+
+			// Add alternative names if they exist
+			if (program.alternativeNames) {
+				for (const altName of program.alternativeNames) {
+					allProgramNamesSet.add(altName);
+				}
+			}
+		}
+
+		return Array.from(allProgramNamesSet).sort();
 	}
 
 	async getUniversityNames(): Promise<string[]> {
@@ -159,66 +181,40 @@ class GameDataService {
 		};
 	}
 
-	// Normalize program name by removing language information and other variations
-	private normalizeProgramName(programName: string): string {
-		return (
-			programName
-				.toLowerCase()
-				.trim()
-				// Remove language specifications
-				.replace(/\s*\(İngilizce\)\s*/gi, "")
-				.replace(/\s*\(i̇ngilizce\)\s*/gi, "")
-				.replace(/\s*\(ingilizce\)\s*/gi, "")
-				.replace(/\s*\(almanca\)\s*/gi, "")
-				.replace(/\s*\(fransızca\)\s*/gi, "")
-				.replace(/\s*\(rusça\)\s*/gi, "")
-				.replace(/\s*\(arapça\)\s*/gi, "")
-				.replace(/\s*\(çince\)\s*/gi, "")
-				.replace(/\s*\(japonca\)\s*/gi, "")
-				.replace(/\s*\(korece\)\s*/gi, "")
-				.replace(/\s*\(İspanyolca\)\s*/gi, "")
-				.replace(/\s*\(i̇spanyolca\)\s*/gi, "")
-				.replace(/\s*\(ispanyolca\)\s*/gi, "")
-				.replace(/\s*\(İtalyanca\)\s*/gi, "")
-				.replace(/\s*\(i̇talyanca\)\s*/gi, "")
-				.replace(/\s*\(italyanca\)\s*/gi, "")
-				// Remove Turkish diacritics for better matching
-				.replace(/ğ/g, "g")
-				.replace(/ü/g, "u")
-				.replace(/ş/g, "s")
-				.replace(/ı/g, "i")
-				.replace(/ö/g, "o")
-				.replace(/ç/g, "c")
-				// Normalize spaces
-				.replace(/\s+/g, " ")
-				.trim()
-		);
+	// Normalize text for Turkish comparison
+	private normalizeText(text: string): string {
+		return text
+			.toLocaleLowerCase("tr-TR")
+			.replace(/ğ/g, "g")
+			.replace(/ü/g, "u")
+			.replace(/ş/g, "s")
+			.replace(/ı/g, "i")
+			.replace(/ö/g, "o")
+			.replace(/ç/g, "c")
+			.trim();
 	}
 
-	// Check if two program names match, ignoring language variants
-	checkProgramNameMatch(guess: string, target: string): boolean {
-		const normalizedGuess = this.normalizeProgramName(guess);
-		const normalizedTarget = this.normalizeProgramName(target);
-		return normalizedGuess === normalizedTarget;
-	}
+	// Check if two program names match, considering both main name and alternative names
+	checkProgramNameMatch(guess: string, target: Program): boolean {
+		const guessNormalized = this.normalizeText(guess);
+		const targetNameNormalized = this.normalizeText(target.programName);
 
-	// Get the preferred (non-language) variant of a program name
-	private getPreferredProgramName(programName: string): string {
-		const normalized = this.normalizeProgramName(programName);
-		
-		// Find all programs with the same normalized name
-		const variants = this.allPrograms
-			.filter(p => this.normalizeProgramName(p.programName) === normalized)
-			.map(p => p.programName);
-		
-		// Prefer non-language versions
-		const hasLanguageRegex = /\([^)]*(?:İngilizce|i̇ngilizce|ingilizce|almanca|fransızca|rusça|arapça|çince|japonca|korece|İspanyolca|i̇spanyolca|ispanyolca|İtalyanca|i̇talyanca|italyanca)[^)]*\)/i;
-		
-		// Find non-language variant first
-		const nonLanguageVariant = variants.find(variant => !hasLanguageRegex.test(variant));
-		
-		// Return non-language variant if found, otherwise return the original
-		return nonLanguageVariant || programName;
+		// Check exact match with main program name
+		if (guessNormalized === targetNameNormalized) {
+			return true;
+		}
+
+		// Check exact match with alternative names
+		if (target.alternativeNames) {
+			for (const altName of target.alternativeNames) {
+				const altNameNormalized = this.normalizeText(altName);
+				if (guessNormalized === altNameNormalized) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 }
 

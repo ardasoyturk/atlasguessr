@@ -173,7 +173,7 @@ export default function AtlasguessrGame() {
 		// Use flexible program matching that ignores language variants
 		const programMatch = gameDataService.checkProgramNameMatch(
 			programGuess,
-			currentProgram.programName
+			currentProgram
 		);
 
 		// Add to guess history
