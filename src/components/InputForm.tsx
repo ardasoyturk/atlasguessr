@@ -73,9 +73,9 @@ export function InputForm({
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Tahmininizi Yapın</CardTitle>
+				<CardTitle className="text-lg sm:text-xl">Tahmininizi Yapın</CardTitle>
 			</CardHeader>
-			<CardContent className="space-y-4">
+			<CardContent className="space-y-3 sm:space-y-4">
 				<div className="relative">
 					<label
 						htmlFor="university-guess"
@@ -102,11 +102,9 @@ export function InputForm({
 							{filteredUniversitySuggestions.map((suggestion) => (
 								<button
 									key={suggestion}
-									className="w-full cursor-pointer p-2 text-left hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-700"
+									className="w-full cursor-pointer p-2 text-left text-sm hover:bg-gray-100 sm:text-base dark:text-gray-200 dark:hover:bg-slate-700"
 									type="button"
-									onClick={() =>
-										onUniversitySelect(suggestion)
-									}
+									onClick={() => onUniversitySelect(suggestion)}
 								>
 									{suggestion}
 								</button>
@@ -154,10 +152,7 @@ export function InputForm({
 								if (programInputRef.current) {
 									programInputRef.current.focus();
 								}
-								if (
-									typeof onProgramInputMouseDown ===
-									"function"
-								) {
+								if (typeof onProgramInputMouseDown === "function") {
 									onProgramInputMouseDown();
 								}
 								if (typeof onProgramInputFocus === "function") {
@@ -185,38 +180,29 @@ export function InputForm({
 						</button>
 					</div>
 					{/* Always show dropdown if there are suggestions and showProgramDropdown is true */}
-					{filteredProgramSuggestions.length > 0 &&
-						showProgramDropdown && (
-							<div
-								ref={programDropdownRef}
-								className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800"
-							>
-								{filteredProgramSuggestions.map(
-									(suggestion) => (
-										<button
-											key={suggestion}
-											className="w-full cursor-pointer p-2 text-left hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-700"
-											type="button"
-											onClick={() =>
-												onProgramSelect(suggestion)
-											}
-										>
-											{suggestion}
-										</button>
-									)
-								)}
-							</div>
-						)}
+					{filteredProgramSuggestions.length > 0 && showProgramDropdown && (
+						<div
+							ref={programDropdownRef}
+							className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800"
+						>
+							{filteredProgramSuggestions.map((suggestion) => (
+								<button
+									key={suggestion}
+									className="w-full cursor-pointer p-2 text-left text-sm hover:bg-gray-100 sm:text-base dark:text-gray-200 dark:hover:bg-slate-700"
+									type="button"
+									onClick={() => onProgramSelect(suggestion)}
+								>
+									{suggestion}
+								</button>
+							))}
+						</div>
+					)}
 				</div>
 
 				<Button
 					onClick={onSubmit}
-					disabled={
-						!universityGuess.trim() ||
-						!programGuess.trim() ||
-						gameWon
-					}
-					className="w-full"
+					disabled={!universityGuess.trim() || !programGuess.trim() || gameWon}
+					className="w-full text-sm sm:text-base"
 				>
 					Tahmin Et
 				</Button>

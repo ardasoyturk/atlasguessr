@@ -103,14 +103,14 @@ ${attemptSummary}
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
-			<DialogContent className="mx-4 w-full max-w-md rounded-xl border-green-200 bg-gradient-to-b from-green-50 to-white p-0 shadow-2xl">
+			<DialogContent className="mx-2 w-full max-w-md rounded-xl border-green-200 bg-gradient-to-b from-green-50 to-white p-0 shadow-2xl sm:mx-4">
 				{/* Celebration Header */}
-				<div className="bg-gradient-to-r from-green-500 to-emerald-500 px-6 py-8 text-center text-white">
-					<div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-						<CheckCircle className="h-8 w-8" />
+				<div className="bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-6 text-center text-white sm:px-6 sm:py-8">
+					<div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm sm:mb-3 sm:h-16 sm:w-16">
+						<CheckCircle className="h-6 w-6 sm:h-8 sm:w-8" />
 					</div>
 					<DialogHeader>
-						<DialogTitle className="font-bold text-2xl text-white">
+						<DialogTitle className="font-bold text-white text-xl sm:text-2xl">
 							🎉 Tebrikler!
 						</DialogTitle>
 						<DialogDescription className="text-green-100">
@@ -120,41 +120,43 @@ ${attemptSummary}
 				</div>
 
 				{/* Game Result Details */}
-				<div className="space-y-4 p-6">
+				<div className="space-y-3 p-4 sm:space-y-4 sm:p-6">
 					{/* University and Program */}
-					<div className="space-y-3">
-						<div className="rounded-lg bg-blue-50 p-4">
+					<div className="space-y-2 sm:space-y-3">
+						<div className="rounded-lg bg-blue-50 p-3 sm:p-4">
 							<div className="flex items-center gap-2 text-blue-800">
-								<span className="text-lg">🏛️</span>
+								<span className="text-base sm:text-lg">🏛️</span>
 								<div>
 									<p className="font-medium text-blue-600 text-xs">
 										ÜNİVERSİTE
 									</p>
-									<p className="font-semibold leading-tight">
+									<p className="font-semibold text-sm leading-tight sm:text-base">
 										{currentProgram.universityName}
 									</p>
 								</div>
 							</div>
 						</div>
 
-						<div className="rounded-lg bg-purple-50 p-4">
+						<div className="rounded-lg bg-purple-50 p-3 sm:p-4">
 							<div className="flex items-center gap-2 text-purple-800">
-								<span className="text-lg">📚</span>
+								<span className="text-base sm:text-lg">📚</span>
 								<div>
 									<p className="font-medium text-purple-600 text-xs">PROGRAM</p>
-									<p className="font-semibold leading-tight">
+									<p className="font-semibold text-sm leading-tight sm:text-base">
 										{currentProgram.programName}
 									</p>
 								</div>
 							</div>
 						</div>
 
-						<div className="rounded-lg bg-orange-50 p-4">
+						<div className="rounded-lg bg-orange-50 p-3 sm:p-4">
 							<div className="flex items-center gap-2 text-orange-800">
-								<span className="text-lg">📍</span>
+								<span className="text-base sm:text-lg">📍</span>
 								<div>
 									<p className="font-medium text-orange-600 text-xs">ŞEHİR</p>
-									<p className="font-semibold">{currentProgram.cityName}</p>
+									<p className="font-semibold text-sm sm:text-base">
+										{currentProgram.cityName}
+									</p>
 								</div>
 							</div>
 						</div>

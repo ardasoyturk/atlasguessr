@@ -14,19 +14,19 @@ export function GameStats({
 	programCorrect,
 }: GameStatsProps) {
 	return (
-		<div className="mb-6 flex justify-center gap-4">
-			<Badge variant="outline" className="text-sm">
+		<div className="mb-4 flex flex-wrap justify-center gap-2 sm:mb-6 sm:gap-4">
+			<Badge variant="outline" className="text-xs sm:text-sm">
 				Deneme: {attempts}
 			</Badge>
 			<Badge
 				variant={universityCorrect ? "default" : "outline"}
-				className="text-sm"
+				className="text-xs sm:text-sm"
 			>
 				Üniversite: {universityCorrect ? "✓" : "?"}
 			</Badge>
 			<Badge
 				variant={programCorrect ? "default" : "outline"}
-				className="text-sm"
+				className="text-xs sm:text-sm"
 			>
 				Program: {programCorrect ? "✓" : "?"}
 			</Badge>

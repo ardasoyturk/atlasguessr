@@ -22,7 +22,7 @@ export function GuessHistory({
 	if (guessHistory.length === 0) return null;
 
 	return (
-		<Card className="mb-6">
+		<Card className="mb-4 sm:mb-6">
 			<CardHeader>
 				<CardTitle>Tahmin Geçmişi</CardTitle>
 			</CardHeader>
@@ -31,17 +31,17 @@ export function GuessHistory({
 					{guessHistory.map((guess, index) => (
 						<div
 							key={`${guess.university}-${guess.program}-${index}`}
-							className="grid grid-cols-1 gap-2 rounded-lg bg-gray-50 p-3 md:grid-cols-2 dark:bg-slate-700/60"
+							className="grid grid-cols-1 gap-2 rounded-lg bg-gray-50 p-2 sm:p-3 lg:grid-cols-2 dark:bg-slate-700/60"
 						>
 							<div
-								className={`rounded p-2 ${
+								className={`rounded p-2 text-sm sm:text-base ${
 									guess.universityMatch
 										? "bg-green-100 text-green-800 dark:border dark:border-green-500/30 dark:bg-green-800/30 dark:text-green-200"
 										: "bg-red-100 text-red-800 dark:border dark:border-red-500/30 dark:bg-red-800/30 dark:text-red-200"
 								}`}
 							>
 								<span className="font-medium">Üniversite: </span>
-								{guess.university}
+								<span className="break-words">{guess.university}</span>
 								{guess.universityMatch ? " ✓" : " ✗"}
 								{/* Show the actual correct answer if the guess was correct but different */}
 								{guess.universityMatch &&
@@ -55,14 +55,14 @@ export function GuessHistory({
 									)}
 							</div>
 							<div
-								className={`rounded p-2 ${
+								className={`rounded p-2 text-sm sm:text-base ${
 									guess.programMatch
 										? "bg-green-100 text-green-800 dark:border dark:border-green-500/30 dark:bg-green-800/30 dark:text-green-200"
 										: "bg-red-100 text-red-800 dark:border dark:border-red-500/30 dark:bg-red-800/30 dark:text-red-200"
 								}`}
 							>
 								<span className="font-medium">Program: </span>
-								{guess.program}
+								<span className="break-words">{guess.program}</span>
 								{guess.programMatch ? " ✓" : " ✗"}
 								{/* Show the actual correct answer if the guess was correct but different */}
 								{guess.programMatch &&

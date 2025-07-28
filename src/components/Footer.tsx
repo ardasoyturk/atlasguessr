@@ -2,8 +2,8 @@
 
 export function Footer() {
 	return (
-		<footer className="mt-12 border-indigo-200 border-t pt-6 dark:border-gray-700">
-			<div className="flex items-center justify-between text-sm">
+		<footer className="mt-8 border-indigo-200 border-t pt-4 sm:mt-12 sm:pt-6 dark:border-gray-700">
+			<div className="flex flex-col items-center gap-2 text-center text-sm sm:flex-row sm:justify-between sm:text-left">
 				<p className="text-gray-600 dark:text-gray-300">
 					Made with ❤️ by{" "}
 					<a

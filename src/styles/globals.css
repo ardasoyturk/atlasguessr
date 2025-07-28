@@ -158,4 +158,38 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+
+	/* Mobile optimizations */
+	html {
+		-webkit-text-size-adjust: 100%;
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	/* Improve touch scrolling */
+	* {
+		-webkit-overflow-scrolling: touch;
+	}
+
+	/* Prevent zoom on double tap */
+	button,
+	input,
+	select,
+	textarea {
+		touch-action: manipulation;
+	}
+
+	/* Better mobile input handling */
+	input,
+	textarea {
+		-webkit-appearance: none;
+		border-radius: 0;
+	}
+
+	/* Ensure proper scaling for mobile */
+	@media (max-width: 640px) {
+		.container {
+			padding-left: 1rem;
+			padding-right: 1rem;
+		}
+	}
 }

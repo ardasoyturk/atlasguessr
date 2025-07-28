@@ -8,6 +8,10 @@ import { Geist } from "next/font/google";
 
 export const viewport: Viewport = {
 	themeColor: "#3b82f6",
+	width: "device-width",
+	initialScale: 1,
+	maximumScale: 1,
+	userScalable: false,
 };
 
 export const metadata: Metadata = {
@@ -16,7 +20,6 @@ export const metadata: Metadata = {
 		"Türkiye'deki üniversite programlarını tahmin etme oyunu. Offline oynanabilen eğitici tahmin oyunu.",
 	keywords: ["üniversite", "program", "tahmin", "oyun", "eğitim", "türkiye"],
 	authors: [{ name: "Atlasguessr" }],
-	viewport: "width=device-width, initial-scale=1, maximum-scale=1",
 	manifest: "/manifest.json",
 	icons: [
 		{ rel: "icon", url: "/favicon.ico" },
