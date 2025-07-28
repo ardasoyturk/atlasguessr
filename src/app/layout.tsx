@@ -3,6 +3,11 @@ import "@/styles/globals.css";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import type { Viewport } from "next";
+
+export const viewport: Viewport = {
+	themeColor: "#3b82f6",
+};
 
 export const metadata: Metadata = {
 	title: "Atlasguessr - Üniversite Program Tahmin Oyunu",
@@ -11,7 +16,6 @@ export const metadata: Metadata = {
 	keywords: ["üniversite", "program", "tahmin", "oyun", "eğitim", "türkiye"],
 	authors: [{ name: "Atlasguessr" }],
 	viewport: "width=device-width, initial-scale=1, maximum-scale=1",
-	themeColor: "#3b82f6",
 	manifest: "/manifest.json",
 	icons: [
 		{ rel: "icon", url: "/favicon.ico" },
@@ -44,7 +48,10 @@ export default function RootLayout({
 				<link rel="manifest" href="/manifest.json" />
 				<meta name="mobile-web-app-capable" content="yes" />
 				<meta name="apple-mobile-web-app-capable" content="yes" />
-				<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+				<meta
+					name="apple-mobile-web-app-status-bar-style"
+					content="default"
+				/>
 				<meta name="apple-mobile-web-app-title" content="Atlasguessr" />
 			</head>
 			<body>

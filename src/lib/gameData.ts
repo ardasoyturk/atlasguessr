@@ -130,7 +130,9 @@ class GameDataService {
 		);
 
 		if (filteredPrograms.length === 0) {
-			throw new Error(`No programs available for ranking type: ${rankingType}`);
+			throw new Error(
+				`No programs available for ranking type: ${rankingType}`
+			);
 		}
 
 		const randomIndex = Math.floor(Math.random() * filteredPrograms.length);
