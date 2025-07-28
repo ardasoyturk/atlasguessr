@@ -160,6 +160,25 @@ class GameDataService {
 		return this.allUniversityNames;
 	}
 
+	async getUniversityNamesByTypeAndCity(universityType: string, cityName: string): Promise<string[]> {
+		await this.loadAllData();
+		
+		// Filter universities by both type and city
+		const filteredPrograms = this.allPrograms.filter((program) => {
+			const typeMatch = program.programType === universityType;
+			const cityMatch = program.cityName === cityName;
+			return typeMatch && cityMatch;
+		});
+
+		// Extract unique university names
+		const universityNamesSet = new Set<string>();
+		for (const program of filteredPrograms) {
+			universityNamesSet.add(program.universityName);
+		}
+
+		return Array.from(universityNamesSet).sort();
+	}
+
 	async getTotalCount(): Promise<number> {
 		await this.loadAllData();
 		return this.allPrograms.length;

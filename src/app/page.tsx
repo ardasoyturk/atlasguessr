@@ -76,6 +76,8 @@ export default function AtlasguessrGame() {
 			}
 
 			setCurrentProgram(randomProgram);
+			console.log("Selected program:", randomProgram);
+			console.log("Program type:", randomProgram.programType, "City:", randomProgram.cityName);
 			setAllProgramNames(programNames);
 			setPrograms([randomProgram]); // Just to indicate data is loaded
 
@@ -108,10 +110,25 @@ export default function AtlasguessrGame() {
 	const handleUniversityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		setUniversityGuess(value);
-		if (value.length > 1) {
-			setFilteredUniversitySuggestions(
-				allUniversityNames.filter((name) => normalizeText(name).includes(normalizeText(value))),
-			);
+		if (value.length > 1 && currentProgram) {
+			// Filter universities by the current program's type and city
+			console.log("Filtering universities by type:", currentProgram.programType, "and city:", currentProgram.cityName);
+			gameDataService.getUniversityNamesByTypeAndCity(currentProgram.programType, currentProgram.cityName)
+				.then((filteredUniversities) => {
+					console.log("Filtered universities count:", filteredUniversities.length);
+					const searchResults = filteredUniversities.filter((name) => 
+						normalizeText(name).includes(normalizeText(value))
+					);
+					console.log("Search results count:", searchResults.length);
+					setFilteredUniversitySuggestions(searchResults);
+				})
+				.catch((error) => {
+					console.error("Error filtering universities:", error);
+					// Fallback to all universities if filtering fails
+					setFilteredUniversitySuggestions(
+						allUniversityNames.filter((name) => normalizeText(name).includes(normalizeText(value)))
+					);
+				});
 		} else {
 			setFilteredUniversitySuggestions([]);
 			setProgramsForSelectedUniversity([]); // Reset programs for selected university
