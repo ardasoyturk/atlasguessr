@@ -108,16 +108,17 @@ export default function AtlasguessrGame() {
 	const handleUniversityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		setUniversityGuess(value);
-		
+
 		// Always clear the programs for selected university when typing (user is changing selection)
 		setProgramsForSelectedUniversity([]);
-		
+
 		if (value.length > 1 && currentProgram) {
 			// Filter universities by the current program's type and city
-			gameDataService.getUniversityNamesByTypeAndCity(currentProgram.programType, currentProgram.cityName)
+			gameDataService
+				.getUniversityNamesByTypeAndCity(currentProgram.programType, currentProgram.cityName)
 				.then((filteredUniversities) => {
-					const searchResults = filteredUniversities.filter((name) => 
-						normalizeText(name).includes(normalizeText(value))
+					const searchResults = filteredUniversities.filter((name) =>
+						normalizeText(name).includes(normalizeText(value)),
 					);
 					setFilteredUniversitySuggestions(searchResults);
 				})
@@ -125,7 +126,7 @@ export default function AtlasguessrGame() {
 					console.error("Error filtering universities:", error);
 					// Fallback to all universities if filtering fails
 					setFilteredUniversitySuggestions(
-						allUniversityNames.filter((name) => normalizeText(name).includes(normalizeText(value)))
+						allUniversityNames.filter((name) => normalizeText(name).includes(normalizeText(value))),
 					);
 				});
 		} else {

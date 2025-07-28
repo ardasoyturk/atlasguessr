@@ -54,30 +54,26 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 						<>
 							{/* Warning Message */}
 							{/* Warning Message */}
-							<div className="rounded-lg bg-amber-50 p-4 text-center dark:bg-amber-900/20 dark:border dark:border-amber-500/30">
-								<p className="mb-2 font-medium text-amber-800 dark:text-amber-200">
-									Emin misin? 🤯
-								</p>
+							<div className="rounded-lg bg-amber-50 p-4 text-center dark:border dark:border-amber-500/30 dark:bg-amber-900/20">
+								<p className="mb-2 font-medium text-amber-800 dark:text-amber-200">Emin misin? 🤯</p>
 								<p className="text-amber-700 text-sm dark:text-amber-300">
 									Cevabı gördükten sonra oyun bitecek ve yeni oyuna geçmen gerekecek.
 									{attempts === 0 && " Bence hiç denemeden pes etme!"}
 								</p>
 							</div>
-
 							{/* Encouragement for attempts */}
 							{attempts < 3 && (
-								<div className="rounded-lg bg-blue-50 p-4 text-center dark:bg-blue-900/20 dark:border dark:border-blue-500/30">
-									<p className="mb-2 font-medium text-blue-800 dark:text-blue-200">
-										💪 Biraz daha dene!
-									</p>
+								<div className="rounded-lg bg-blue-50 p-4 text-center dark:border dark:border-blue-500/30 dark:bg-blue-900/20">
+									<p className="mb-2 font-medium text-blue-800 dark:text-blue-200">💪 Biraz daha dene!</p>
 									<p className="text-blue-700 text-sm dark:text-blue-300">
 										İpuçları oldukça detaylı. Belki bir kaç tahmin daha yapabilirsin?
 									</p>
 								</div>
-							)}							{/* Action Buttons */}
+							)}{" "}
+							{/* Action Buttons */}
 							<div className="flex gap-2">
-								<Button 
-									onClick={() => setShowHint(true)} 
+								<Button
+									onClick={() => setShowHint(true)}
 									className="flex-1 gap-2 bg-amber-600 text-white hover:bg-amber-700 dark:bg-amber-600 dark:hover:bg-amber-700"
 								>
 									<Eye className="h-4 w-4" />
@@ -97,62 +93,48 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 						<>
 							{/* Answer Display */}
 							<div className="space-y-3">
-								<div className="rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20 dark:border dark:border-blue-500/30">
+								<div className="rounded-lg bg-blue-50 p-4 dark:border dark:border-blue-500/30 dark:bg-blue-900/20">
 									<div className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
 										<span className="text-lg">🏛️</span>
 										<div>
-											<p className="font-medium text-blue-600 text-xs dark:text-blue-400">
-												ÜNİVERSİTE
-											</p>
-											<p className="font-semibold leading-tight dark:text-blue-100">
-												{currentProgram.universityName}
-											</p>
+											<p className="font-medium text-blue-600 text-xs dark:text-blue-400">ÜNİVERSİTE</p>
+											<p className="font-semibold leading-tight dark:text-blue-100">{currentProgram.universityName}</p>
 										</div>
 									</div>
 								</div>
 
-								<div className="rounded-lg bg-purple-50 p-4 dark:bg-purple-900/20 dark:border dark:border-purple-500/30">
+								<div className="rounded-lg bg-purple-50 p-4 dark:border dark:border-purple-500/30 dark:bg-purple-900/20">
 									<div className="flex items-center gap-2 text-purple-800 dark:text-purple-200">
 										<span className="text-lg">📚</span>
 										<div>
-											<p className="font-medium text-purple-600 text-xs dark:text-purple-400">
-												PROGRAM
-											</p>
-											<p className="font-semibold leading-tight dark:text-purple-100">
-												{currentProgram.programName}
-											</p>
+											<p className="font-medium text-purple-600 text-xs dark:text-purple-400">PROGRAM</p>
+											<p className="font-semibold leading-tight dark:text-purple-100">{currentProgram.programName}</p>
 										</div>
 									</div>
 								</div>
 
-								<div className="rounded-lg bg-orange-50 p-4 dark:bg-orange-900/20 dark:border dark:border-orange-500/30">
+								<div className="rounded-lg bg-orange-50 p-4 dark:border dark:border-orange-500/30 dark:bg-orange-900/20">
 									<div className="flex items-center gap-2 text-orange-800 dark:text-orange-200">
 										<span className="text-lg">📍</span>
 										<div>
-											<p className="font-medium text-orange-600 text-xs dark:text-orange-400">
-												ŞEHİR
-											</p>
-											<p className="font-semibold dark:text-orange-100">
-												{currentProgram.cityName}
-											</p>
+											<p className="font-medium text-orange-600 text-xs dark:text-orange-400">ŞEHİR</p>
+											<p className="font-semibold dark:text-orange-100">{currentProgram.cityName}</p>
 										</div>
 									</div>
 								</div>
 							</div>
 
 							{/* Game Over Message */}
-							<div className="rounded-lg bg-gray-50 p-4 text-center dark:bg-slate-800 dark:border dark:border-slate-600">
-								<p className="mb-2 font-medium text-gray-700 dark:text-gray-200">
-									🎮 Oyun Bitti!
-								</p>
+							<div className="rounded-lg bg-gray-50 p-4 text-center dark:border dark:border-slate-600 dark:bg-slate-800">
+								<p className="mb-2 font-medium text-gray-700 dark:text-gray-200">🎮 Oyun Bitti!</p>
 								<p className="text-gray-600 text-sm dark:text-gray-300">
 									Cevabı gördün ve oyun bitti. Şimdi yeni bir oyun başlatabilirsin.
 								</p>
 							</div>
 
 							{/* New Game Button */}
-							<Button 
-								onClick={handleNewGame} 
+							<Button
+								onClick={handleNewGame}
 								className="w-full gap-2 bg-green-600 text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
 							>
 								<EyeOff className="h-4 w-4" />

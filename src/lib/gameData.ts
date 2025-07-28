@@ -162,7 +162,7 @@ class GameDataService {
 
 	async getUniversityNamesByTypeAndCity(universityType: string, cityName: string): Promise<string[]> {
 		await this.loadAllData();
-		
+
 		// Filter universities by both type and city
 		const filteredPrograms = this.allPrograms.filter((program) => {
 			const typeMatch = program.programType === universityType;
@@ -241,17 +241,17 @@ class GameDataService {
 
 	async getProgramNamesByUniversity(universityName: string, rankingType: string): Promise<string[]> {
 		await this.loadAllData();
-		
+
 		const filteredPrograms = this.allPrograms.filter(
 			(program) => program.universityName === universityName && program.rankingType === rankingType,
 		);
-		
+
 		// Only add main program names, not alternatives
 		const mainProgramNamesSet = new Set<string>();
 		for (const program of filteredPrograms) {
 			mainProgramNamesSet.add(program.programName);
 		}
-		
+
 		return Array.from(mainProgramNamesSet).sort();
 	}
 }

@@ -145,7 +145,7 @@ ${attemptSummary}
 					</div>
 
 					{/* Attempt History Visualization */}
-					<div className="rounded-lg bg-gray-50 p-4 dark:bg-slate-800 dark:border dark:border-slate-600">
+					<div className="rounded-lg bg-gray-50 p-4 dark:border dark:border-slate-600 dark:bg-slate-800">
 						<p className="mb-3 text-center font-medium text-gray-600 text-sm dark:text-gray-300">Tahmin Geçmişi</p>
 						<div className="flex flex-wrap justify-center gap-3">
 							{guessHistory.map((guess, index) => (
@@ -164,8 +164,8 @@ ${attemptSummary}
 
 					{/* Action Buttons */}
 					<div className="flex gap-2">
-						<Button 
-							onClick={shareResult} 
+						<Button
+							onClick={shareResult}
 							className="flex-1 gap-2 bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700"
 						>
 							{copied ? (
