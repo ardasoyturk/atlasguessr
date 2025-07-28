@@ -1,10 +1,10 @@
 import "@/styles/globals.css";
 
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import type { Viewport } from "next";
 import { Geist } from "next/font/google";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 export const viewport: Viewport = {
 	themeColor: "#3b82f6",
@@ -49,10 +49,7 @@ export default function RootLayout({
 				<link rel="manifest" href="/manifest.json" />
 				<meta name="mobile-web-app-capable" content="yes" />
 				<meta name="apple-mobile-web-app-capable" content="yes" />
-				<meta
-					name="apple-mobile-web-app-status-bar-style"
-					content="default"
-				/>
+				<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 				<meta name="apple-mobile-web-app-title" content="Atlasguessr" />
 			</head>
 			<GoogleTagManager gtmId="GTM-N6HWL9CP" />

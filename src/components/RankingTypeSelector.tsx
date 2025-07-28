@@ -123,9 +123,7 @@ export function RankingTypeSelector({
 									: "border-gray-200 bg-white/50 hover:border-gray-300 hover:bg-white/80 dark:border-slate-600 dark:bg-slate-700/50 dark:hover:border-slate-500 dark:hover:bg-slate-700/80"
 							}`}
 							style={{ animationDelay: `${index * 75}ms` }}
-							onClick={() =>
-								handleSelection(rankingTypeInfo.type)
-							}
+							onClick={() => handleSelection(rankingTypeInfo.type)}
 						>
 							{/* Animated background gradient */}
 							<div
@@ -148,8 +146,7 @@ export function RankingTypeSelector({
 								<div>
 									<div
 										className={`font-semibold text-lg transition-colors duration-150 ${
-											selectedType ===
-											rankingTypeInfo.type
+											selectedType === rankingTypeInfo.type
 												? "text-white"
 												: "text-gray-800 group-hover:text-gray-900 dark:text-gray-100 dark:group-hover:text-white"
 										}`}
@@ -158,8 +155,7 @@ export function RankingTypeSelector({
 									</div>
 									<div
 										className={`text-sm transition-colors duration-150 ${
-											selectedType ===
-											rankingTypeInfo.type
+											selectedType === rankingTypeInfo.type
 												? "text-white/90"
 												: "text-gray-500 group-hover:text-gray-600 dark:text-gray-300 dark:group-hover:text-gray-200"
 										}`}

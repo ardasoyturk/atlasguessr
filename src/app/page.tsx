@@ -21,7 +21,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function AtlasguessrGame() {
 	const [gamePhase, setGamePhase] = useState<"selection" | "playing">(
-		"selection"
+		"selection",
 	);
 	const [selectedRankingType, setSelectedRankingType] =
 		useState<RankingType | null>(null);
@@ -30,7 +30,7 @@ export default function AtlasguessrGame() {
 	const [allProgramNames, setAllProgramNames] = useState<string[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [currentProgram, setCurrentProgram] = useState<Program | undefined>(
-		undefined
+		undefined,
 	);
 	const [universityGuess, setUniversityGuess] = useState("");
 	const [programGuess, setProgramGuess] = useState("");
@@ -50,8 +50,9 @@ export default function AtlasguessrGame() {
 
 	const [filteredUniversitySuggestions, setFilteredUniversitySuggestions] =
 		useState<string[]>([]);
-	const [filteredProgramSuggestions, setFilteredProgramSuggestions] =
-		useState<string[]>([]);
+	const [filteredProgramSuggestions, setFilteredProgramSuggestions] = useState<
+		string[]
+	>([]);
 	const [programsForSelectedUniversity, setProgramsForSelectedUniversity] =
 		useState<string[]>([]);
 	const [showProgramDropdown, setShowProgramDropdown] = useState(true);
@@ -84,13 +85,9 @@ export default function AtlasguessrGame() {
 			} else {
 				// Get random program from specific ranking type
 				randomProgram =
-					await gameDataService.getRandomProgramByRankingType(
-						rankingType
-					);
+					await gameDataService.getRandomProgramByRankingType(rankingType);
 				programNames =
-					await gameDataService.getProgramNamesByRankingType(
-						rankingType
-					);
+					await gameDataService.getProgramNamesByRankingType(rankingType);
 			}
 
 			setCurrentProgram(randomProgram);
@@ -124,15 +121,15 @@ export default function AtlasguessrGame() {
 		return guess.trim() === target.trim();
 	};
 	const handleUniversityInputChange = (
-		e: React.ChangeEvent<HTMLInputElement>
+		e: React.ChangeEvent<HTMLInputElement>,
 	) => {
 		const value = e.target.value;
 		setUniversityGuess(value);
 		if (value.length > 1) {
 			setFilteredUniversitySuggestions(
 				allUniversityNames.filter((name) =>
-					normalizeText(name).includes(normalizeText(value))
-				)
+					normalizeText(name).includes(normalizeText(value)),
+				),
 			);
 		} else {
 			setFilteredUniversitySuggestions([]);
@@ -143,9 +140,7 @@ export default function AtlasguessrGame() {
 		}
 	};
 
-	const handleProgramInputChange = (
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
+	const handleProgramInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		setProgramGuess(value);
 		setShowProgramDropdown(true); // Show dropdown on input change
@@ -159,8 +154,8 @@ export default function AtlasguessrGame() {
 			if (value.length > 0) {
 				setFilteredProgramSuggestions(
 					sourcePrograms.filter((name) =>
-						normalizeText(name).includes(normalizeText(value))
-					)
+						normalizeText(name).includes(normalizeText(value)),
+					),
 				);
 			} else {
 				setFilteredProgramSuggestions(sourcePrograms);
@@ -196,7 +191,7 @@ export default function AtlasguessrGame() {
 			try {
 				const programNames = await gameDataService.getProgramNamesByUniversity(
 					suggestion,
-					selectedRankingType
+					selectedRankingType,
 				);
 				setProgramsForSelectedUniversity(programNames);
 			} catch (error) {
@@ -217,7 +212,7 @@ export default function AtlasguessrGame() {
 
 		const normalizedUniversityGuess = normalizeText(universityGuess);
 		const normalizedUniversityTarget = normalizeText(
-			currentProgram.universityName
+			currentProgram.universityName,
 		);
 
 		const universityMatch =
@@ -226,7 +221,7 @@ export default function AtlasguessrGame() {
 		// Use flexible program matching that ignores language variants
 		const programMatch = gameDataService.checkProgramNameMatch(
 			programGuess,
-			currentProgram
+			currentProgram,
 		);
 
 		// Add to guess history
@@ -268,7 +263,7 @@ export default function AtlasguessrGame() {
 			} else {
 				randomProgram =
 					await gameDataService.getRandomProgramByRankingType(
-						selectedRankingType
+						selectedRankingType,
 					);
 			}
 
@@ -310,9 +305,7 @@ export default function AtlasguessrGame() {
 		<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-slate-900 dark:to-indigo-900">
 			{gamePhase === "selection" && (
 				<div className="animate-fade-in-up">
-					<RankingTypeSelector
-						onSelectRankingType={handleRankingTypeSelect}
-					/>
+					<RankingTypeSelector onSelectRankingType={handleRankingTypeSelect} />
 				</div>
 			)}
 
@@ -323,8 +316,7 @@ export default function AtlasguessrGame() {
 							🎓 Atlasguessr
 						</h1>
 						<p className="animate-fade-in-delay text-gray-600 dark:text-gray-300">
-							Türk üniversitelerindeki lisans programlarını tahmin
-							edin!
+							Türk üniversitelerindeki lisans programlarını tahmin edin!
 						</p>
 						{selectedRankingType && (
 							<div className="mt-4 animate-scale-in">
@@ -336,10 +328,7 @@ export default function AtlasguessrGame() {
 						)}
 					</div>
 
-					<LoadingState
-						isLoading={isLoading}
-						currentProgram={currentProgram}
-					/>
+					<LoadingState isLoading={isLoading} currentProgram={currentProgram} />
 
 					{!isLoading && currentProgram && (
 						<div className="animate-fade-in-stagger space-y-6">
@@ -354,45 +343,29 @@ export default function AtlasguessrGame() {
 							<div className="animate-slide-in-right">
 								<div className="mb-6 grid gap-6 md:grid-cols-2">
 									<div className="animate-scale-in">
-										<HintsCard
-											currentProgram={currentProgram}
-										/>
+										<HintsCard currentProgram={currentProgram} />
 									</div>
 
 									<div className="animate-scale-in-delay">
 										<InputForm
 											universityGuess={universityGuess}
 											programGuess={programGuess}
-											universityCorrect={
-												universityCorrect
-											}
+											universityCorrect={universityCorrect}
 											programCorrect={programCorrect}
 											gameWon={gameWon}
 											filteredUniversitySuggestions={
 												filteredUniversitySuggestions
 											}
-											filteredProgramSuggestions={
-												filteredProgramSuggestions
-											}
+											filteredProgramSuggestions={filteredProgramSuggestions}
 											showProgramDropdown={showProgramDropdown}
 											setShowProgramDropdown={setShowProgramDropdown}
-											onUniversityChange={
-												handleUniversityInputChange
-											}
-											onProgramChange={
-												handleProgramInputChange
-											}
+											onUniversityChange={handleUniversityInputChange}
+											onProgramChange={handleProgramInputChange}
 											onProgramInputFocus={handleProgramInputFocus}
-											onUniversitySelect={
-												selectUniversitySuggestion
-											}
-											onProgramSelect={
-												selectProgramSuggestion
-											}
+											onUniversitySelect={selectUniversitySuggestion}
+											onProgramSelect={selectProgramSuggestion}
 											onSubmit={checkGuess}
-											universityInputRef={
-												universityInputRef
-											}
+											universityInputRef={universityInputRef}
 											programInputRef={programInputRef}
 											onProgramInputMouseDown={() =>
 												setProgramInputFocusedByUser(true)
@@ -405,9 +378,7 @@ export default function AtlasguessrGame() {
 							<div className="animate-slide-in-up">
 								<ActionButtons
 									gameWon={gameWon}
-									onShowAnswer={() =>
-										setShowAnswerModal(true)
-									}
+									onShowAnswer={() => setShowAnswerModal(true)}
 									onResetGame={resetGame}
 									onNewGameSession={startNewGameSession}
 								/>

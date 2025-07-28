@@ -133,7 +133,7 @@ export function InputForm({
 							placeholder="Örn: Bilgisayar Mühendisliği (4 Yıllık)"
 							className={
 								programCorrect
-									? "border-green-500 bg-green-50 dark:border-green-400 dark:bg-green-900/20 pr-8"
+									? "border-green-500 bg-green-50 pr-8 dark:border-green-400 dark:bg-green-900/20"
 									: "pr-8"
 							}
 							disabled={gameWon}
@@ -143,7 +143,7 @@ export function InputForm({
 						<button
 							type="button"
 							aria-label="Açılır menüyü göster"
-							className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-300 bg-transparent border-none p-0 m-0 cursor-pointer"
+							className="-translate-y-1/2 absolute top-1/2 right-3 m-0 cursor-pointer border-none bg-transparent p-0 text-gray-400 dark:text-gray-300"
 							style={{
 								fontWeight: 400,
 								fontSize: "1.2rem",
@@ -154,7 +154,10 @@ export function InputForm({
 								if (programInputRef.current) {
 									programInputRef.current.focus();
 								}
-								if (typeof onProgramInputMouseDown === "function") {
+								if (
+									typeof onProgramInputMouseDown ===
+									"function"
+								) {
 									onProgramInputMouseDown();
 								}
 								if (typeof onProgramInputFocus === "function") {
@@ -170,6 +173,7 @@ export function InputForm({
 								xmlns="http://www.w3.org/2000/svg"
 								style={{ display: "block" }}
 							>
+								<title>Açılır menü oku</title>
 								<path
 									d="M5 7L9 11L13 7"
 									stroke="currentColor"
@@ -181,23 +185,28 @@ export function InputForm({
 						</button>
 					</div>
 					{/* Always show dropdown if there are suggestions and showProgramDropdown is true */}
-					{filteredProgramSuggestions.length > 0 && showProgramDropdown && (
-						<div
-							ref={programDropdownRef}
-							className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800"
-						>
-							{filteredProgramSuggestions.map((suggestion) => (
-								<button
-									key={suggestion}
-									className="w-full cursor-pointer p-2 text-left hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-700"
-									type="button"
-									onClick={() => onProgramSelect(suggestion)}
-								>
-									{suggestion}
-								</button>
-							))}
-						</div>
-					)}
+					{filteredProgramSuggestions.length > 0 &&
+						showProgramDropdown && (
+							<div
+								ref={programDropdownRef}
+								className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800"
+							>
+								{filteredProgramSuggestions.map(
+									(suggestion) => (
+										<button
+											key={suggestion}
+											className="w-full cursor-pointer p-2 text-left hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-700"
+											type="button"
+											onClick={() =>
+												onProgramSelect(suggestion)
+											}
+										>
+											{suggestion}
+										</button>
+									)
+								)}
+							</div>
+						)}
 				</div>
 
 				<Button

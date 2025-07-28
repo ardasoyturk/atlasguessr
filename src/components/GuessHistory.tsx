@@ -36,32 +36,29 @@ export function GuessHistory({
 							<div
 								className={`rounded p-2 ${
 									guess.universityMatch
-										? "bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-200 dark:border dark:border-green-500/30"
-										: "bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-200 dark:border dark:border-red-500/30"
+										? "bg-green-100 text-green-800 dark:border dark:border-green-500/30 dark:bg-green-800/30 dark:text-green-200"
+										: "bg-red-100 text-red-800 dark:border dark:border-red-500/30 dark:bg-red-800/30 dark:text-red-200"
 								}`}
 							>
-								<span className="font-medium">
-									Üniversite:{" "}
-								</span>
+								<span className="font-medium">Üniversite: </span>
 								{guess.university}
 								{guess.universityMatch ? " ✓" : " ✗"}
 								{/* Show the actual correct answer if the guess was correct but different */}
 								{guess.universityMatch &&
 									!isExactMatch(
 										guess.university,
-										currentProgram.universityName
+										currentProgram.universityName,
 									) && (
 										<div className="mt-1 text-green-600 text-xs dark:text-green-400">
-											Doğru cevap:{" "}
-											{currentProgram.universityName}
+											Doğru cevap: {currentProgram.universityName}
 										</div>
 									)}
 							</div>
 							<div
 								className={`rounded p-2 ${
 									guess.programMatch
-										? "bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-200 dark:border dark:border-green-500/30"
-										: "bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-200 dark:border dark:border-red-500/30"
+										? "bg-green-100 text-green-800 dark:border dark:border-green-500/30 dark:bg-green-800/30 dark:text-green-200"
+										: "bg-red-100 text-red-800 dark:border dark:border-red-500/30 dark:bg-red-800/30 dark:text-red-200"
 								}`}
 							>
 								<span className="font-medium">Program: </span>
@@ -69,11 +66,9 @@ export function GuessHistory({
 								{guess.programMatch ? " ✓" : " ✗"}
 								{/* Show the actual correct answer if the guess was correct but different */}
 								{guess.programMatch &&
-									guess.program !==
-										currentProgram.programName && (
+									guess.program !== currentProgram.programName && (
 										<div className="mt-1 text-green-600 text-xs dark:text-green-400">
-											Doğru cevap:{" "}
-											{currentProgram.programName}
+											Doğru cevap: {currentProgram.programName}
 										</div>
 									)}
 							</div>
