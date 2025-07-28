@@ -12,8 +12,8 @@ import { HintsCard } from "@/components/HintsCard";
 import { InputForm } from "@/components/InputForm";
 import { LoadingState } from "@/components/LoadingState";
 import {
-	RankingTypeSelector,
 	type RankingType,
+	RankingTypeSelector,
 } from "@/components/RankingTypeSelector";
 import { ShowAnswerModal } from "@/components/ShowAnswerModal";
 import { type Program, gameDataService } from "@/lib/gameData";
@@ -273,7 +273,7 @@ export default function AtlasguessrGame() {
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+		<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-slate-900 dark:to-indigo-900">
 			{gamePhase === "selection" && (
 				<div className="animate-fade-in-up">
 					<RankingTypeSelector
@@ -285,16 +285,16 @@ export default function AtlasguessrGame() {
 			{gamePhase === "playing" && (
 				<div className="mx-auto max-w-4xl animate-slide-in-from-right">
 					<div className="mb-8 text-center">
-						<h1 className="mb-2 animate-bounce-in font-bold text-4xl text-indigo-900">
+						<h1 className="mb-2 animate-bounce-in font-bold text-4xl text-indigo-900 dark:text-indigo-200">
 							🎓 Atlasguessr
 						</h1>
-						<p className="animate-fade-in-delay text-gray-600">
+						<p className="animate-fade-in-delay text-gray-600 dark:text-gray-300">
 							Türk üniversitelerindeki lisans programlarını tahmin
 							edin!
 						</p>
 						{selectedRankingType && (
 							<div className="mt-4 animate-scale-in">
-								<span className="inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-800 shadow-sm ring-1 ring-indigo-600/20">
+								<span className="inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 font-medium text-indigo-800 text-sm shadow-sm ring-1 ring-indigo-600/20 dark:bg-indigo-900/50 dark:text-indigo-200 dark:ring-indigo-400/30">
 									<span className="mr-2">🎯</span>
 									Sıralama Türü: {selectedRankingType}
 								</span>

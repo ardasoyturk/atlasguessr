@@ -2,8 +2,8 @@ import "@/styles/globals.css";
 
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import type { Viewport } from "next";
+import { Geist } from "next/font/google";
 
 export const viewport: Viewport = {
 	themeColor: "#3b82f6",
@@ -54,7 +54,7 @@ export default function RootLayout({
 				/>
 				<meta name="apple-mobile-web-app-title" content="Atlasguessr" />
 			</head>
-			<body>
+			<body className="min-h-screen bg-background text-foreground antialiased">
 				{children}
 				<ServiceWorkerRegistration />
 			</body>

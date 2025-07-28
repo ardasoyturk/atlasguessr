@@ -31,13 +31,13 @@ export function GuessHistory({
 					{guessHistory.map((guess, index) => (
 						<div
 							key={`${guess.university}-${guess.program}-${index}`}
-							className="grid grid-cols-1 gap-2 rounded-lg bg-gray-50 p-3 md:grid-cols-2"
+							className="grid grid-cols-1 gap-2 rounded-lg bg-gray-50 p-3 md:grid-cols-2 dark:bg-slate-700/60"
 						>
 							<div
 								className={`rounded p-2 ${
 									guess.universityMatch
-										? "bg-green-100 text-green-800"
-										: "bg-red-100 text-red-800"
+										? "bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-200 dark:border dark:border-green-500/30"
+										: "bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-200 dark:border dark:border-red-500/30"
 								}`}
 							>
 								<span className="font-medium">
@@ -51,7 +51,7 @@ export function GuessHistory({
 										guess.university,
 										currentProgram.universityName
 									) && (
-										<div className="mt-1 text-green-600 text-xs">
+										<div className="mt-1 text-green-600 text-xs dark:text-green-400">
 											Doğru cevap:{" "}
 											{currentProgram.universityName}
 										</div>
@@ -60,8 +60,8 @@ export function GuessHistory({
 							<div
 								className={`rounded p-2 ${
 									guess.programMatch
-										? "bg-green-100 text-green-800"
-										: "bg-red-100 text-red-800"
+										? "bg-green-100 text-green-800 dark:bg-green-800/30 dark:text-green-200 dark:border dark:border-green-500/30"
+										: "bg-red-100 text-red-800 dark:bg-red-800/30 dark:text-red-200 dark:border dark:border-red-500/30"
 								}`}
 							>
 								<span className="font-medium">Program: </span>
@@ -71,7 +71,7 @@ export function GuessHistory({
 								{guess.programMatch &&
 									guess.program !==
 										currentProgram.programName && (
-										<div className="mt-1 text-green-600 text-xs">
+										<div className="mt-1 text-green-600 text-xs dark:text-green-400">
 											Doğru cevap:{" "}
 											{currentProgram.programName}
 										</div>

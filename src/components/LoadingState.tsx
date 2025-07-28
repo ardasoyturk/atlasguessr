@@ -31,10 +31,7 @@ export function LoadingState({ isLoading, currentProgram }: LoadingStateProps) {
 						<p className="text-lg text-red-600">
 							Veri yüklenirken hata oluştu.
 						</p>
-						<Button
-							onClick={() => window.location.reload()}
-							className="mt-4"
-						>
+						<Button onClick={() => window.location.reload()} className="mt-4">
 							Yeniden Dene
 						</Button>
 					</CardContent>

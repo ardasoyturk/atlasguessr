@@ -8,7 +8,7 @@ export function GameInstructions() {
 			<CardHeader>
 				<CardTitle className="text-lg">Nasıl Oynanır?</CardTitle>
 			</CardHeader>
-			<CardContent className="space-y-2 text-gray-600 text-sm">
+			<CardContent className="space-y-2 text-gray-600 text-sm dark:text-gray-300">
 				<p>
 					• Verilen ipuçlarını kullanarak hem üniversite hem de
 					program adını tahmin edin

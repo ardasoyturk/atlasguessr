@@ -60,18 +60,18 @@ export function InputForm({
 						placeholder="Örn: BOĞAZİÇİ ÜNİVERSİTESİ"
 						className={
 							universityCorrect
-								? "border-green-500 bg-green-50"
+								? "border-green-500 bg-green-50 dark:border-green-400 dark:bg-green-900/20"
 								: ""
 						}
 						disabled={gameWon}
 						autoComplete="off"
 					/>
 					{filteredUniversitySuggestions.length > 0 && (
-						<div className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg">
+						<div className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800">
 							{filteredUniversitySuggestions.map((suggestion) => (
 								<button
 									key={suggestion}
-									className="w-full cursor-pointer p-2 text-left hover:bg-gray-100"
+									className="w-full cursor-pointer p-2 text-left hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-700"
 									type="button"
 									onClick={() =>
 										onUniversitySelect(suggestion)
@@ -98,18 +98,20 @@ export function InputForm({
 						onChange={onProgramChange}
 						placeholder="Örn: Bilgisayar Mühendisliği (4 Yıllık)"
 						className={
-							programCorrect ? "border-green-500 bg-green-50" : ""
+							programCorrect
+								? "border-green-500 bg-green-50 dark:border-green-400 dark:bg-green-900/20"
+								: ""
 						}
 						disabled={gameWon}
 						onKeyPress={(e) => e.key === "Enter" && onSubmit()}
 						autoComplete="off"
 					/>
 					{filteredProgramSuggestions.length > 0 && (
-						<div className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg">
+						<div className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800">
 							{filteredProgramSuggestions.map((suggestion) => (
 								<button
 									key={suggestion}
-									className="w-full cursor-pointer p-2 text-left hover:bg-gray-100"
+									className="w-full cursor-pointer p-2 text-left hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-700"
 									type="button"
 									onClick={() => onProgramSelect(suggestion)}
 								>

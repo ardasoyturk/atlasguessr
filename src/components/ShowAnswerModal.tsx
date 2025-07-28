@@ -58,9 +58,7 @@ export function ShowAnswerModal({
 						</DialogTitle>
 						<DialogDescription className="text-amber-100">
 							Görünüşe göre{" "}
-							{attempts > 0
-								? `${attempts} deneme sonrası`
-								: "hiç denemeden"}{" "}
+							{attempts > 0 ? `${attempts} deneme sonrası` : "hiç denemeden"}{" "}
 							cevabı görmek istiyorsun.
 						</DialogDescription>
 					</DialogHeader>
@@ -76,10 +74,9 @@ export function ShowAnswerModal({
 									Emin misin? 🤯
 								</p>
 								<p className="text-amber-700 text-sm">
-									Cevabı gördükten sonra oyun bitecek ve yeni
-									oyuna geçmen gerekecek.
-									{attempts === 0 &&
-										" Bence hiç denemeden pes etme!"}
+									Cevabı gördükten sonra oyun bitecek ve yeni oyuna geçmen
+									gerekecek.
+									{attempts === 0 && " Bence hiç denemeden pes etme!"}
 								</p>
 							</div>
 
@@ -90,8 +87,8 @@ export function ShowAnswerModal({
 										💪 Biraz daha dene!
 									</p>
 									<p className="text-blue-700 text-sm">
-										İpuçları oldukça detaylı. Belki bir kaç
-										tahmin daha yapabilirsin?
+										İpuçları oldukça detaylı. Belki bir kaç tahmin daha
+										yapabilirsin?
 									</p>
 								</div>
 							)}
@@ -154,9 +151,7 @@ export function ShowAnswerModal({
 											<p className="font-medium text-orange-600 text-xs">
 												ŞEHİR
 											</p>
-											<p className="font-semibold">
-												{currentProgram.cityName}
-											</p>
+											<p className="font-semibold">{currentProgram.cityName}</p>
 										</div>
 									</div>
 								</div>
@@ -164,12 +159,10 @@ export function ShowAnswerModal({
 
 							{/* Game Over Message */}
 							<div className="rounded-lg bg-gray-50 p-4 text-center">
-								<p className="mb-2 font-medium text-gray-700">
-									🎮 Oyun Bitti!
-								</p>
+								<p className="mb-2 font-medium text-gray-700">🎮 Oyun Bitti!</p>
 								<p className="text-gray-600 text-sm">
-									Cevabı gördün ve oyun bitti. Şimdi yeni bir
-									oyun başlatabilirsin.
+									Cevabı gördün ve oyun bitti. Şimdi yeni bir oyun
+									başlatabilirsin.
 								</p>
 							</div>
 
