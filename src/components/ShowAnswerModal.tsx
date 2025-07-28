@@ -57,10 +57,11 @@ export function ShowAnswerModal({
 							🤔 Cevabı Görmek İstiyorsun?
 						</DialogTitle>
 						<DialogDescription className="text-amber-100">
+							Görünüşe göre{" "}
 							{attempts > 0
 								? `${attempts} deneme sonrası`
-								: "Hiç denemeden"}{" "}
-							cevabı görmek istiyorsun!
+								: "hiç denemeden"}{" "}
+							cevabı görmek istiyorsun.
 						</DialogDescription>
 					</DialogHeader>
 				</div>
@@ -78,7 +79,7 @@ export function ShowAnswerModal({
 									Cevabı gördükten sonra oyun bitecek ve yeni
 									oyuna geçmen gerekecek.
 									{attempts === 0 &&
-										" Hiç denemeden pes etme!"}
+										" Bence hiç denemeden pes etme!"}
 								</p>
 							</div>
 
@@ -167,8 +168,8 @@ export function ShowAnswerModal({
 									🎮 Oyun Bitti!
 								</p>
 								<p className="text-gray-600 text-sm">
-									Cevabı gördün! Şimdi yeni bir oyun
-									başlatabilirsin.
+									Cevabı gördün ve oyun bitti. Şimdi yeni bir
+									oyun başlatabilirsin.
 								</p>
 							</div>
 
