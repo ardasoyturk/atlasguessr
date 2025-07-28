@@ -20,6 +20,7 @@ interface InputFormProps {
 	universityInputRef: RefObject<HTMLInputElement | null>;
 	programInputRef: RefObject<HTMLInputElement | null>;
 	onUniversityChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onUniversityInputFocus: () => void;
 	onProgramChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	onUniversitySelect: (suggestion: string) => void;
 	onProgramSelect: (suggestion: string) => void;
@@ -43,6 +44,7 @@ export function InputForm({
 	universityInputRef,
 	programInputRef,
 	onUniversityChange,
+	onUniversityInputFocus,
 	onProgramChange,
 	onUniversitySelect,
 	onProgramSelect,
@@ -82,6 +84,7 @@ export function InputForm({
 						ref={universityInputRef}
 						value={universityGuess}
 						onChange={onUniversityChange}
+						onFocus={onUniversityInputFocus}
 						placeholder="Örn: BOĞAZİÇİ ÜNİVERSİTESİ"
 						className={
 							universityCorrect ? "border-green-500 bg-green-50 dark:border-green-400 dark:bg-green-900/20" : ""

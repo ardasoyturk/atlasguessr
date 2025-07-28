@@ -108,32 +108,42 @@ export default function AtlasguessrGame() {
 	const handleUniversityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		setUniversityGuess(value);
-
-		// Always clear the programs for selected university when typing (user is changing selection)
 		setProgramsForSelectedUniversity([]);
 
-		if (value.length > 1 && currentProgram) {
-			// Filter universities by the current program's type and city
+		if (currentProgram) {
 			gameDataService
 				.getUniversityNamesByTypeAndCity(currentProgram.programType, currentProgram.cityName)
 				.then((filteredUniversities) => {
-					const searchResults = filteredUniversities.filter((name) =>
-						normalizeText(name).includes(normalizeText(value)),
-					);
+					let searchResults = filteredUniversities;
+					if (value.length > 0) {
+						searchResults = filteredUniversities.filter((name) => normalizeText(name).includes(normalizeText(value)));
+					}
 					setFilteredUniversitySuggestions(searchResults);
 				})
 				.catch((error) => {
 					console.error("Error filtering universities:", error);
-					// Fallback to all universities if filtering fails
-					setFilteredUniversitySuggestions(
-						allUniversityNames.filter((name) => normalizeText(name).includes(normalizeText(value))),
-					);
+					let fallback = allUniversityNames;
+					if (value.length > 0) {
+						fallback = allUniversityNames.filter((name) => normalizeText(name).includes(normalizeText(value)));
+					}
+					setFilteredUniversitySuggestions(fallback);
 				});
 		} else {
 			setFilteredUniversitySuggestions([]);
-			setFilteredProgramSuggestions(allProgramNames); // Show all programs when no university is selected
-			setShowProgramDropdown(false); // Hide dropdown until focus/click
-			setProgramInputFocusedByUser(false); // Prevent dropdown from opening automatically
+			setFilteredProgramSuggestions(allProgramNames);
+			setShowProgramDropdown(false);
+			setProgramInputFocusedByUser(false);
+		}
+	};
+	// Show dropdown with all city universities on focus if input is empty
+	const handleUniversityInputFocus = () => {
+		if (currentProgram) {
+			gameDataService
+				.getUniversityNamesByTypeAndCity(currentProgram.programType, currentProgram.cityName)
+				.then((filteredUniversities) => {
+					setFilteredUniversitySuggestions(filteredUniversities);
+				})
+				.catch(() => setFilteredUniversitySuggestions([]));
 		}
 	};
 
@@ -337,6 +347,7 @@ export default function AtlasguessrGame() {
 											showProgramDropdown={showProgramDropdown}
 											setShowProgramDropdown={setShowProgramDropdown}
 											onUniversityChange={handleUniversityInputChange}
+											onUniversityInputFocus={handleUniversityInputFocus}
 											onProgramChange={handleProgramInputChange}
 											onProgramInputFocus={handleProgramInputFocus}
 											onUniversitySelect={selectUniversitySuggestion}
