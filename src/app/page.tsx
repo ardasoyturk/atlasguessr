@@ -52,6 +52,11 @@ export default function AtlasguessrGame() {
 		useState<string[]>([]);
 	const [filteredProgramSuggestions, setFilteredProgramSuggestions] =
 		useState<string[]>([]);
+	const [programsForSelectedUniversity, setProgramsForSelectedUniversity] =
+		useState<string[]>([]);
+	const [showProgramDropdown, setShowProgramDropdown] = useState(true);
+	const [programInputFocusedByUser, setProgramInputFocusedByUser] =
+		useState(false);
 
 	const universityInputRef = useRef<HTMLInputElement>(null);
 	const programInputRef = useRef<HTMLInputElement>(null);
@@ -131,6 +136,10 @@ export default function AtlasguessrGame() {
 			);
 		} else {
 			setFilteredUniversitySuggestions([]);
+			setProgramsForSelectedUniversity([]); // Reset programs for selected university
+			setFilteredProgramSuggestions(allProgramNames); // Show all programs
+			setShowProgramDropdown(false); // Hide dropdown until focus/click
+			setProgramInputFocusedByUser(false); // Prevent dropdown from opening automatically
 		}
 	};
 
@@ -139,37 +148,62 @@ export default function AtlasguessrGame() {
 	) => {
 		const value = e.target.value;
 		setProgramGuess(value);
-		if (value.length > 1 && currentProgram?.rankingType) {
-			// Get program names filtered by the current program's ranking type
-			gameDataService
-				.getProgramNamesByRankingType(currentProgram.rankingType)
-				.then((filteredProgramNames) => {
-					const suggestions = filteredProgramNames.filter((name) =>
+		setShowProgramDropdown(true); // Show dropdown on input change
+		let sourcePrograms: string[] = [];
+		if (programsForSelectedUniversity.length > 0) {
+			sourcePrograms = programsForSelectedUniversity;
+		} else if (currentProgram?.rankingType) {
+			sourcePrograms = allProgramNames;
+		}
+		if (sourcePrograms.length > 0) {
+			if (value.length > 0) {
+				setFilteredProgramSuggestions(
+					sourcePrograms.filter((name) =>
 						normalizeText(name).includes(normalizeText(value))
-					);
-					setFilteredProgramSuggestions(suggestions);
-				})
-				.catch((error) => {
-					console.error(
-						"Error filtering program suggestions:",
-						error
-					);
-					// Fallback to all programs if filtering fails
-					setFilteredProgramSuggestions(
-						allProgramNames.filter((name) =>
-							normalizeText(name).includes(normalizeText(value))
-						)
-					);
-				});
+					)
+				);
+			} else {
+				setFilteredProgramSuggestions(sourcePrograms);
+			}
 		} else {
 			setFilteredProgramSuggestions([]);
 		}
 	};
 
-	const selectUniversitySuggestion = (suggestion: string) => {
+	const handleProgramInputFocus = (e?: React.FocusEvent<HTMLInputElement>) => {
+		// Only open dropdown if focus was by user (not programmatic)
+		if (programInputFocusedByUser) {
+			setShowProgramDropdown(true);
+			let sourcePrograms: string[] = [];
+			if (programsForSelectedUniversity.length > 0) {
+				sourcePrograms = programsForSelectedUniversity;
+			} else if (currentProgram?.rankingType) {
+				sourcePrograms = allProgramNames;
+			}
+			setFilteredProgramSuggestions(sourcePrograms);
+		}
+	};
+
+	const selectUniversitySuggestion = async (suggestion: string) => {
 		setUniversityGuess(suggestion);
 		setFilteredUniversitySuggestions([]);
+		setShowProgramDropdown(false); // Hide dropdown after picking university
+		setProgramInputFocusedByUser(false); // Mark that next focus is programmatic
 		programInputRef.current?.focus(); // Move focus to program input
+
+		// Fetch programs for selected university
+		if (selectedRankingType) {
+			try {
+				const programNames = await gameDataService.getProgramNamesByUniversity(
+					suggestion,
+					selectedRankingType
+				);
+				setProgramsForSelectedUniversity(programNames);
+			} catch (error) {
+				console.error("Error fetching programs for university:", error);
+				setProgramsForSelectedUniversity([]);
+			}
+		}
 	};
 
 	const selectProgramSuggestion = (suggestion: string) => {
@@ -340,12 +374,15 @@ export default function AtlasguessrGame() {
 											filteredProgramSuggestions={
 												filteredProgramSuggestions
 											}
+											showProgramDropdown={showProgramDropdown}
+											setShowProgramDropdown={setShowProgramDropdown}
 											onUniversityChange={
 												handleUniversityInputChange
 											}
 											onProgramChange={
 												handleProgramInputChange
 											}
+											onProgramInputFocus={handleProgramInputFocus}
 											onUniversitySelect={
 												selectUniversitySuggestion
 											}
@@ -357,6 +394,9 @@ export default function AtlasguessrGame() {
 												universityInputRef
 											}
 											programInputRef={programInputRef}
+											onProgramInputMouseDown={() =>
+												setProgramInputFocusedByUser(true)
+											}
 										/>
 									</div>
 								</div>

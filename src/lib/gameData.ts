@@ -233,6 +233,24 @@ class GameDataService {
 
 		return false;
 	}
+
+	async getProgramNamesByUniversity(
+		universityName: string,
+		rankingType: string,
+	): Promise<string[]> {
+		await this.loadAllData();
+		const filteredPrograms = this.allPrograms.filter(
+			(program) => 
+				program.universityName === universityName && 
+				program.rankingType === rankingType,
+		);
+		// Only add main program names, not alternatives
+		const mainProgramNamesSet = new Set<string>();
+		for (const program of filteredPrograms) {
+			mainProgramNamesSet.add(program.programName);
+		}
+		return Array.from(mainProgramNamesSet).sort();
+	}
 }
 
 // Export a singleton instance
