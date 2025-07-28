@@ -73,7 +73,7 @@ export function InputForm({
 				<CardTitle className="text-lg sm:text-xl">Tahmininizi Yapın</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-3 sm:space-y-4">
-				<div className="relative">
+				<div className="pb-4">
 					<label htmlFor="university-guess" className="mb-2 block font-medium text-sm">
 						Üniversite Adı
 					</label>
@@ -90,7 +90,7 @@ export function InputForm({
 						autoComplete="off"
 					/>
 					{filteredUniversitySuggestions.length > 0 && (
-						<div className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800">
+						<div className="mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800">
 							{filteredUniversitySuggestions.map((suggestion) => (
 								<button
 									key={suggestion}
@@ -105,7 +105,7 @@ export function InputForm({
 					)}
 				</div>
 
-				<div className="relative">
+				<div className="pb-4">
 					<label htmlFor="program-guess" className="mb-2 block font-medium text-sm">
 						Program Adı
 					</label>
@@ -128,13 +128,8 @@ export function InputForm({
 						<button
 							type="button"
 							aria-label="Açılır menüyü göster"
-							className="-translate-y-1/2 absolute top-1/2 right-3 m-0 cursor-pointer border-none bg-transparent p-0 text-gray-400 dark:text-gray-300"
-							style={{
-								fontWeight: 400,
-								fontSize: "1.2rem",
-								opacity: 0.7,
-								lineHeight: 0,
-							}}
+							className="absolute right-2 top-1/2 -translate-y-1/2 p-1 bg-transparent border-none outline-none focus:ring-2 focus:ring-blue-400 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 transition-colors"
+							style={{ lineHeight: 0 }}
 							onClick={() => {
 								if (programInputRef.current) {
 									programInputRef.current.focus();
@@ -148,18 +143,18 @@ export function InputForm({
 							}}
 						>
 							<svg
-								width="18"
-								height="18"
-								viewBox="0 0 18 18"
+								width="16"
+								height="16"
+								viewBox="0 0 16 16"
 								fill="none"
 								xmlns="http://www.w3.org/2000/svg"
 								style={{ display: "block" }}
 							>
 								<title>Açılır menü oku</title>
 								<path
-									d="M5 7L9 11L13 7"
+									d="M4.5 6.5L8 10L11.5 6.5"
 									stroke="currentColor"
-									strokeWidth="2"
+									strokeWidth="1.5"
 									strokeLinecap="round"
 									strokeLinejoin="round"
 								/>
@@ -170,7 +165,7 @@ export function InputForm({
 					{filteredProgramSuggestions.length > 0 && showProgramDropdown && (
 						<div
 							ref={programDropdownRef}
-							className="absolute z-10 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800"
+							className="mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800"
 						>
 							{filteredProgramSuggestions.map((suggestion) => (
 								<button
@@ -186,13 +181,15 @@ export function InputForm({
 					)}
 				</div>
 
-				<Button
-					onClick={onSubmit}
-					disabled={!universityGuess.trim() || !programGuess.trim() || gameWon}
-					className="w-full text-sm sm:text-base"
-				>
-					Tahmin Et
-				</Button>
+				<div className="mt-6">
+					<Button
+						onClick={onSubmit}
+						disabled={!universityGuess.trim() || !programGuess.trim() || gameWon}
+						className="w-full text-sm sm:text-base"
+					>
+						Tahmin Et
+					</Button>
+				</div>
 			</CardContent>
 		</Card>
 	);
