@@ -57,13 +57,11 @@ export function RankingTypeSelector({ onSelectRankingType }: RankingTypeSelector
 	};
 
 	return (
-		<div className="flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 p-2 sm:p-4 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900">
+		<div className="flex min-h-screen items-center justify-center overflow-hidden bg-gray-50 p-2 sm:p-4 dark:bg-slate-900">
 			<Card className="w-full max-w-2xl border-white/20 bg-white/90 shadow-2xl backdrop-blur-sm dark:border-slate-700/50 dark:bg-slate-800/90">
 				<CardHeader className="p-4 text-center sm:p-6">
 					<CardTitle className="mb-2 font-bold text-2xl text-gray-800 sm:text-3xl lg:text-4xl dark:text-gray-100">
-						<span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
-							🎓 Atlasguessr
-						</span>
+						<span className="text-blue-600 dark:text-blue-400">🎓 Atlasguessr</span>
 					</CardTitle>
 					<CardDescription className="text-base text-gray-600 sm:text-lg dark:text-gray-300">
 						Sıralama türünü seçin ve maceranız başlasın! ✨
@@ -75,17 +73,17 @@ export function RankingTypeSelector({ onSelectRankingType }: RankingTypeSelector
 							key={rankingTypeInfo.type}
 							variant="outline"
 							className={
-								"group relative flex h-auto w-full items-center justify-between p-4 text-left sm:p-6 bg-white/50 border-gray-200 dark:bg-slate-700/50 dark:border-slate-600"
+								"group relative flex h-auto w-full items-center justify-between border-gray-200 bg-white/50 p-4 text-left sm:p-6 dark:border-slate-600 dark:bg-slate-700/50"
 							}
 							onClick={() => handleSelection(rankingTypeInfo.type)}
 						>
 							<div className="relative z-10 flex items-center space-x-3 sm:space-x-4">
 								<span className="text-2xl sm:text-3xl">{rankingTypeInfo.emoji}</span>
 								<div>
-									<div className="font-semibold text-base sm:text-lg text-gray-800 dark:text-gray-100">
+									<div className="font-semibold text-base text-gray-800 sm:text-lg dark:text-gray-100">
 										{rankingTypeInfo.type}
 									</div>
-									<div className="text-xs sm:text-sm text-gray-500 dark:text-gray-300">
+									<div className="text-gray-500 text-xs sm:text-sm dark:text-gray-300">
 										{rankingTypeInfo.description}
 									</div>
 								</div>

@@ -34,9 +34,9 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 
 	return (
 		<Dialog open={isOpen} onOpenChange={handleClose}>
-			<DialogContent className="mx-2 w-full max-w-md rounded-xl border-amber-200 bg-gradient-to-b from-amber-50 to-white p-0 shadow-2xl sm:mx-4 dark:border-amber-800 dark:from-slate-800 dark:to-slate-900">
+			<DialogContent className="mx-2 w-full max-w-md rounded-xl border-amber-200 bg-amber-50 p-0 shadow-2xl sm:mx-4 dark:border-amber-800 dark:bg-slate-800">
 				{/* Warning Header */}
-				<div className="rounded-md bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-6 text-center text-white sm:px-6 sm:py-8">
+				<div className="rounded-md bg-amber-500 px-4 py-6 text-center text-white sm:px-6 sm:py-8 dark:bg-amber-600">
 					<div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm sm:mb-3 sm:h-16 sm:w-16">
 						<Eye className="h-6 w-6 sm:h-8 sm:w-8" />
 					</div>

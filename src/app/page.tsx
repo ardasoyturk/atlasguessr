@@ -265,7 +265,7 @@ export default function AtlasguessrGame() {
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-2 sm:p-4 dark:from-slate-900 dark:to-indigo-900">
+		<div className="min-h-screen bg-gray-50 dark:bg-slate-900">
 			{gamePhase === "selection" && <RankingTypeSelector onSelectRankingType={handleRankingTypeSelect} />}
 
 			{gamePhase === "playing" && (

@@ -97,9 +97,9 @@ ${attemptSummary}
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
-			<DialogContent className="mx-2 w-full max-w-md rounded-xl border-green-200 bg-gradient-to-b from-green-50 to-white p-0 shadow-2xl sm:mx-4 dark:border-green-800 dark:from-slate-800 dark:to-slate-900">
+			<DialogContent className="mx-2 w-full max-w-md rounded-xl border-green-200 bg-green-50 p-0 shadow-2xl sm:mx-4 dark:border-green-800 dark:bg-slate-800">
 				{/* Celebration Header */}
-				<div className="bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-6 text-center text-white sm:px-6 sm:py-8">
+				<div className="bg-green-500 px-4 py-6 text-center text-white sm:px-6 sm:py-8 dark:bg-green-600">
 					<div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm sm:mb-3 sm:h-16 sm:w-16">
 						<CheckCircle className="h-6 w-6 sm:h-8 sm:w-8" />
 					</div>

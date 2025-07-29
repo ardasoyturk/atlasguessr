@@ -32,7 +32,7 @@ export function ActionButtons({ gameWon, onShowAnswer, onResetGame, onNewGameSes
 				<Button
 					onClick={onNewGameSession}
 					variant="outline"
-					className="gap-2 border-gray-300 bg-white text-gray-900 hover:bg-gray-50 dark:border-gray-600 dark:bg-yellow-600 dark:text-gray-100 dark:hover:bg-gray-700"
+					className="gap-2 border-gray-300 bg-yellow-500 text-white hover:bg-yellow-600 dark:border-gray-600 dark:bg-yellow-600 dark:text-gray-100 dark:hover:bg-yellow-700"
 				>
 					<ArrowLeft className="h-4 w-4" />
 					<span className="text-sm sm:text-base">Yeni Sıralama Türü</span>

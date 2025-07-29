@@ -321,7 +321,7 @@ function OynaPageContent() {
 	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-2 sm:p-4 dark:from-slate-900 dark:to-indigo-900">
+		<div className="min-h-screen bg-gray-50 p-2 sm:p-4 dark:bg-slate-900">
 			<div className="mx-auto max-w-4xl px-2 sm:px-4">
 				<div className="mb-6 text-center sm:mb-8">
 					<h1 className="mb-2 font-bold text-2xl text-indigo-900 sm:text-3xl lg:text-4xl dark:text-indigo-200">
