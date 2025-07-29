@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
+import { PWAInstallPrompt } from "@/components/PWAInstallPrompt";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import type { Viewport } from "next";
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 			<GoogleTagManager gtmId="GTM-N6HWL9CP" />
 			<body className="min-h-screen bg-background text-foreground antialiased">
 				{children}
+				<PWAInstallPrompt />
 				<ServiceWorkerRegistration />
 				<GoogleAnalytics gaId="G-SKL8NEHMCN" />
 			</body>
