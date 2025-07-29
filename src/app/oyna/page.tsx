@@ -333,7 +333,6 @@ function OynaPageContent() {
 					{selectedRankingType && (
 						<div className="mt-3 sm:mt-4">
 							<span className="inline-flex items-center rounded-full bg-indigo-100 px-2 py-1 font-medium text-indigo-800 text-xs shadow-sm ring-1 ring-indigo-600/20 sm:px-3 sm:text-sm dark:bg-indigo-900/50 dark:text-indigo-200 dark:ring-indigo-400/30">
-								<span className="mr-1 sm:mr-2">🎯</span>
 								Sıralama Türü: {selectedRankingType}
 							</span>
 						</div>

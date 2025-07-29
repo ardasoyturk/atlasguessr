@@ -41,7 +41,9 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 						<Eye className="h-6 w-6 sm:h-8 sm:w-8" />
 					</div>
 					<DialogHeader>
-						<DialogTitle className="font-bold text-white text-xl sm:text-2xl">🤔 Cevabı Görmek İstiyorsun?</DialogTitle>
+						<DialogTitle className="font-bold text-white text-xl sm:text-2xl">
+							🤔Cevabı görmek mi istiyorsun?
+						</DialogTitle>
 						<DialogDescription className="text-amber-100">
 							Görünüşe göre {attempts > 0 ? `${attempts} deneme sonrası` : "hiç denemeden"} cevabı görmek istiyorsun.
 						</DialogDescription>
@@ -55,7 +57,7 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 							{/* Warning Message */}
 							{/* Warning Message */}
 							<div className="rounded-lg bg-amber-50 p-4 text-center dark:border dark:border-amber-500/30 dark:bg-amber-900/20">
-								<p className="mb-2 font-medium text-amber-800 dark:text-amber-200">Emin misin? 🤯</p>
+								<p className="mb-2 font-medium text-amber-800 dark:text-amber-200">Emin misin?</p>
 								<p className="text-amber-700 text-sm dark:text-amber-300">
 									Cevabı gördükten sonra oyun bitecek ve yeni oyuna geçmen gerekecek.
 									{attempts === 0 && " Bence hiç denemeden pes etme!"}
@@ -64,9 +66,9 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 							{/* Encouragement for attempts */}
 							{attempts < 3 && (
 								<div className="rounded-lg bg-blue-50 p-4 text-center dark:border dark:border-blue-500/30 dark:bg-blue-900/20">
-									<p className="mb-2 font-medium text-blue-800 dark:text-blue-200">💪 Biraz daha dene!</p>
+									<p className="mb-2 font-medium text-blue-800 dark:text-blue-200">Bence biraz daha denemelisin.</p>
 									<p className="text-blue-700 text-sm dark:text-blue-300">
-										İpuçları oldukça detaylı. Belki bir kaç tahmin daha yapabilirsin?
+										İpuçları oldukça detaylı. Belki bir kaç tahmin daha yapabilirsin, şansını denemeye ne dersin?
 									</p>
 								</div>
 							)}{" "}
@@ -77,7 +79,7 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 									className="flex-1 gap-2 bg-amber-600 text-white hover:bg-amber-700 dark:bg-amber-600 dark:hover:bg-amber-700"
 								>
 									<Eye className="h-4 w-4" />
-									Evet, Göster
+									Evet, göster
 								</Button>
 								<Button
 									onClick={handleClose}
