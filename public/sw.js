@@ -1,31 +1,39 @@
 // @ts-nocheck
 // Service Worker for offline caching
-const CACHE_NAME = "atlas-guessr-v1";
-const DATA_CACHE_NAME = "atlas-guessr-data-v1";
+const CACHE_NAME = "atlas-guessr-v2";
+const DATA_CACHE_NAME = "atlas-guessr-data-v2";
 
 // Files to cache for offline functionality
 const urlsToCache = [
 	"/",
+	"/oyna",
+	"/manifest.json",
+	"/android-chrome-192x192.png",
+	"/android-chrome-512x512.png",
+	"/apple-touch-icon.png",
+	"/favicon-32x32.png",
 	"/data/sayisal.json",
 	"/data/esitagirlik.json",
 	"/data/sozel.json",
 	"/data/dil.json",
-	"/_next/static/css/",
-	"/_next/static/js/",
 ];
 
 // Install event - cache essential files
 self.addEventListener("install", (event) => {
+	console.log("Service Worker: Install event");
 	event.waitUntil(
 		caches
 			.open(CACHE_NAME)
 			.then((cache) => {
 				console.log("Service Worker: Caching essential files");
-				return cache.addAll(["/"]); // Cache main page first
+				return cache.addAll(urlsToCache);
 			})
 			.then(() => {
 				console.log("Service Worker: Essential files cached");
 				return self.skipWaiting();
+			})
+			.catch((error) => {
+				console.error("Service Worker: Cache failed:", error);
 			}),
 	);
 });

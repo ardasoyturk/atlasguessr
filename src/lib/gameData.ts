@@ -76,20 +76,13 @@ class GameDataService {
 
 		try {
 			console.log("Loading all program data...");
-			const types: ProgramType[] = [
-				"sayisal",
-				"esitagirlik",
-				"sozel",
-				"dil",
-			];
+			const types: ProgramType[] = ["sayisal", "esitagirlik", "sozel", "dil"];
 
 			const allData = await Promise.all(
 				types.map(async (type) => {
 					const response = await fetch(`/data/${type}.json`);
 					if (!response.ok) {
-						throw new Error(
-							`Failed to fetch ${type}.json: ${response.statusText}`
-						);
+						throw new Error(`Failed to fetch ${type}.json: ${response.statusText}`);
 					}
 					const programs = (await response.json()) as Program[];
 
@@ -106,7 +99,7 @@ class GameDataService {
 						...program,
 						rankingType: rankingTypeMap[type],
 					}));
-				})
+				}),
 			);
 
 			// Flatten all programs into one array
@@ -128,24 +121,16 @@ class GameDataService {
 			}
 
 			this.allProgramNames = Array.from(allProgramNamesSet).sort(); // Extract unique university names for suggestions
-			const universityNameSet = new Set(
-				this.allPrograms.map((p) => p.universityName)
-			);
+			const universityNameSet = new Set(this.allPrograms.map((p) => p.universityName));
 			this.allUniversityNames = Array.from(universityNameSet).sort();
 
 			this.isLoaded = true;
 			console.log(`Loaded ${this.allPrograms.length} total programs`);
-			console.log(
-				`Extracted ${this.allProgramNames.length} unique program names`
-			);
-			console.log(
-				`Extracted ${this.allUniversityNames.length} unique university names`
-			);
+			console.log(`Extracted ${this.allProgramNames.length} unique program names`);
+			console.log(`Extracted ${this.allUniversityNames.length} unique university names`);
 		} catch (error) {
 			console.error("Error loading program data:", error);
-			throw new Error(
-				"Failed to load program data. Please check your connection."
-			);
+			throw new Error("Failed to load program data. Please check your connection.");
 		}
 	}
 
@@ -170,14 +155,10 @@ class GameDataService {
 		await this.loadAllData();
 
 		// Filter programs by ranking type
-		const filteredPrograms = this.allPrograms.filter(
-			(program) => program.rankingType === rankingType
-		);
+		const filteredPrograms = this.allPrograms.filter((program) => program.rankingType === rankingType);
 
 		if (filteredPrograms.length === 0) {
-			throw new Error(
-				`No programs available for ranking type: ${rankingType}`
-			);
+			throw new Error(`No programs available for ranking type: ${rankingType}`);
 		}
 
 		const randomIndex = Math.floor(Math.random() * filteredPrograms.length);
@@ -199,9 +180,7 @@ class GameDataService {
 		await this.loadAllData();
 
 		// Filter programs by ranking type and get ALL program names (including alternative names)
-		const filteredPrograms = this.allPrograms.filter(
-			(program) => program.rankingType === rankingType
-		);
+		const filteredPrograms = this.allPrograms.filter((program) => program.rankingType === rankingType);
 
 		// Extract ALL unique program names, including alternative names
 		const allProgramNamesSet = new Set<string>();
@@ -226,10 +205,7 @@ class GameDataService {
 		return this.allUniversityNames;
 	}
 
-	async getUniversityNamesByTypeAndCity(
-		universityType: string,
-		cityName: string
-	): Promise<string[]> {
+	async getUniversityNamesByTypeAndCity(universityType: string, cityName: string): Promise<string[]> {
 		await this.loadAllData();
 
 		// Filter universities by both type and city
@@ -311,16 +287,11 @@ class GameDataService {
 		return false;
 	}
 
-	async getProgramNamesByUniversity(
-		universityName: string,
-		rankingType: string
-	): Promise<string[]> {
+	async getProgramNamesByUniversity(universityName: string, rankingType: string): Promise<string[]> {
 		await this.loadAllData();
 
 		const filteredPrograms = this.allPrograms.filter(
-			(program) =>
-				program.universityName === universityName &&
-				program.rankingType === rankingType
+			(program) => program.universityName === universityName && program.rankingType === rankingType,
 		);
 
 		// Only add main program names, not alternatives

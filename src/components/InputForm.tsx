@@ -131,7 +131,7 @@ export function InputForm({
 						<button
 							type="button"
 							aria-label="Açılır menüyü göster"
-							className="absolute right-2 top-1/2 -translate-y-1/2 p-1 bg-transparent border-none outline-none focus:ring-2 focus:ring-blue-400 rounded-full text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 transition-colors"
+							className="-translate-y-1/2 absolute top-1/2 right-2 rounded-full border-none bg-transparent p-1 text-gray-400 outline-none transition-colors hover:text-gray-600 focus:ring-2 focus:ring-blue-400 dark:text-gray-300 dark:hover:text-gray-100"
 							style={{ lineHeight: 0 }}
 							onClick={() => {
 								if (programInputRef.current) {

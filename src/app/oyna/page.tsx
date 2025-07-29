@@ -15,12 +15,12 @@ import type { RankingType } from "@/components/RankingTypeSelector";
 import { ShowAnswerModal } from "@/components/ShowAnswerModal";
 import { type Program, gameDataService } from "@/lib/gameData";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState, Suspense } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 
 function OynaPageContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	
+
 	// Get ranking type from URL params
 	const rankingTypeParam = searchParams.get("siralama");
 	const selectedRankingType = rankingTypeParam as RankingType | null;
@@ -321,9 +321,9 @@ function OynaPageContent() {
 	}
 
 	return (
-	   <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-2 sm:p-4 dark:from-slate-900 dark:to-indigo-900">
-		   <div className="mx-auto max-w-4xl px-2 sm:px-4">
-			   <div className="mb-6 text-center sm:mb-8">
+		<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-2 sm:p-4 dark:from-slate-900 dark:to-indigo-900">
+			<div className="mx-auto max-w-4xl px-2 sm:px-4">
+				<div className="mb-6 text-center sm:mb-8">
 					<h1 className="mb-2 font-bold text-2xl text-indigo-900 sm:text-3xl lg:text-4xl dark:text-indigo-200">
 						🎓 Atlasguessr
 					</h1>
@@ -340,19 +340,19 @@ function OynaPageContent() {
 					)}
 				</div>
 
-			   <div className="space-y-4 sm:space-y-6">
+				<div className="space-y-4 sm:space-y-6">
 					<div>
 						<GameStats attempts={attempts} universityCorrect={universityCorrect} programCorrect={programCorrect} />
 					</div>
 
 					<div>
-				   <div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 lg:grid-cols-2">
-					   <div>
-						   <HintsCard currentProgram={currentProgram} />
-					   </div>
+						<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 lg:grid-cols-2">
+							<div>
+								<HintsCard currentProgram={currentProgram} />
+							</div>
 
-					   <div>
-						   <InputForm
+							<div>
+								<InputForm
 									universityGuess={universityGuess}
 									programGuess={programGuess}
 									universityCorrect={universityCorrect}
@@ -423,7 +423,7 @@ function OynaPageContent() {
 				<Footer />
 			</div>
 
-		   {/* All custom animations and related CSS have been removed for a snappy, animation-free experience. */}
+			{/* All custom animations and related CSS have been removed for a snappy, animation-free experience. */}
 		</div>
 	);
 }
