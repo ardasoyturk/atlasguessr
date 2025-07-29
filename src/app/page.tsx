@@ -297,15 +297,15 @@ export default function AtlasguessrGame() {
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-2 sm:p-4 dark:from-slate-900 dark:to-indigo-900">
 			{gamePhase === "selection" && (
-				<div className="animate-fade-in-up">
+				<div className="animate-fade-in-up-fast">
 					<RankingTypeSelector onSelectRankingType={handleRankingTypeSelect} />
 				</div>
 			)}
 
 			{gamePhase === "playing" && (
-				<div className="mx-auto max-w-4xl animate-slide-in-from-right px-2 sm:px-4">
+				<div className="mx-auto max-w-4xl animate-slide-in-from-right-fast px-2 sm:px-4">
 					<div className="mb-6 text-center sm:mb-8">
-						<h1 className="mb-2 animate-bounce-in font-bold text-2xl text-indigo-900 sm:text-3xl lg:text-4xl dark:text-indigo-200">
+						<h1 className="mb-2 font-bold text-2xl text-indigo-900 sm:text-3xl lg:text-4xl dark:text-indigo-200">
 							🎓 Atlasguessr
 						</h1>
 						<p className="animate-fade-in-delay px-2 text-gray-600 text-sm sm:text-base dark:text-gray-300">
@@ -324,12 +324,12 @@ export default function AtlasguessrGame() {
 					<LoadingState isLoading={isLoading} currentProgram={currentProgram} />
 
 					{!isLoading && currentProgram && (
-						<div className="animate-fade-in-stagger space-y-4 sm:space-y-6">
-							<div className="animate-slide-in-left">
+						<div className="animate-fade-in-up-fast space-y-4 sm:space-y-6">
+							<div>
 								<GameStats attempts={attempts} universityCorrect={universityCorrect} programCorrect={programCorrect} />
 							</div>
 
-							<div className="animate-slide-in-right">
+							<div>
 								<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 lg:grid-cols-2">
 									<div className="animate-scale-in">
 										<HintsCard currentProgram={currentProgram} />
@@ -363,7 +363,7 @@ export default function AtlasguessrGame() {
 								</div>
 							</div>
 
-							<div className="animate-slide-in-up">
+							<div>
 								<ActionButtons
 									gameWon={gameWon}
 									onShowAnswer={() => setShowAnswerModal(true)}
@@ -372,11 +372,11 @@ export default function AtlasguessrGame() {
 								/>
 							</div>
 
-							<div className="animate-fade-in-delay-2">
+							<div>
 								<GuessHistory guessHistory={guessHistory} currentProgram={currentProgram} isExactMatch={isExactMatch} />
 							</div>
 
-							<div className="animate-fade-in-delay-3">
+							<div>
 								<GameInstructions />
 							</div>
 						</div>
@@ -411,121 +411,33 @@ export default function AtlasguessrGame() {
 
 			{/* Custom CSS animations */}
 			<style jsx>{`
-				@keyframes fade-in-up {
-					from {
-						opacity: 0;
-						transform: translateY(30px);
-					}
-					to {
-						opacity: 1;
-						transform: translateY(0);
-					}
-				}
-				@keyframes slide-in-from-right {
-					from {
-						opacity: 0;
-						transform: translateX(100px);
-					}
-					to {
-						opacity: 1;
-						transform: translateX(0);
-					}
-				}
-				@keyframes slide-in-left {
-					from {
-						opacity: 0;
-						transform: translateX(-50px);
-					}
-					to {
-						opacity: 1;
-						transform: translateX(0);
-					}
-				}
-				@keyframes slide-in-right {
-					from {
-						opacity: 0;
-						transform: translateX(50px);
-					}
-					to {
-						opacity: 1;
-						transform: translateX(0);
-					}
-				}
-				@keyframes slide-in-up {
-					from {
-						opacity: 0;
-						transform: translateY(30px);
-					}
-					to {
-						opacity: 1;
-						transform: translateY(0);
-					}
-				}
-				@keyframes scale-in {
-					from {
-						opacity: 0;
-						transform: scale(0.9);
-					}
-					to {
-						opacity: 1;
-						transform: scale(1);
-					}
-				}
-				@keyframes bounce-in {
-					0% {
-						opacity: 0;
-						transform: scale(0.3);
-					}
-					50% {
-						opacity: 1;
-						transform: scale(1.05);
-					}
-					70% {
-						transform: scale(0.9);
-					}
-					100% {
-						opacity: 1;
-						transform: scale(1);
-					}
-				}
-
-				.animate-fade-in-up {
-					animation: fade-in-up 0.8s ease-out;
-				}
-				.animate-slide-in-from-right {
-					animation: slide-in-from-right 0.8s ease-out;
-				}
-				.animate-slide-in-left {
-					animation: slide-in-left 0.6s ease-out;
-				}
-				.animate-slide-in-right {
-					animation: slide-in-right 0.6s ease-out 0.2s both;
-				}
-				.animate-slide-in-up {
-					animation: slide-in-up 0.6s ease-out 0.4s both;
-				}
-				.animate-scale-in {
-					animation: scale-in 0.5s ease-out;
-				}
-				.animate-scale-in-delay {
-					animation: scale-in 0.5s ease-out 0.2s both;
-				}
-				.animate-bounce-in {
-					animation: bounce-in 1s ease-out;
-				}
-				.animate-fade-in-delay {
-					animation: fade-in-up 0.6s ease-out 0.3s both;
-				}
-				.animate-fade-in-delay-2 {
-					animation: fade-in-up 0.6s ease-out 0.6s both;
-				}
-				.animate-fade-in-delay-3 {
-					animation: fade-in-up 0.6s ease-out 0.9s both;
-				}
-				.animate-fade-in-stagger {
-					animation: fade-in-up 0.8s ease-out 0.2s both;
-				}
-			`}</style>
+					   @keyframes fade-in-up-fast {
+							   from {
+									   opacity: 0;
+									   transform: translateY(10px);
+							   }
+							   to {
+									   opacity: 1;
+									   transform: translateY(0);
+							   }
+					   }
+					   @keyframes slide-in-from-right-fast {
+							   from {
+									   opacity: 0;
+									   transform: translateX(30px);
+							   }
+							   to {
+									   opacity: 1;
+									   transform: translateX(0);
+							   }
+					   }
+					   .animate-fade-in-up-fast {
+							   animation: fade-in-up-fast 0.25s ease-out;
+					   }
+					   .animate-slide-in-from-right-fast {
+							   animation: slide-in-from-right-fast 0.25s ease-out;
+					   }
+			   `}</style>
 		</div>
 	);
 }
