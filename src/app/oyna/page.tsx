@@ -11,20 +11,23 @@ import { GuessHistory } from "@/components/GuessHistory";
 import { HintsCard } from "@/components/HintsCard";
 import { InputForm } from "@/components/InputForm";
 import { LoadingState } from "@/components/LoadingState";
-import { type RankingType, RankingTypeSelector } from "@/components/RankingTypeSelector";
+import type { RankingType } from "@/components/RankingTypeSelector";
 import { ShowAnswerModal } from "@/components/ShowAnswerModal";
 import { type Program, gameDataService } from "@/lib/gameData";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState, Suspense } from "react";
 
-export default function AtlasguessrGame() {
+function OynaPageContent() {
 	const router = useRouter();
-	const [gamePhase, setGamePhase] = useState<"selection" | "playing">("selection");
-	const [selectedRankingType, setSelectedRankingType] = useState<RankingType | null>(null);
-	const [programs, setPrograms] = useState<Program[]>([]);
+	const searchParams = useSearchParams();
+	
+	// Get ranking type from URL params
+	const rankingTypeParam = searchParams.get("siralama");
+	const selectedRankingType = rankingTypeParam as RankingType | null;
+
 	const [allUniversityNames, setAllUniversityNames] = useState<string[]>([]);
 	const [allProgramNames, setAllProgramNames] = useState<string[]>([]);
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 	const [currentProgram, setCurrentProgram] = useState<Program | undefined>(undefined);
 	const [universityGuess, setUniversityGuess] = useState("");
 	const [programGuess, setProgramGuess] = useState("");
@@ -51,11 +54,52 @@ export default function AtlasguessrGame() {
 	const universityInputRef = useRef<HTMLInputElement>(null);
 	const programInputRef = useRef<HTMLInputElement>(null);
 
-	const handleRankingTypeSelect = async (rankingType: RankingType) => {
-		// Navigate to the play page with the selected ranking type
-		const searchParams = new URLSearchParams();
-		searchParams.set("siralama", rankingType);
-		router.push(`/oyna?${searchParams.toString()}`);
+	// Initialize game when component mounts or ranking type changes
+	useEffect(() => {
+		if (!selectedRankingType) {
+			// Redirect to home if no ranking type is specified
+			router.push("/");
+			return;
+		}
+
+		initializeGame();
+	}, [selectedRankingType, router]);
+
+	const initializeGame = async () => {
+		if (!selectedRankingType) return;
+
+		try {
+			setIsLoading(true);
+
+			// Preload all data first
+			await gameDataService.preloadData();
+
+			// Get program names and university names
+			const universityNames = await gameDataService.getUniversityNames();
+			setAllUniversityNames(universityNames);
+
+			// Get a random program based on the selected ranking type
+			let randomProgram: Program;
+			let programNames: string[];
+
+			if (selectedRankingType === "Rastgele") {
+				// Get random program from all types
+				randomProgram = await gameDataService.getRandomProgram();
+				programNames = await gameDataService.getProgramNames();
+			} else {
+				// Get random program from specific ranking type
+				randomProgram = await gameDataService.getRandomProgramByRankingType(selectedRankingType);
+				programNames = await gameDataService.getProgramNamesByRankingType(selectedRankingType);
+			}
+
+			setCurrentProgram(randomProgram);
+			setAllProgramNames(programNames);
+
+			setIsLoading(false);
+		} catch (error) {
+			console.error("Failed to load data:", error);
+			setIsLoading(false);
+		}
 	};
 
 	const normalizeText = (text: string) => {
@@ -75,6 +119,7 @@ export default function AtlasguessrGame() {
 	const isExactMatch = (guess: string, target: string) => {
 		return guess.trim() === target.trim();
 	};
+
 	const handleUniversityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value;
 		setUniversityGuess(value);
@@ -105,6 +150,7 @@ export default function AtlasguessrGame() {
 			setProgramInputFocusedByUser(false);
 		}
 	};
+
 	// Show dropdown with all city universities on focus if input is empty
 	const handleUniversityInputFocus = () => {
 		if (currentProgram) {
@@ -249,165 +295,208 @@ export default function AtlasguessrGame() {
 	};
 
 	const startNewGameSession = () => {
-		setGamePhase("selection");
-		setSelectedRankingType(null);
-		setCurrentProgram(undefined);
-		setUniversityGuess("");
-		setProgramGuess("");
-		setAttempts(0);
-		setUniversityCorrect(false);
-		setProgramCorrect(false);
-		setGameWon(false);
-		setShowAnswerModal(false);
-		setGuessHistory([]);
-		setFilteredUniversitySuggestions([]);
-		setFilteredProgramSuggestions([]);
+		// Navigate back to home to select a new ranking type
+		router.push("/");
 	};
+
+	if (isLoading) {
+		return <LoadingState isLoading={true} currentProgram={undefined} />;
+	}
+
+	if (!currentProgram) {
+		return (
+			<div className="flex min-h-screen items-center justify-center">
+				<div className="text-center">
+					<p className="text-gray-600 dark:text-gray-300">Oyun yüklenemedi</p>
+					<button
+						type="button"
+						onClick={() => router.push("/")}
+						className="mt-4 rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+					>
+						Ana Sayfaya Dön
+					</button>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-2 sm:p-4 dark:from-slate-900 dark:to-indigo-900">
-			{gamePhase === "selection" && (
-				<div className="animate-fade-in-up-fast">
-					<RankingTypeSelector onSelectRankingType={handleRankingTypeSelect} />
-				</div>
-			)}
-
-			{gamePhase === "playing" && (
-				<div className="mx-auto max-w-4xl animate-slide-in-from-right-fast px-2 sm:px-4">
-					<div className="mb-6 text-center sm:mb-8">
-						<h1 className="mb-2 font-bold text-2xl text-indigo-900 sm:text-3xl lg:text-4xl dark:text-indigo-200">
-							🎓 Atlasguessr
-						</h1>
-						<p className="animate-fade-in-delay px-2 text-gray-600 text-sm sm:text-base dark:text-gray-300">
-							Türk üniversitelerindeki lisans programlarını tahmin edin!
-						</p>
-						{selectedRankingType && (
-							<div className="mt-3 animate-scale-in sm:mt-4">
-								<span className="inline-flex items-center rounded-full bg-indigo-100 px-2 py-1 font-medium text-indigo-800 text-xs shadow-sm ring-1 ring-indigo-600/20 sm:px-3 sm:text-sm dark:bg-indigo-900/50 dark:text-indigo-200 dark:ring-indigo-400/30">
-									<span className="mr-1 sm:mr-2">🎯</span>
-									Sıralama Türü: {selectedRankingType}
-								</span>
-							</div>
-						)}
-					</div>
-
-					<LoadingState isLoading={isLoading} currentProgram={currentProgram} />
-
-					{!isLoading && currentProgram && (
-						<div className="animate-fade-in-up-fast space-y-4 sm:space-y-6">
-							<div>
-								<GameStats attempts={attempts} universityCorrect={universityCorrect} programCorrect={programCorrect} />
-							</div>
-
-							<div>
-								<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 lg:grid-cols-2">
-									<div className="animate-scale-in">
-										<HintsCard currentProgram={currentProgram} />
-									</div>
-
-									<div className="animate-scale-in-delay">
-										<InputForm
-											universityGuess={universityGuess}
-											programGuess={programGuess}
-											universityCorrect={universityCorrect}
-											programCorrect={programCorrect}
-											gameWon={gameWon}
-											filteredUniversitySuggestions={filteredUniversitySuggestions}
-											filteredProgramSuggestions={filteredProgramSuggestions}
-											showProgramDropdown={showProgramDropdown}
-											setShowProgramDropdown={setShowProgramDropdown}
-											onUniversityChange={handleUniversityInputChange}
-											onUniversityInputFocus={handleUniversityInputFocus}
-											onProgramChange={handleProgramInputChange}
-											onProgramInputFocus={handleProgramInputFocus}
-											onUniversitySelect={selectUniversitySuggestion}
-											onProgramSelect={selectProgramSuggestion}
-											onSubmit={checkGuess}
-											universityInputRef={universityInputRef}
-											programInputRef={programInputRef}
-											onProgramInputMouseDown={() => setProgramInputFocusedByUser(true)}
-											allProgramNames={allProgramNames}
-											programsForSelectedUniversity={programsForSelectedUniversity}
-										/>
-									</div>
-								</div>
-							</div>
-
-							<div>
-								<ActionButtons
-									gameWon={gameWon}
-									onShowAnswer={() => setShowAnswerModal(true)}
-									onResetGame={resetGame}
-									onNewGameSession={startNewGameSession}
-								/>
-							</div>
-
-							<div>
-								<GuessHistory guessHistory={guessHistory} currentProgram={currentProgram} isExactMatch={isExactMatch} />
-							</div>
-
-							<div>
-								<GameInstructions />
-							</div>
+			<div className="mx-auto max-w-4xl animate-slide-in-from-right-fast px-2 sm:px-4">
+				<div className="mb-6 text-center sm:mb-8">
+					<h1 className="mb-2 font-bold text-2xl text-indigo-900 sm:text-3xl lg:text-4xl dark:text-indigo-200">
+						🎓 Atlasguessr
+					</h1>
+					<p className="animate-fade-in-delay px-2 text-gray-600 text-sm sm:text-base dark:text-gray-300">
+						Türk üniversitelerindeki lisans programlarını tahmin edin!
+					</p>
+					{selectedRankingType && (
+						<div className="mt-3 animate-scale-in sm:mt-4">
+							<span className="inline-flex items-center rounded-full bg-indigo-100 px-2 py-1 font-medium text-indigo-800 text-xs shadow-sm ring-1 ring-indigo-600/20 sm:px-3 sm:text-sm dark:bg-indigo-900/50 dark:text-indigo-200 dark:ring-indigo-400/30">
+								<span className="mr-1 sm:mr-2">🎯</span>
+								Sıralama Türü: {selectedRankingType}
+							</span>
 						</div>
 					)}
-
-					{/* Game Won Modal */}
-					{currentProgram && (
-						<GameWonModal
-							isOpen={gameWon}
-							onClose={() => setGameWon(false)}
-							currentProgram={currentProgram}
-							attempts={attempts}
-							onNewGame={resetGame}
-							guessHistory={guessHistory}
-						/>
-					)}
-
-					{/* Show Answer Modal */}
-					{currentProgram && (
-						<ShowAnswerModal
-							isOpen={showAnswerModal}
-							onClose={() => setShowAnswerModal(false)}
-							currentProgram={currentProgram}
-							attempts={attempts}
-							onNewGame={resetGame}
-						/>
-					)}
-
-					<Footer />
 				</div>
-			)}
+
+				<div className="animate-fade-in-up-fast space-y-4 sm:space-y-6">
+					<div>
+						<GameStats attempts={attempts} universityCorrect={universityCorrect} programCorrect={programCorrect} />
+					</div>
+
+					<div>
+						<div className="mb-4 grid gap-4 sm:mb-6 sm:gap-6 lg:grid-cols-2">
+							<div className="animate-scale-in">
+								<HintsCard currentProgram={currentProgram} />
+							</div>
+
+							<div className="animate-scale-in-delay">
+								<InputForm
+									universityGuess={universityGuess}
+									programGuess={programGuess}
+									universityCorrect={universityCorrect}
+									programCorrect={programCorrect}
+									gameWon={gameWon}
+									filteredUniversitySuggestions={filteredUniversitySuggestions}
+									filteredProgramSuggestions={filteredProgramSuggestions}
+									showProgramDropdown={showProgramDropdown}
+									setShowProgramDropdown={setShowProgramDropdown}
+									onUniversityChange={handleUniversityInputChange}
+									onUniversityInputFocus={handleUniversityInputFocus}
+									onProgramChange={handleProgramInputChange}
+									onProgramInputFocus={handleProgramInputFocus}
+									onUniversitySelect={selectUniversitySuggestion}
+									onProgramSelect={selectProgramSuggestion}
+									onSubmit={checkGuess}
+									universityInputRef={universityInputRef}
+									programInputRef={programInputRef}
+									onProgramInputMouseDown={() => setProgramInputFocusedByUser(true)}
+									allProgramNames={allProgramNames}
+									programsForSelectedUniversity={programsForSelectedUniversity}
+								/>
+							</div>
+						</div>
+					</div>
+
+					<div>
+						<ActionButtons
+							gameWon={gameWon}
+							onShowAnswer={() => setShowAnswerModal(true)}
+							onResetGame={resetGame}
+							onNewGameSession={startNewGameSession}
+						/>
+					</div>
+
+					<div>
+						<GuessHistory guessHistory={guessHistory} currentProgram={currentProgram} isExactMatch={isExactMatch} />
+					</div>
+
+					<div>
+						<GameInstructions />
+					</div>
+				</div>
+
+				{/* Game Won Modal */}
+				{currentProgram && (
+					<GameWonModal
+						isOpen={gameWon}
+						onClose={() => setGameWon(false)}
+						currentProgram={currentProgram}
+						attempts={attempts}
+						onNewGame={resetGame}
+						guessHistory={guessHistory}
+					/>
+				)}
+
+				{/* Show Answer Modal */}
+				{currentProgram && (
+					<ShowAnswerModal
+						isOpen={showAnswerModal}
+						onClose={() => setShowAnswerModal(false)}
+						currentProgram={currentProgram}
+						attempts={attempts}
+						onNewGame={resetGame}
+					/>
+				)}
+
+				<Footer />
+			</div>
 
 			{/* Custom CSS animations */}
-			<style jsx>{`
-					   @keyframes fade-in-up-fast {
-							   from {
-									   opacity: 0;
-									   transform: translateY(10px);
-							   }
-							   to {
-									   opacity: 1;
-									   transform: translateY(0);
-							   }
-					   }
-					   @keyframes slide-in-from-right-fast {
-							   from {
-									   opacity: 0;
-									   transform: translateX(30px);
-							   }
-							   to {
-									   opacity: 1;
-									   transform: translateX(0);
-							   }
-					   }
-					   .animate-fade-in-up-fast {
-							   animation: fade-in-up-fast 0.25s ease-out;
-					   }
-					   .animate-slide-in-from-right-fast {
-							   animation: slide-in-from-right-fast 0.25s ease-out;
-					   }
-			   `}</style>
+			<style>{`
+				@keyframes slide-in-from-right-fast {
+					from {
+						opacity: 0;
+						transform: translateX(30px);
+					}
+					to {
+						opacity: 1;
+						transform: translateX(0);
+					}
+				}
+				.animate-slide-in-from-right-fast {
+					animation: slide-in-from-right-fast 0.25s ease-out;
+				}
+				.animate-scale-in {
+					animation: scale-in 0.3s ease-out;
+				}
+				.animate-fade-in-delay {
+					animation: fade-in-delay 0.4s ease-out;
+				}
+				.animate-fade-in-up-fast {
+					animation: fade-in-up-fast 0.25s ease-out;
+				}
+				.animate-scale-in-delay {
+					animation: scale-in-delay 0.4s ease-out;
+				}
+				@keyframes scale-in {
+					from {
+						opacity: 0;
+						transform: scale(0.9);
+					}
+					to {
+						opacity: 1;
+						transform: scale(1);
+					}
+				}
+				@keyframes fade-in-delay {
+					from {
+						opacity: 0;
+					}
+					to {
+						opacity: 1;
+					}
+				}
+				@keyframes fade-in-up-fast {
+					from {
+						opacity: 0;
+						transform: translateY(10px);
+					}
+					to {
+						opacity: 1;
+						transform: translateY(0);
+					}
+				}
+				@keyframes scale-in-delay {
+					from {
+						opacity: 0;
+						transform: scale(0.9);
+					}
+					to {
+						opacity: 1;
+						transform: scale(1);
+					}
+				}
+			`}</style>
 		</div>
+	);
+}
+
+export default function OynaPage() {
+	return (
+		<Suspense fallback={<LoadingState isLoading={true} currentProgram={undefined} />}>
+			<OynaPageContent />
+		</Suspense>
 	);
 }
