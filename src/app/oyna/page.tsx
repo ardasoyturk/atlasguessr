@@ -327,11 +327,11 @@ function OynaPageContent() {
 					<h1 className="mb-2 font-bold text-2xl text-indigo-900 sm:text-3xl lg:text-4xl dark:text-indigo-200">
 						🎓 Atlasguessr
 					</h1>
-					<p className="animate-fade-in-delay px-2 text-gray-600 text-sm sm:text-base dark:text-gray-300">
+					<p className="px-2 text-gray-600 text-sm sm:text-base dark:text-gray-300">
 						Türk üniversitelerindeki lisans programlarını tahmin edin!
 					</p>
 					{selectedRankingType && (
-						<div className="mt-3 animate-scale-in sm:mt-4">
+						<div className="mt-3 sm:mt-4">
 							<span className="inline-flex items-center rounded-full bg-indigo-100 px-2 py-1 font-medium text-indigo-800 text-xs shadow-sm ring-1 ring-indigo-600/20 sm:px-3 sm:text-sm dark:bg-indigo-900/50 dark:text-indigo-200 dark:ring-indigo-400/30">
 								<span className="mr-1 sm:mr-2">🎯</span>
 								Sıralama Türü: {selectedRankingType}

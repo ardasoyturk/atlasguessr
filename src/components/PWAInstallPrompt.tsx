@@ -106,7 +106,7 @@ export function PWAInstallPrompt() {
 		<button
 			type="button"
 			onClick={handleInstallClick}
-			className="fixed right-4 bottom-4 z-50 flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-3 font-medium text-white shadow-lg transition-all hover:scale-105 hover:bg-blue-700 active:scale-95"
+			className="fixed right-4 bottom-4 z-50 flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-3 font-medium text-white shadow-lg hover:bg-blue-700"
 			aria-label="Atlasguessr'i uygulama olarak yükle"
 		>
 			<span className="text-lg">📱</span>

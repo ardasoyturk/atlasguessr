@@ -15,7 +15,7 @@ export function LoadingState({ isLoading, currentProgram }: LoadingStateProps) {
 			<div className="flex min-h-[50vh] items-center justify-center">
 				<Card className="w-full max-w-md">
 					<CardContent className="pt-6 text-center">
-						<div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+						<div className="mx-auto mb-4 h-8 w-8 rounded-full border-4 border-blue-500 border-t-transparent" />
 						<p className="text-lg">Veriler yükleniyor...</p>
 					</CardContent>
 				</Card>
