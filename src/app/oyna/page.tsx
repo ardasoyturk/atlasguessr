@@ -50,6 +50,7 @@ function OynaPageContent() {
 	const [programsForSelectedUniversity, setProgramsForSelectedUniversity] = useState<string[]>([]);
 	const [showProgramDropdown, setShowProgramDropdown] = useState(true);
 	const [programInputFocusedByUser, setProgramInputFocusedByUser] = useState(false);
+	const [answerSubmitted, setAnswerSubmitted] = useState(false);
 
 	const universityInputRef = useRef<HTMLInputElement>(null);
 	const programInputRef = useRef<HTMLInputElement>(null);
@@ -226,7 +227,7 @@ function OynaPageContent() {
 	};
 
 	const checkGuess = () => {
-		if (!universityGuess.trim() || !programGuess.trim() || !currentProgram) return;
+		if (!universityGuess.trim() || !programGuess.trim() || !currentProgram || answerSubmitted) return;
 
 		const normalizedUniversityGuess = normalizeText(universityGuess);
 		const normalizedUniversityTarget = normalizeText(currentProgram.universityName);
@@ -255,6 +256,7 @@ function OynaPageContent() {
 
 		if (universityMatch && programMatch) {
 			setGameWon(true);
+			setAnswerSubmitted(true);
 		}
 
 		setAttempts(attempts + 1);
@@ -292,6 +294,7 @@ function OynaPageContent() {
 		setGuessHistory([]);
 		setFilteredUniversitySuggestions([]);
 		setFilteredProgramSuggestions([]);
+		setAnswerSubmitted(false);
 	};
 
 	const startNewGameSession = () => {
@@ -373,6 +376,7 @@ function OynaPageContent() {
 									onProgramInputMouseDown={() => setProgramInputFocusedByUser(true)}
 									allProgramNames={allProgramNames}
 									programsForSelectedUniversity={programsForSelectedUniversity}
+									answerSubmitted={answerSubmitted}
 								/>
 							</div>
 						</div>

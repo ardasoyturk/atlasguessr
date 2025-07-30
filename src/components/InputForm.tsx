@@ -29,6 +29,7 @@ interface InputFormProps {
 	onProgramInputMouseDown?: () => void;
 	allProgramNames: string[]; // Add this prop
 	programsForSelectedUniversity: string[];
+	answerSubmitted?: boolean;
 }
 
 export function InputForm({
@@ -53,6 +54,7 @@ export function InputForm({
 	onProgramInputMouseDown,
 	allProgramNames = [], // Default to empty array
 	programsForSelectedUniversity = [],
+	answerSubmitted = false,
 }: InputFormProps) {
 	const programDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -89,7 +91,7 @@ export function InputForm({
 						className={
 							universityCorrect ? "border-green-500 bg-green-50 dark:border-green-400 dark:bg-green-900/20" : ""
 						}
-						disabled={gameWon}
+						disabled={gameWon || answerSubmitted}
 						autoComplete="off"
 					/>
 					{filteredUniversitySuggestions.length > 0 && (
@@ -124,7 +126,7 @@ export function InputForm({
 							className={
 								programCorrect ? "border-green-500 bg-green-50 pr-8 dark:border-green-400 dark:bg-green-900/20" : "pr-8"
 							}
-							disabled={gameWon}
+							disabled={gameWon || answerSubmitted}
 							onKeyPress={(e) => e.key === "Enter" && onSubmit()}
 							autoComplete="off"
 						/>
@@ -187,7 +189,7 @@ export function InputForm({
 				<div className="mt-6">
 					<Button
 						onClick={onSubmit}
-						disabled={!universityGuess.trim() || !programGuess.trim() || gameWon}
+						disabled={!universityGuess.trim() || !programGuess.trim() || gameWon || answerSubmitted}
 						className="w-full text-sm sm:text-base"
 					>
 						Tahmin Et
