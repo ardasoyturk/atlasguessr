@@ -96,10 +96,13 @@ export function InputForm({
 					/>
 					{filteredUniversitySuggestions.length > 0 && (
 						<div className="mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800">
-							{filteredUniversitySuggestions.map((suggestion) => (
+							{filteredUniversitySuggestions.map((suggestion, index) => (
 								<button
 									key={suggestion}
-									className="w-full cursor-pointer p-2 text-left text-sm hover:bg-gray-100 sm:text-base dark:text-gray-200 dark:hover:bg-slate-700"
+									className="w-full cursor-pointer p-2 text-left text-sm transition-all duration-200 hover:scale-[1.02] hover:bg-gray-100 active:scale-[0.98] sm:text-base dark:text-gray-200 dark:hover:bg-slate-700"
+									style={{
+										animationDelay: `${index * 50}ms`,
+									}}
 									type="button"
 									onClick={() => onUniversitySelect(suggestion)}
 								>
@@ -133,7 +136,7 @@ export function InputForm({
 						<button
 							type="button"
 							aria-label="Açılır menüyü göster"
-							className="-translate-y-1/2 absolute top-1/2 right-2 rounded-full border-none bg-transparent p-1 text-gray-400 outline-none hover:text-gray-600 focus:ring-2 focus:ring-blue-400 dark:text-gray-300 dark:hover:text-gray-100"
+							className="-translate-y-1/2 absolute top-1/2 right-2 rounded-full border-none bg-transparent p-1 text-gray-400 outline-none transition-all duration-200 hover:scale-110 hover:text-gray-600 focus:ring-2 focus:ring-blue-400 active:scale-95 dark:text-gray-300 dark:hover:text-gray-100"
 							style={{ lineHeight: 0 }}
 							onClick={() => {
 								if (programInputRef.current) {
@@ -172,10 +175,13 @@ export function InputForm({
 							ref={programDropdownRef}
 							className="mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg dark:border-slate-600 dark:bg-slate-800"
 						>
-							{filteredProgramSuggestions.map((suggestion) => (
+							{filteredProgramSuggestions.map((suggestion, index) => (
 								<button
 									key={suggestion}
-									className="w-full cursor-pointer p-2 text-left text-sm hover:bg-gray-100 sm:text-base dark:text-gray-200 dark:hover:bg-slate-700"
+									className="w-full cursor-pointer p-2 text-left text-sm transition-all duration-200 hover:scale-[1.02] hover:bg-gray-100 active:scale-[0.98] sm:text-base dark:text-gray-200 dark:hover:bg-slate-700"
+									style={{
+										animationDelay: `${index * 50}ms`,
+									}}
 									type="button"
 									onClick={() => onProgramSelect(suggestion)}
 								>
@@ -190,7 +196,7 @@ export function InputForm({
 					<Button
 						onClick={onSubmit}
 						disabled={!universityGuess.trim() || !programGuess.trim() || gameWon || answerSubmitted}
-						className="w-full text-sm sm:text-base"
+						className="w-full text-sm transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 disabled:hover:scale-100 sm:text-base"
 					>
 						Tahmin Et
 					</Button>

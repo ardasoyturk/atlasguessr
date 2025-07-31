@@ -151,11 +151,19 @@ ${attemptSummary}
 							{guessHistory.map((guess, index) => (
 								<div
 									key={`${guess.university}-${guess.program}-${index}`}
-									className="flex gap-0.5"
+									className="fade-in zoom-in flex animate-in gap-0.5"
+									style={{
+										animationDelay: `${index * 150}ms`,
+										animationDuration: "400ms",
+									}}
 									title={`${index + 1}. Tahmin`}
 								>
-									<div className={`h-6 w-6 rounded-sm ${guess.universityMatch ? "bg-green-500" : "bg-red-500"}`} />
-									<div className={`h-6 w-6 rounded-sm ${guess.programMatch ? "bg-green-500" : "bg-red-500"}`} />
+									<div
+										className={`h-6 w-6 rounded-sm transition-all duration-300 hover:scale-110 ${guess.universityMatch ? "bg-green-500" : "bg-red-500"}`}
+									/>
+									<div
+										className={`h-6 w-6 rounded-sm transition-all duration-300 hover:scale-110 ${guess.programMatch ? "bg-green-500" : "bg-red-500"}`}
+									/>
 								</div>
 							))}
 						</div>
@@ -166,16 +174,16 @@ ${attemptSummary}
 					<div className="flex gap-2">
 						<Button
 							onClick={shareResult}
-							className="flex-1 gap-2 bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700"
+							className="group flex-1 gap-2 bg-blue-600 text-white transition-all duration-300 hover:scale-105 hover:bg-blue-700 hover:shadow-lg active:scale-95 dark:bg-blue-600 dark:hover:bg-blue-700"
 						>
 							{copied ? (
 								<>
-									<Copy className="h-4 w-4" />
+									<Copy className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
 									Kopyalandı!
 								</>
 							) : (
 								<>
-									<Share2 className="h-4 w-4" />
+									<Share2 className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
 									Paylaş
 								</>
 							)}
@@ -183,9 +191,9 @@ ${attemptSummary}
 						<Button
 							onClick={handleNewGame}
 							variant="outline"
-							className="flex-1 gap-2 border-green-200 bg-white text-green-700 hover:bg-green-50 hover:text-green-800 dark:border-green-700 dark:bg-slate-800 dark:text-green-400 dark:hover:bg-green-900/20 dark:hover:text-green-300"
+							className="group flex-1 gap-2 border-green-200 bg-white text-green-700 transition-all duration-300 hover:scale-105 hover:bg-green-50 hover:text-green-800 hover:shadow-lg active:scale-95 dark:border-green-700 dark:bg-slate-800 dark:text-green-400 dark:hover:bg-green-900/20 dark:hover:text-green-300"
 						>
-							<RefreshCw className="h-4 w-4" />
+							<RefreshCw className="h-4 w-4 transition-all duration-300 group-hover:rotate-180 group-hover:scale-110" />
 							Yeni Oyun
 						</Button>
 					</div>

@@ -58,12 +58,12 @@ export function RankingTypeSelector({ onSelectRankingType }: RankingTypeSelector
 
 	return (
 		<div className="flex min-h-screen items-center justify-center overflow-hidden bg-gray-50 p-2 sm:p-4 dark:bg-slate-900">
-			<Card className="w-full max-w-2xl border-white/20 bg-white/90 shadow-2xl backdrop-blur-sm dark:border-slate-700/50 dark:bg-slate-800/90">
+			<Card className="fade-in slide-in-from-bottom-4 w-full max-w-2xl animate-in border-white/20 bg-white/90 shadow-2xl backdrop-blur-sm duration-700 dark:border-slate-700/50 dark:bg-slate-800/90">
 				<CardHeader className="p-4 text-center sm:p-6">
-					<CardTitle className="mb-2 font-bold text-2xl text-gray-800 sm:text-3xl lg:text-4xl dark:text-gray-100">
+					<CardTitle className="fade-in slide-in-from-top-2 mb-2 animate-in font-bold text-2xl text-gray-800 duration-500 sm:text-3xl lg:text-4xl dark:text-gray-100">
 						<span className="text-blue-600 dark:text-blue-400">🎓 Atlasguessr</span>
 					</CardTitle>
-					<CardDescription className="text-base text-gray-600 sm:text-lg dark:text-gray-300">
+					<CardDescription className="fade-in slide-in-from-top-2 animate-in text-base text-gray-600 delay-150 duration-500 sm:text-lg dark:text-gray-300">
 						Sıralama türünü seçin ve maceranız başlasın! ✨
 					</CardDescription>
 				</CardHeader>
@@ -73,22 +73,35 @@ export function RankingTypeSelector({ onSelectRankingType }: RankingTypeSelector
 							key={rankingTypeInfo.type}
 							variant="outline"
 							className={
-								"group relative flex h-auto w-full items-center justify-between border-gray-200 bg-white/50 p-4 text-left sm:p-6 dark:border-slate-600 dark:bg-slate-700/50"
+								"group fade-in slide-in-from-left-3 relative flex h-auto w-full animate-in cursor-pointer items-center justify-between border-gray-200 bg-white/50 p-4 text-left transition-all duration-300 ease-out hover:scale-[1.02] hover:border-gray-300 hover:bg-white/80 hover:shadow-lg active:scale-[0.98] sm:p-6 dark:border-slate-600 dark:bg-slate-700/50 dark:hover:border-slate-500 dark:hover:bg-slate-600/60 dark:hover:shadow-xl"
 							}
+							style={{
+								animationDelay: `${index * 100 + 300}ms`,
+								animationDuration: "600ms",
+							}}
 							onClick={() => handleSelection(rankingTypeInfo.type)}
 						>
+							{/* Gradient background that appears on hover */}
+							<div
+								className={`absolute inset-0 rounded-md bg-gradient-to-r ${rankingTypeInfo.gradient} opacity-0 transition-opacity duration-300 group-hover:opacity-10`}
+							/>
+
 							<div className="relative z-10 flex items-center space-x-3 sm:space-x-4">
-								<span className="text-2xl sm:text-3xl">{rankingTypeInfo.emoji}</span>
+								<span className="text-2xl transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110 sm:text-3xl">
+									{rankingTypeInfo.emoji}
+								</span>
 								<div>
-									<div className="font-semibold text-base text-gray-800 sm:text-lg dark:text-gray-100">
+									<div className="font-semibold text-base text-gray-800 transition-colors duration-300 group-hover:text-gray-900 sm:text-lg dark:text-gray-100 dark:group-hover:text-white">
 										{rankingTypeInfo.type}
 									</div>
-									<div className="text-gray-500 text-xs sm:text-sm dark:text-gray-300">
+									<div className="text-gray-500 text-xs transition-colors duration-300 group-hover:text-gray-600 sm:text-sm dark:text-gray-300 dark:group-hover:text-gray-200">
 										{rankingTypeInfo.description}
 									</div>
 								</div>
 							</div>
-							<div className="relative text-gray-400 dark:text-gray-500">→</div>
+							<div className="relative text-gray-400 transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300">
+								→
+							</div>
 						</Button>
 					))}
 				</CardContent>

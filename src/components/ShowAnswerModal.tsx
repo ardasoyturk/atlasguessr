@@ -76,17 +76,17 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 							<div className="flex gap-2">
 								<Button
 									onClick={() => setShowHint(true)}
-									className="flex-1 gap-2 bg-amber-600 text-white hover:bg-amber-700 dark:bg-amber-600 dark:hover:bg-amber-700"
+									className="group flex-1 gap-2 bg-amber-600 text-white transition-all duration-300 hover:scale-105 hover:bg-amber-700 hover:shadow-lg active:scale-95 dark:bg-amber-600 dark:hover:bg-amber-700"
 								>
-									<Eye className="h-4 w-4" />
+									<Eye className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
 									Evet, göster
 								</Button>
 								<Button
 									onClick={handleClose}
 									variant="outline"
-									className="flex-1 gap-2 border-green-200 bg-white text-green-700 hover:bg-green-50 hover:text-green-800 dark:border-green-700 dark:bg-slate-800 dark:text-green-400 dark:hover:bg-green-900/20 dark:hover:text-green-300"
+									className="group flex-1 gap-2 border-green-200 bg-white text-green-700 transition-all duration-300 hover:scale-105 hover:bg-green-50 hover:text-green-800 hover:shadow-lg active:scale-95 dark:border-green-700 dark:bg-slate-800 dark:text-green-400 dark:hover:bg-green-900/20 dark:hover:text-green-300"
 								>
-									<X className="h-4 w-4" />
+									<X className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
 									Vazgeç
 								</Button>
 							</div>
@@ -95,7 +95,7 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 						<>
 							{/* Answer Display */}
 							<div className="space-y-3">
-								<div className="rounded-lg bg-blue-50 p-4 dark:border dark:border-blue-500/30 dark:bg-blue-900/20">
+								<div className="fade-in slide-in-from-left-3 animate-in rounded-lg bg-blue-50 p-4 duration-500 dark:border dark:border-blue-500/30 dark:bg-blue-900/20">
 									<div className="flex items-center gap-2 text-blue-800 dark:text-blue-200">
 										<span className="text-lg">🏛️</span>
 										<div>
@@ -105,7 +105,7 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 									</div>
 								</div>
 
-								<div className="rounded-lg bg-purple-50 p-4 dark:border dark:border-purple-500/30 dark:bg-purple-900/20">
+								<div className="fade-in slide-in-from-left-3 animate-in rounded-lg bg-purple-50 p-4 delay-150 duration-500 dark:border dark:border-purple-500/30 dark:bg-purple-900/20">
 									<div className="flex items-center gap-2 text-purple-800 dark:text-purple-200">
 										<span className="text-lg">📚</span>
 										<div>
@@ -115,7 +115,7 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 									</div>
 								</div>
 
-								<div className="rounded-lg bg-orange-50 p-4 dark:border dark:border-orange-500/30 dark:bg-orange-900/20">
+								<div className="fade-in slide-in-from-left-3 animate-in rounded-lg bg-orange-50 p-4 delay-300 duration-500 dark:border dark:border-orange-500/30 dark:bg-orange-900/20">
 									<div className="flex items-center gap-2 text-orange-800 dark:text-orange-200">
 										<span className="text-lg">📍</span>
 										<div>
@@ -137,9 +137,9 @@ export function ShowAnswerModal({ isOpen, onClose, currentProgram, onNewGame, at
 							{/* New Game Button */}
 							<Button
 								onClick={handleNewGame}
-								className="w-full gap-2 bg-green-600 text-white hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-700"
+								className="group w-full gap-2 bg-green-600 text-white transition-all duration-300 hover:scale-105 hover:bg-green-700 hover:shadow-lg active:scale-95 dark:bg-green-600 dark:hover:bg-green-700"
 							>
-								<EyeOff className="h-4 w-4" />
+								<EyeOff className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
 								Yeni Oyun Başlat
 							</Button>
 						</>
