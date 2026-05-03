@@ -26,6 +26,7 @@ interface InputFormProps {
 	onProgramInputFocus: () => void;
 	onProgramInputMouseDown?: () => void;
 	answerSubmitted?: boolean;
+	rankingType?: string | null;
 }
 
 export function InputForm({
@@ -49,6 +50,7 @@ export function InputForm({
 	onProgramInputFocus,
 	onProgramInputMouseDown,
 	answerSubmitted = false,
+	rankingType = null,
 }: InputFormProps) {
 	const programDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -126,7 +128,15 @@ export function InputForm({
 							onChange={onProgramChange}
 							onFocus={onProgramInputFocus}
 							onMouseDown={onProgramInputMouseDown}
-							placeholder="Örn: Bilgisayar Mühendisliği"
+							placeholder={
+								rankingType === "Sözel"
+									? "Örn: Türk Dili ve Edebiyatı"
+									: rankingType === "Eşit Ağırlık"
+										? "Örn: Hukuk"
+										: rankingType === "Yabancı Dil"
+											? "Örn: İngiliz Dili ve Edebiyatı"
+											: "Örn: Bilgisayar Mühendisliği"
+							}
 							className={
 								programCorrect
 									? "border-emerald-300/70 bg-emerald-500/[0.08] pr-9 dark:border-emerald-500/30"

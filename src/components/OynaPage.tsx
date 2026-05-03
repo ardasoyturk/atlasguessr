@@ -373,6 +373,7 @@ export function OynaPage({ initialRankingType = null }: OynaPageProps) {
 						programInputRef={programInputRef}
 						onProgramInputMouseDown={() => setProgramInputFocusedByUser(true)}
 						answerSubmitted={answerSubmitted}
+						rankingType={currentProgram?.rankingType || selectedRankingType}
 					/>
 				</div>
 
