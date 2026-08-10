@@ -1,3 +1,5 @@
+
+
 # Atlasguessr
 
 Atlasguessr is an educational guessing game where players identify Turkish university programs from clues. The game is offline-first and works as an installable PWA.
@@ -10,7 +12,7 @@ Atlasguessr is an educational guessing game where players identify Turkish unive
 - Responsive UI with dark mode support
 
 ## Tech Stack
-- [Astro](https://astro.build/) + [React](https://react.dev/) islands
+- [Astro](https://astro.build/) + [Preact](https://preactjs.com/) islands
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS v4](https://tailwindcss.com/)
 - [Cloudflare Workers](https://developers.cloudflare.com/workers/) via Astro Cloudflare adapter
